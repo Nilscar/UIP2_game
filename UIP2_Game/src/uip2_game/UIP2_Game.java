@@ -6,7 +6,7 @@ package uip2_game;
 
 /**
  *
- * @author per-emilfreden
+ * @author per-emilfreden, nils carlberg
  */
 public class UIP2_Game {
 
