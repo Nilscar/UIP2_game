@@ -15,6 +15,10 @@ public class UIP2_Game {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        player player = new player();
+        Player2 player2 = new Player2();
+        player.greet();
+        
     }
     
 }
