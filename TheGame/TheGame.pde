@@ -4,7 +4,7 @@ Sprite player;
 
 void setup(){
   size(1000, 800);
-  player = new Sprite("data/player.png", 0.1, 100, 300);
+  player = new Sprite("data/player.png", 0.1, 100, 300, 1);
   player.change_x = 0;
   player.change_y = 0;
 }
