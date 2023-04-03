@@ -23,6 +23,11 @@ void setup(){
   wood = loadImage("data/blocks/tileWood.png");
   
   createBlocks("data/blocks/blockMap.csv");
+  //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
+  //player = new Sprite("data/orcspritesheet.png", 1.0, 100, 300,10);
+  //player = new Sprite("data/anima.jpg", 1.0, 100, 300,7);
+  frameRate(30);
+  
 }
 
 void draw(){
