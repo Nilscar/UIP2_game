@@ -1,7 +1,13 @@
 // Global variables
-final static float SPEED = 5;
+final static float WALK_SPEED = 5;
+final static float JUMP_SPEED = 10;
 final static float SPRITE_SIZE = 50.0;
 final static float SPRITE_SCALE = 50.0/128;
+final static float GRAVITY = 0.6;
+
+final static float TEST_SCALEW = 1.95 * (842 - 585) * 50.0/842;
+final static float TEST_SCALEH = 1.95 * (1024 - 754) * 50.0/1024;
+
 
 Sprite player;
 PImage dirt, grass, sand, snow, stone, wood;
@@ -9,7 +15,8 @@ ArrayList<Sprite> blocks;
 
 void setup(){
   size(1000, 800);
-  player = new Sprite("data/player.png", 0.1, 100, 300, 1); //Sprite("path", scale, xPos, yPos, frames)
+  imageMode(CENTER);
+  player = new Sprite("data/player.png", 1.0, 300, 100, 1); //Sprite("path", scale, xPos, yPos, frames)
   player.change_x = 0;
   player.change_y = 0;
   
@@ -26,7 +33,7 @@ void setup(){
   //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
   //player = new Sprite("data/orcspritesheet.png", 1.0, 100, 300, 10);
   //player = new Sprite("data/anima.jpg", 1.0, 100, 300, 7);
-  frameRate(30);
+  //frameRate(30);
   
 }
 
@@ -34,26 +41,70 @@ void draw(){
   background(255);
   
   player.display();
-  player.update();
+  blockCollisions(player, blocks);
   
   for(Sprite block: blocks){
     block.display(); 
   }
 }
 
+public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
+   player.change_y += GRAVITY;
+   player.center_y += player.change_y;
+   ArrayList<Sprite> collisionList = checkCollisions(player, blocks);
+   if(collisionList.size() > 0){
+    Sprite collision = collisionList.get(0);
+    if(player.change_y > 0){
+      player.setBottom(collision.getTop());
+    }
+    else if(player.change_y < 0){
+     player.setTop(collision.getBottom()); 
+    }
+    player.change_y = 0;
+   }
+ 
+  player.center_x += player.change_x;
+  collisionList = checkCollisions(player, blocks);
+ if(collisionList.size() > 0){
+  Sprite collision = collisionList.get(0);
+  if(player.change_x > 0){
+    player.setRight(collision.getLeft());
+  }
+  else if(player.change_x < 0){
+   player.setLeft(collision.getRight()); 
+  }
+  //player.change_x = 0;
+ }
+} // End of blockCollisions()
+
+boolean checkCollision(Sprite player, Sprite block){
+  boolean noXOverlap = player.getRight() <= block.getLeft() || player.getLeft() >= block.getRight();
+  boolean noYOverlap = player.getBottom() <= block.getTop() || player.getTop() >= block.getBottom();
+  if(noXOverlap || noYOverlap){
+    return false;
+  }
+  else{
+    return true;
+  }
+}
+
+public ArrayList<Sprite> checkCollisions(Sprite player, ArrayList<Sprite> blockList){
+  ArrayList<Sprite> collision_list = new ArrayList<Sprite>();
+  for(Sprite block: blockList){
+    if(checkCollision(player, block))
+      collision_list.add(block);
+  }
+  return collision_list;
+}
+
 void keyPressed(){
   if(keyCode == RIGHT){
-    player.change_x = SPEED;
+    player.change_x = WALK_SPEED;
   }
   else if(keyCode == LEFT){
-    player.change_x = -SPEED;
+    player.change_x = -WALK_SPEED;
   }
-  else if(keyCode == UP){
-    player.change_y = -SPEED;
-  }
-  else if(keyCode == DOWN){
-    player.change_y = SPEED;
-  }
+  
 }
 
 void keyReleased(){
@@ -63,12 +114,7 @@ void keyReleased(){
   else if(keyCode == LEFT){
     player.change_x = 0;
   }
-  else if(keyCode == UP){
-    player.change_y = 0;
-  }
-  else if(keyCode == DOWN){
-    player.change_y = 0;
-  }
+  
 }
 //dirt, grass, sand, snow, stone, wood
 void createBlocks(String filename){
@@ -113,5 +159,5 @@ void createBlocks(String filename){
      blocks.add(block);
     }
    }
-  }
-}
+  } 
+}//End of createBlocks()

@@ -7,11 +7,13 @@ public class Sprite{
   float fr_w;
   int n_frames;
   PImage[] imgs;
+  final static float TEST_SCALEW = 1.95 * (842 - 585) * 50.0/842;
+  final static float TEST_SCALEH = 1.95 * (1024 - 754) * 50.0/1024;
   
   public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames){
     img = loadImage(filename);
-    w = img.width * scale;
-    h = img.height * scale;
+    w = img.width * scale * 50.0/842;
+    h = img.height * scale * 50.0/1024;
     center_x = xPos;
     center_y = yPos;
     change_x = 0;
@@ -54,5 +56,30 @@ public class Sprite{
     //currentFrame = (currentFrame+(n_frames/30.0));
     center_x += change_x;
     center_y += change_y;
+  }
+  
+  void setLeft(float left){
+    center_x = left + w/2;
+  }
+  float getLeft(){
+    return center_x - w/2;
+  }
+  void setRight(float right){
+    center_x = right - w/2;
+  }
+  float getRight(){
+    return center_x + w/2;
+  }
+  void setTop(float top){
+    center_y = top + h/2;
+  }
+  float getTop(){
+    return center_y - h/2;
+  }
+  void setBottom(float bottom){
+    center_y = bottom - h/2;
+  }
+  float getBottom(){
+    return center_y + h/2;
   }
 }
