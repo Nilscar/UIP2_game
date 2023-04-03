@@ -1,9 +1,10 @@
-// Global variables
-PImage img;
-float center_x, center_y;
-float change_x, change_y;
+public class Sprite{
+  PImage img;
+  float center_x, center_y;
+  float change_x, change_y;
+}
 
-void setup(){
+/*void setup(){
   size(800, 600);
   img = loadImage("data/orcspritesheet.png");
   center_x = 100;
@@ -18,4 +19,4 @@ void draw(){
   image(img, center_x, center_y);
   center_x += change_x;
   center_y += change_y;
-}
+}*/
