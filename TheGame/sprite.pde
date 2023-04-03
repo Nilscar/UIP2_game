@@ -13,21 +13,16 @@ public class Sprite{
     change_x = 0;
     change_y = 0;
   }
-}
-
-/*void setup(){
-  size(800, 600);
-  img = loadImage("data/orcspritesheet.png");
-  center_x = 100;
-  center_y = 300;
-  change_x = 5;
-  change_y = 2;
-}
-
-void draw(){
-  background(255);
+  public Sprite(String filename, float scale){
+    this(filename, scale, 0, 0);
+  }
   
-  image(img, center_x, center_y);
-  center_x += change_x;
-  center_y += change_y;
-}*/
+  public void display(){
+    image(img, center_x, center_y, w, h);
+  }
+  
+  public void update(){
+    center_x += change_x;
+    center_y += change_y;
+  }
+}
