@@ -7,8 +7,7 @@ public class Sprite{
   float fr_w;
   int n_frames;
   PImage[] imgs;
-  final static float TEST_SCALEW = 1.95 * (842 - 585) * 50.0/842;
-  final static float TEST_SCALEH = 1.95 * (1024 - 754) * 50.0/1024;
+  boolean isOnBlock;
   
   public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames){
     img = loadImage(filename);
@@ -19,6 +18,7 @@ public class Sprite{
     change_x = 0;
     change_y = 0;
     n_frames = num_of_frames;
+    isOnBlock = false;
     /*
     imgs = new PImage[n_frames];
     if (n_frames < 2){

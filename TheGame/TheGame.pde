@@ -13,6 +13,7 @@ Sprite player;
 PImage dirt, grass, sand, snow, stone, wood;
 ArrayList<Sprite> blocks;
 
+
 void setup(){
   size(1000, 800);
   imageMode(CENTER);
@@ -48,6 +49,7 @@ void draw(){
   }
 }
 
+//Checking for collisions and setting the correct SPEED in both x&y directions
 public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
    player.change_y += GRAVITY;
    player.center_y += player.change_y;
@@ -56,6 +58,7 @@ public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
     Sprite collision = collisionList.get(0);
     if(player.change_y > 0){
       player.setBottom(collision.getTop());
+      player.isOnBlock = true;
     }
     else if(player.change_y < 0){
      player.setTop(collision.getBottom()); 
@@ -77,6 +80,7 @@ public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
  }
 } // End of blockCollisions()
 
+//boolean for checking collisions between player and blocks
 boolean checkCollision(Sprite player, Sprite block){
   boolean noXOverlap = player.getRight() <= block.getLeft() || player.getLeft() >= block.getRight();
   boolean noYOverlap = player.getBottom() <= block.getTop() || player.getTop() >= block.getBottom();
@@ -88,6 +92,7 @@ boolean checkCollision(Sprite player, Sprite block){
   }
 }
 
+//Checking collisions between player and blocks
 public ArrayList<Sprite> checkCollisions(Sprite player, ArrayList<Sprite> blockList){
   ArrayList<Sprite> collision_list = new ArrayList<Sprite>();
   for(Sprite block: blockList){
@@ -104,6 +109,10 @@ void keyPressed(){
   else if(keyCode == LEFT){
     player.change_x = -WALK_SPEED;
   }
+  else if(keyCode == UP && player.isOnBlock){
+    player.change_y = -JUMP_SPEED;
+    player.isOnBlock = false;
+  }
   
 }
 
@@ -116,7 +125,7 @@ void keyReleased(){
   }
   
 }
-//dirt, grass, sand, snow, stone, wood
+//Creating the game map from csv file
 void createBlocks(String filename){
   String[] rows = loadStrings(filename);
   for(int row = 0; row < rows.length; row++){
