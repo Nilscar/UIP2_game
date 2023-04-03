@@ -17,8 +17,9 @@ public class Sprite{
     change_x = 0;
     change_y = 0;
     n_frames = num_of_frames;
+    /*
     imgs = new PImage[n_frames];
-    if (n_frames<2){
+    if (n_frames < 2){
       fr_w = w;
       imgs[0] = img;
     }
@@ -27,7 +28,7 @@ public class Sprite{
       for (int i = 0; i < n_frames; i++) {
         imgs[i] = img.get(int(fr_w*(i%n_frames)), 0, int(fr_w), int(h));
       }
-    }
+    }*/
   }
   public Sprite(String filename, float scale, int n_frames){
     this(filename, scale, 0, 0, n_frames );
@@ -44,12 +45,13 @@ public class Sprite{
   }
   
   public void display(){
-    //image(imgs[0],center_x, center_y,w,h);
-    image(imgs[(int(currentFrame))% n_frames], center_x, center_y, fr_w, h);
+    image(img,center_x, center_y, w, h);
+    //image(imgs[0],center_x, center_y, w, h);
+    //image(imgs[(int(currentFrame))% n_frames], center_x, center_y, fr_w, h);
   }
   
   public void update(){
-    currentFrame = (currentFrame+(n_frames/30.0));
+    //currentFrame = (currentFrame+(n_frames/30.0));
     center_x += change_x;
     center_y += change_y;
   }
