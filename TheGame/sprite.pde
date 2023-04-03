@@ -4,7 +4,7 @@ public class Sprite{
   float change_x, change_y;
   float w, h;
   
-  public Sprite(String filename, float scale, float xPos, float yPos){
+  public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames){
     img = loadImage(filename);
     w = img.width * scale;
     h = img.height * scale;
@@ -12,6 +12,7 @@ public class Sprite{
     center_y = yPos;
     change_x = 0;
     change_y = 0;
+    n_frames = num_of_frames
   }
   public Sprite(String filename, float scale){
     this(filename, scale, 0, 0);
