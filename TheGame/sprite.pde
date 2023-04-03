@@ -9,10 +9,11 @@ public class Sprite{
   PImage[] imgs;
   boolean isOnBlock;
   
+  //Constructor for player
   public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames){
     img = loadImage(filename);
-    w = img.width * scale * 50.0/842;
-    h = img.height * scale * 50.0/1024;
+    w = img.width * scale;
+    h = img.height * scale;
     center_x = xPos;
     center_y = yPos;
     change_x = 0;
@@ -32,13 +33,15 @@ public class Sprite{
       }
     }*/
   }
+  //Constructor for stuff in upper left corner?? idk
   public Sprite(String filename, float scale, int n_frames){
     this(filename, scale, 0, 0, n_frames );
   }
-  public Sprite(PImage image, float scale, int num_of_frames){
+  //Constructor for blocks
+  public Sprite(PImage image, float scaleW, float scaleH, int num_of_frames){
    img = image;
-   w = img.width * scale;
-   h = img.height * scale;
+   w = img.width * scaleW;
+   h = img.height * scaleH;
    center_x = 0;
    center_y = 0;
    change_x = 0;

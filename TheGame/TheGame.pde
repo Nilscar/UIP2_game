@@ -1,13 +1,11 @@
 // Global variables
 final static float WALK_SPEED = 5;
-final static float JUMP_SPEED = 10;
-final static float SPRITE_SIZE = 50.0;
-final static float SPRITE_SCALE = 50.0/128;
+final static float JUMP_SPEED = 14;
+final static float BLOCK_SIZE = 50.0;
+final static float BLOCK_SCALEW = 50.0/128;
+final static float BLOCK_SCALEH = 50.0/146;
+final static float PLAYER_SCALE = 0.4;
 final static float GRAVITY = 0.6;
-
-final static float TEST_SCALEW = 1.95 * (842 - 585) * 50.0/842;
-final static float TEST_SCALEH = 1.95 * (1024 - 754) * 50.0/1024;
-
 
 Sprite player;
 PImage dirt, grass, sand, snow, stone, wood;
@@ -15,9 +13,9 @@ ArrayList<Sprite> blocks;
 
 
 void setup(){
-  size(1000, 800);
+  fullScreen();
   imageMode(CENTER);
-  player = new Sprite("data/player.png", 1.0, 300, 100, 1); //Sprite("path", scale, xPos, yPos, frames)
+  player = new Sprite("data/zombie_stand.png", PLAYER_SCALE, 100, 500, 1); //Sprite("path", scale, xPos, yPos, frames)
   player.change_x = 0;
   player.change_y = 0;
   
@@ -132,39 +130,39 @@ void createBlocks(String filename){
    String[] columns = split(rows[row], ",");
    for(int col = 0; col < columns.length; col++){
     if(columns[col].equals("1")){
-     Sprite block = new Sprite(dirt, SPRITE_SCALE, 1);
-     block.center_x = SPRITE_SIZE/2 + col * SPRITE_SIZE;
-     block.center_y = SPRITE_SIZE/2 + row * SPRITE_SIZE;
+     Sprite block = new Sprite(dirt, BLOCK_SCALEW, BLOCK_SCALEH, 1);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
     }
     else if(columns[col].equals("2")){
-     Sprite block = new Sprite(grass, SPRITE_SCALE, 1);
-     block.center_x = SPRITE_SIZE/2 + col * SPRITE_SIZE;
-     block.center_y = SPRITE_SIZE/2 + row * SPRITE_SIZE;
+     Sprite block = new Sprite(grass, BLOCK_SCALEW, BLOCK_SCALEH, 1);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
     }
     else if(columns[col].equals("3")){
-     Sprite block = new Sprite(sand, SPRITE_SCALE, 1);
-     block.center_x = SPRITE_SIZE/2 + col * SPRITE_SIZE;
-     block.center_y = SPRITE_SIZE/2 + row * SPRITE_SIZE;
+     Sprite block = new Sprite(sand, BLOCK_SCALEW, BLOCK_SCALEH, 1);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
     }
     else if(columns[col].equals("4")){
-     Sprite block = new Sprite(snow, SPRITE_SCALE, 1);
-     block.center_x = SPRITE_SIZE/2 + col * SPRITE_SIZE;
-     block.center_y = SPRITE_SIZE/2 + row * SPRITE_SIZE;
+     Sprite block = new Sprite(snow, BLOCK_SCALEW, BLOCK_SCALEH, 1);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
     }
     else if(columns[col].equals("5")){
-     Sprite block = new Sprite(stone, SPRITE_SCALE, 1);
-     block.center_x = SPRITE_SIZE/2 + col * SPRITE_SIZE;
-     block.center_y = SPRITE_SIZE/2 + row * SPRITE_SIZE;
+     Sprite block = new Sprite(stone, BLOCK_SCALEW, BLOCK_SCALEH, 1);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
     }
     else if(columns[col].equals("6")){
-     Sprite block = new Sprite(wood, SPRITE_SCALE, 1);
-     block.center_x = SPRITE_SIZE/2 + col * SPRITE_SIZE;
-     block.center_y = SPRITE_SIZE/2 + row * SPRITE_SIZE;
+     Sprite block = new Sprite(wood, BLOCK_SCALEW, BLOCK_SCALEH, 1);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
     }
    }
