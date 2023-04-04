@@ -117,7 +117,7 @@ public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
     player.setRight(collision.getLeft());
     reward.center_x = player.center_x + CHEST_SIZE;
     reward.center_y = player.center_y;
-    player.treasure = true;
+    player.treasure = true; //Solve with while-loop?
   }
   else if(collision.treasure && player.change_x < 0){
     player.setLeft(collision.getRight());
