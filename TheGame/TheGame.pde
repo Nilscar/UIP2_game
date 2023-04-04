@@ -2,8 +2,11 @@
 final static float WALK_SPEED = 5;
 final static float JUMP_SPEED = 12;
 final static float BLOCK_SIZE = 50.0;
-final static float BLOCK_SCALEW = 50.0/128;
-final static float BLOCK_SCALEH = 50.0/146;
+final static float BLOCK_SCALEW = BLOCK_SIZE/128;
+final static float BLOCK_SCALEH = BLOCK_SIZE/146;
+final static float CHEST_SIZE = 20.0;
+final static float CHEST_SCALEW = CHEST_SIZE/62;
+final static float CHEST_SCALEH = CHEST_SIZE/55;
 final static float PLAYER_SCALE = 0.4;
 final static float GRAVITY = 0.6;
 
@@ -12,18 +15,18 @@ final static float LEFT_MARGIN = 60;
 final static float VERTICAL_MARGIN = 50;
 
 float viewX = 0;
-float viewY = 0;
+float viewY = 400;
+
 
 Sprite player;
-PImage dirt, grass, sand, snow, stone, wood;
+PImage dirt, grass, sand, snow, stone, wood, chest;
 ArrayList<Sprite> blocks;
 
 
 void setup(){
   size(1000, 800);
-  
   imageMode(CENTER);
-  player = new Sprite("data/zombie_stand.png", PLAYER_SCALE, 100, 500, 1); //Sprite("path", scale, xPos, yPos, frames)
+  player = new Sprite("data/zombie_stand.png", PLAYER_SCALE, 80, 800, 1); //Sprite("path", scale, xPos, yPos, frames)
   player.change_x = 0;
   player.change_y = 0;
   
@@ -35,6 +38,7 @@ void setup(){
   snow = loadImage("data/blocks/tileSnow.png");
   stone = loadImage("data/blocks/tileStone.png");
   wood = loadImage("data/blocks/tileWood.png");
+  chest = loadImage("data/blocks/box_treasure.png");
   
   createBlocks("data/blocks/blockMap.csv");
   //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
@@ -195,6 +199,12 @@ void createBlocks(String filename){
      Sprite block = new Sprite(wood, BLOCK_SCALEW, BLOCK_SCALEH, 1);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+     blocks.add(block);
+    }
+    else if(columns[col].equals("7")){
+     Sprite block = new Sprite(chest, CHEST_SCALEW, CHEST_SCALEH, 1);
+     block.center_x = CHEST_SIZE + col * BLOCK_SIZE;
+     block.center_y = CHEST_SIZE/2 + row * BLOCK_SIZE + BLOCK_SIZE - CHEST_SIZE;
      blocks.add(block);
     }
    }
