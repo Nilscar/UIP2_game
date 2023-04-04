@@ -5,7 +5,9 @@ public class Sprite{
   float currentFrame = 0;
   float w, h;
   float fr_w;
+  float i_w;
   int n_frames;
+  float Scale;
   PImage[] imgs;
   boolean isOnBlock;
   boolean treasure;
@@ -22,18 +24,21 @@ public class Sprite{
     n_frames = num_of_frames;
     isOnBlock = false;
     treasure = false;
-    /*
+    Scale = scale;
+    
     imgs = new PImage[n_frames];
     if (n_frames < 2){
       fr_w = w;
       imgs[0] = img;
     }
     else{
-      fr_w = w / n_frames;
+      i_w = img.width / n_frames;
       for (int i = 0; i < n_frames; i++) {
-        imgs[i] = img.get(int(fr_w*(i%n_frames)), 0, int(fr_w), int(h));
+        imgs[i] = img.get(int(i_w*(i%n_frames)), 0, int(i_w), int(img.height));
+         imgs[i].resize(int(i_w*scale),int(h));
       }
-    }*/
+      fr_w=w/n_frames;
+    }
   }
   //Constructor for stuff in upper left corner?? idk
   public Sprite(String filename, float scale, int n_frames){
@@ -50,31 +55,42 @@ public class Sprite{
    change_y = 0;
    n_frames = num_of_frames;
    treasure = chest;
+   imgs = new PImage[n_frames];
+    if (n_frames < 2){
+      fr_w = w;
+      imgs[0] = img;
+    }
+    else{
+      fr_w = w / n_frames;
+      for (int i = 0; i < n_frames; i++) {
+        imgs[i] = img.get(int(fr_w*(i%n_frames)), 0, int(fr_w), int(h));
+      }
+    }
   }
   
   public void display(){
-    image(img,center_x, center_y, w, h);
+   // image(img,center_x, center_y, w, h);
     //image(imgs[0],center_x, center_y, w, h);
-    //image(imgs[(int(currentFrame))% n_frames], center_x, center_y, fr_w, h);
+    image(imgs[(int(currentFrame))% n_frames], center_x, center_y, fr_w, h);
   }
   
   public void update(){
-    //currentFrame = (currentFrame+(n_frames/30.0));
+    currentFrame = (currentFrame+(n_frames/60.0));
     center_x += change_x;
     center_y += change_y;
   }
   
   void setLeft(float left){
-    center_x = left + w/2;
+    center_x = left + fr_w/2;
   }
   float getLeft(){
-    return center_x - w/2;
+    return center_x - fr_w/2;
   }
   void setRight(float right){
-    center_x = right - w/2;
+    center_x = right - fr_w/2;
   }
   float getRight(){
-    return center_x + w/2;
+    return center_x + fr_w/2;
   }
   void setTop(float top){
     center_y = top + h/2;

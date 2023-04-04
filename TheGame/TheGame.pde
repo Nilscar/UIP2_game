@@ -7,7 +7,7 @@ final static float BLOCK_SCALEH = BLOCK_SIZE/146;
 final static float CHEST_SIZE = 20.0;
 final static float CHEST_SCALEW = CHEST_SIZE/62;
 final static float CHEST_SCALEH = CHEST_SIZE/55;
-final static float PLAYER_SCALE = 0.4;
+final static float PLAYER_SCALE = 0.6;
 final static float GRAVITY = 0.6;
 
 final static float RIGHT_MARGIN = 400;
@@ -30,7 +30,8 @@ void setup(){
   fullScreen();
   //print(height);
   imageMode(CENTER);
-  player = new Sprite("data/zombie_stand.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 1); //Sprite("path", scale, xPos, yPos, frames)
+ // player = new Sprite("data/zombie_stand.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 1); //Sprite("path", scale, xPos, yPos, frames)
+  player = new Sprite("data/Orc_wait.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 5);
   player.change_x = 0;
   player.change_y = 0;
   
@@ -49,7 +50,7 @@ void setup(){
   //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
   //player = new Sprite("data/orcspritesheet.png", 1.0, 100, 300, 10);
   //player = new Sprite("data/anima.jpg", 1.0, 100, 300, 7);
-  //frameRate(30);
+  frameRate(60);
   createTreasure();
   
 }
@@ -60,7 +61,7 @@ void draw(){
   
   player.display();
   blockCollisions(player, blocks);
-  
+  player.update();
   for(Sprite block: blocks){
     block.display(); 
   }
