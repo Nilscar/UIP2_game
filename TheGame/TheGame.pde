@@ -130,7 +130,6 @@ public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
   }
   else if(player.change_x > 0){
    player.setRight(collision.getLeft());
-   print("collided right");
   }
  }
 } // End of blockCollisions()
