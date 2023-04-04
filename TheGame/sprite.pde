@@ -8,6 +8,7 @@ public class Sprite{
   int n_frames;
   PImage[] imgs;
   boolean isOnBlock;
+  boolean treasure;
   
   //Constructor for player
   public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames){
@@ -20,6 +21,7 @@ public class Sprite{
     change_y = 0;
     n_frames = num_of_frames;
     isOnBlock = false;
+    treasure = false;
     /*
     imgs = new PImage[n_frames];
     if (n_frames < 2){
@@ -38,7 +40,7 @@ public class Sprite{
     this(filename, scale, 0, 0, n_frames );
   }
   //Constructor for blocks
-  public Sprite(PImage image, float scaleW, float scaleH, int num_of_frames){
+  public Sprite(PImage image, float scaleW, float scaleH, int num_of_frames, boolean chest){
    img = image;
    w = img.width * scaleW;
    h = img.height * scaleH;
@@ -47,6 +49,7 @@ public class Sprite{
    change_x = 0;
    change_y = 0;
    n_frames = num_of_frames;
+   treasure = chest;
   }
   
   public void display(){
