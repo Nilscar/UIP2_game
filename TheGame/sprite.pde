@@ -75,9 +75,7 @@ public class Sprite{
   }
   
   public void update(){
-    currentFrame = (currentFrame+(n_frames/60.0));
-    center_x += change_x;
-    center_y += change_y;
+    currentFrame = (currentFrame+(n_frames/90.0));
   }
   
   void setLeft(float left){
