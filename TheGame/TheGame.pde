@@ -1,11 +1,18 @@
 // Global variables
 final static float WALK_SPEED = 5;
-final static float JUMP_SPEED = 14;
+final static float JUMP_SPEED = 12;
 final static float BLOCK_SIZE = 50.0;
 final static float BLOCK_SCALEW = 50.0/128;
 final static float BLOCK_SCALEH = 50.0/146;
 final static float PLAYER_SCALE = 0.4;
 final static float GRAVITY = 0.6;
+
+final static float RIGHT_MARGIN = 400;
+final static float LEFT_MARGIN = 60;
+final static float VERTICAL_MARGIN = 50;
+
+float viewX = 0;
+float viewY = 0;
 
 Sprite player;
 PImage dirt, grass, sand, snow, stone, wood;
@@ -13,7 +20,8 @@ ArrayList<Sprite> blocks;
 
 
 void setup(){
-  fullScreen();
+  size(1000, 800);
+  
   imageMode(CENTER);
   player = new Sprite("data/zombie_stand.png", PLAYER_SCALE, 100, 500, 1); //Sprite("path", scale, xPos, yPos, frames)
   player.change_x = 0;
@@ -38,6 +46,7 @@ void setup(){
 
 void draw(){
   background(255);
+  scroll();
   
   player.display();
   blockCollisions(player, blocks);
@@ -45,6 +54,29 @@ void draw(){
   for(Sprite block: blocks){
     block.display(); 
   }
+}
+
+void scroll(){
+ float rightBoundary = viewX + width - RIGHT_MARGIN;
+ if(player.getRight() > rightBoundary){
+   viewX += player.getRight() - rightBoundary;
+ }
+ 
+ float leftBoundary = viewX + LEFT_MARGIN;
+ if(player.getLeft() < leftBoundary){
+   viewX -= leftBoundary - player.getLeft();
+ }
+ 
+ float bottomBoundary = viewY + height - VERTICAL_MARGIN;
+ if(player.getBottom() > bottomBoundary){
+   viewY += player.getBottom() - bottomBoundary;
+ }
+ 
+ float topBoundary = viewY + VERTICAL_MARGIN;
+ if(player.getTop() < topBoundary){
+   viewY -= topBoundary - player.getTop();
+ }
+ translate(-viewX, -viewY);
 }
 
 //Checking for collisions and setting the correct SPEED in both x&y directions
