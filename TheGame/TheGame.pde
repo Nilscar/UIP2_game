@@ -4,7 +4,7 @@ final static float JUMP_SPEED = 12;
 final static float BLOCK_SIZE = 100.0;
 final static float BLOCK_SCALEW = BLOCK_SIZE/128;
 final static float BLOCK_SCALEH = BLOCK_SIZE/146;
-final static float CHEST_SIZE = 20.0;
+final static float CHEST_SIZE = BLOCK_SIZE/3;
 final static float CHEST_SCALEW = CHEST_SIZE/62;
 final static float CHEST_SCALEH = CHEST_SIZE/55;
 final static float GRAVITY = 0.6;
@@ -50,7 +50,7 @@ void setup(){
   //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
   //player = new Sprite("data/orcspritesheet.png", 1.0, 100, 300, 10);
   //player = new Sprite("data/anima.jpg", 1.0, 100, 300, 7);
-  //frameRate(60);
+  frameRate(60);
   createTreasure();
   
 }

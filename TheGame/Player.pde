@@ -4,7 +4,7 @@ public class Player extends Sprite{
   PImage player_stand = loadImage("data/zombie_seq.png");
   PImage[] pl_stand = new PImage[stand_frames];
   PImage player_walk = loadImage("data/zombie_walk.png");
-   PImage player_walk_left = loadImage("data/zombie_walk_left.png");
+  PImage player_walk_left = loadImage("data/zombie_walk_left.png");
   PImage[] pl_walk_right = new PImage[walk_frames];
   PImage[] pl_walk_left = new PImage[walk_frames];
 
