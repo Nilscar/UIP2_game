@@ -7,7 +7,7 @@ final static float BLOCK_SCALEH = BLOCK_SIZE/146;
 final static float CHEST_SIZE = 20.0;
 final static float CHEST_SCALEW = CHEST_SIZE/62;
 final static float CHEST_SCALEH = CHEST_SIZE/55;
-final static float PLAYER_SCALE = 0.7;
+final static float PLAYER_SCALE = 0.4;
 final static float GRAVITY = 0.6;
 
 final static float RIGHT_MARGIN = 400;
