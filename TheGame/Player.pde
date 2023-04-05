@@ -4,10 +4,11 @@ public class Player extends Sprite{
   PImage player_stand = loadImage("data/zombie_seq.png");
   PImage[] pl_stand = new PImage[stand_frames];
   PImage player_walk = loadImage("data/zombie_walk.png");
+   PImage player_walk_left = loadImage("data/zombie_walk_left.png");
   PImage[] pl_walk_right = new PImage[walk_frames];
   PImage[] pl_walk_left = new PImage[walk_frames];
 
-  final static float PLAYER_SCALE = 0.6;
+  final static float PLAYER_SCALE = 0.9;
   
   public Player(float x_pos, float y_pos ){
     super("data/zombie_seq.png", PLAYER_SCALE, x_pos, y_pos, stand_frames);
@@ -20,7 +21,8 @@ public class Player extends Sprite{
       for (int i = 0; i < walk_frames; i++) {
         pl_walk_right[i] = player_walk.get(int(i_w*(i%walk_frames)), 0, int(i_w), int(player_walk.height));
         pl_walk_right[i].resize(int(i_w*PLAYER_SCALE),int(player_walk.height*PLAYER_SCALE));
-       // pl_walk_left[i] = pl_walk_right[i].translate(1,1);
+        pl_walk_left[i] = player_walk_left.get(int(i_w*(i%walk_frames)), 0, int(i_w), int(player_walk.height));
+        pl_walk_left[i].resize(int(i_w*PLAYER_SCALE),int(player_walk.height*PLAYER_SCALE));
       }
   }
   @Override
@@ -29,8 +31,7 @@ public class Player extends Sprite{
       image(pl_stand[(int(currentFrame))% stand_frames], center_x, center_y, fr_w, h);
     }
     else if (change_x<0){
-      image(pl_walk_right[(int(currentFrame))% walk_frames], center_x, center_y, fr_w, h);
-      scale(-1,1);
+      image(pl_walk_left[(int(currentFrame))% walk_frames], center_x, center_y, fr_w, h);
     }
     else{
       image(pl_walk_right[(int(currentFrame))% walk_frames], center_x, center_y, fr_w, h);
