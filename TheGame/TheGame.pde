@@ -31,7 +31,8 @@ void setup(){
   //print(height);
   imageMode(CENTER);
  // player = new Sprite("data/zombie_stand.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 1); //Sprite("path", scale, xPos, yPos, frames)
-  player = new Sprite("data/zombie_seq.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 5);
+  //player = new Sprite("data/zombie_seq.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 5);
+  //player = new Sprite("data/zombie_walk.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 2);
   player.change_x = 0;
   player.change_y = 0;
   
@@ -50,7 +51,7 @@ void setup(){
   //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
   //player = new Sprite("data/orcspritesheet.png", 1.0, 100, 300, 10);
   //player = new Sprite("data/anima.jpg", 1.0, 100, 300, 7);
-  frameRate(60);
+  //frameRate(60);
   createTreasure();
   
 }
@@ -164,7 +165,7 @@ void keyPressed(){
   else if(keyCode == LEFT){
     player.change_x = -WALK_SPEED;
   }
-  else if(keyCode == UP && player.isOnBlock){
+  else if(keyCode == UP && player.change_y==0){
     player.change_y = -JUMP_SPEED;
     player.isOnBlock = false;
   }
