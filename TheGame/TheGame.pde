@@ -31,7 +31,7 @@ void setup(){
   //print(height);
   imageMode(CENTER);
  // player = new Sprite("data/zombie_stand.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 1); //Sprite("path", scale, xPos, yPos, frames)
-  //player = new Sprite("data/zombie_seq.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 5);
+  player = new Player( 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN);
   //player = new Sprite("data/zombie_walk.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 2);
   player.change_x = 0;
   player.change_y = 0;

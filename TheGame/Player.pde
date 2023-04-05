@@ -1,7 +1,39 @@
 public class Player extends Sprite{
-  final static float PLAYER_SCALE = 0.4;
+  final static int stand_frames = 5;
+  final static int walk_frames = 2;
+  PImage player_stand = loadImage("data/zombie_seq.png");
+  PImage[] pl_stand = new PImage[stand_frames];
+  PImage player_walk = loadImage("data/zombie_walk.png");
+  PImage[] pl_walk_right = new PImage[walk_frames];
+  PImage[] pl_walk_left = new PImage[walk_frames];
+
+  final static float PLAYER_SCALE = 0.6;
   
   public Player(float x_pos, float y_pos ){
-    super("data/zombie_walk.png", PLAYER_SCALE, x_pos, y_pos, 2);
+    super("data/zombie_seq.png", PLAYER_SCALE, x_pos, y_pos, stand_frames);
+    i_w = player_stand.width / stand_frames;
+      for (int i = 0; i < stand_frames; i++) {
+        pl_stand[i] = player_stand.get(int(i_w*(i%stand_frames)), 0, int(i_w), int(player_stand.height));
+        pl_stand[i].resize(int(i_w*PLAYER_SCALE),int(player_stand.height*PLAYER_SCALE));
+      }
+      i_w = player_walk.width / walk_frames;
+      for (int i = 0; i < walk_frames; i++) {
+        pl_walk_right[i] = player_walk.get(int(i_w*(i%walk_frames)), 0, int(i_w), int(player_walk.height));
+        pl_walk_right[i].resize(int(i_w*PLAYER_SCALE),int(player_walk.height*PLAYER_SCALE));
+       // pl_walk_left[i] = pl_walk_right[i].translate(1,1);
+      }
+  }
+  @Override
+  public void display(){
+    if(change_x==0){
+      image(pl_stand[(int(currentFrame))% stand_frames], center_x, center_y, fr_w, h);
+    }
+    else if (change_x<0){
+      image(pl_walk_right[(int(currentFrame))% walk_frames], center_x, center_y, fr_w, h);
+      scale(-1,1);
+    }
+    else{
+      image(pl_walk_right[(int(currentFrame))% walk_frames], center_x, center_y, fr_w, h);
+    }
   }
 }
