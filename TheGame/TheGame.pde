@@ -1,13 +1,16 @@
 // Global variables
 final static float WALK_SPEED = 6;
-final static float JUMP_SPEED = 14;
+final static float JUMP_SPEED = 14.4;
 final static float BLOCK_SIZE = 100.0;
 final static float BLOCK_SCALEW = BLOCK_SIZE/128;
 final static float BLOCK_SCALEH = BLOCK_SIZE/146;
 final static float CHEST_SIZE = BLOCK_SIZE/3;
 final static float CHEST_SCALEW = CHEST_SIZE/62;
 final static float CHEST_SCALEH = CHEST_SIZE/55;
-final static float GRAVITY = 0.8;
+final static float GRAVITY = 0.5;
+PImage menu;
+String state ="menu";
+
 
 final static float RIGHT_MARGIN = 400;
 final static float LEFT_MARGIN = 60;
@@ -25,7 +28,7 @@ boolean treasure = false;
 
 
 void setup(){
- //size(1000, 800);
+ //size(1280, 720);
   fullScreen();
   //print(height);
   imageMode(CENTER);
@@ -34,6 +37,8 @@ void setup(){
   //player = new Sprite("data/zombie_walk.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 2);
   player.change_x = 0;
   player.change_y = 0;
+  menu = loadImage("data/menutest.png");
+  menu.resize(displayWidth, displayHeight);
   
   blocks = new ArrayList<Sprite>();
   
@@ -56,18 +61,28 @@ void setup(){
 }
 
 void draw(){
-  background(255);
-  scroll();
+  if( state !="game"){
+    //print(menu);
+    background(menu);
+    
+    
+    }
+   
+  else if( state == "game"){
+    background(255);
+    scroll();
+    
+    player.display();
+    blockCollisions(player, blocks);
+    player.update();
+    for(Sprite block: blocks){
+      block.display(); 
+    }
+    if(treasure){
+      reward.display();
+    }
+  }
   
-  player.display();
-  blockCollisions(player, blocks);
-  player.update();
-  for(Sprite block: blocks){
-    block.display(); 
-  }
-  if(treasure){
-    reward.display();
-  }
 }
 
 void scroll(){
@@ -172,6 +187,9 @@ void keyPressed(){
     treasure = true;
     player.treasure = false;
     print("a pressed. ");
+  }
+  else if(keyCode == ENTER){
+    state = "game";
   }
 }
 
