@@ -1,13 +1,13 @@
 // Global variables
-final static float WALK_SPEED = 5;
-final static float JUMP_SPEED = 12;
+final static float WALK_SPEED = 6;
+final static float JUMP_SPEED = 14;
 final static float BLOCK_SIZE = 100.0;
 final static float BLOCK_SCALEW = BLOCK_SIZE/128;
 final static float BLOCK_SCALEH = BLOCK_SIZE/146;
 final static float CHEST_SIZE = BLOCK_SIZE/3;
 final static float CHEST_SCALEW = CHEST_SIZE/62;
 final static float CHEST_SCALEH = CHEST_SIZE/55;
-final static float GRAVITY = 0.6;
+final static float GRAVITY = 0.8;
 
 final static float RIGHT_MARGIN = 400;
 final static float LEFT_MARGIN = 60;
@@ -25,7 +25,7 @@ boolean treasure = false;
 
 
 void setup(){
-  //size(1000, 800);
+ //size(1000, 800);
   fullScreen();
   //print(height);
   imageMode(CENTER);

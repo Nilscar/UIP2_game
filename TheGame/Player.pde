@@ -8,7 +8,7 @@ public class Player extends Sprite{
   PImage[] pl_walk_right = new PImage[walk_frames];
   PImage[] pl_walk_left = new PImage[walk_frames];
 
-  final static float PLAYER_SCALE = 0.9;
+  final static float PLAYER_SCALE = 0.8;
   
   public Player(float x_pos, float y_pos ){
     super("data/zombie_seq.png", PLAYER_SCALE, x_pos, y_pos, stand_frames);
