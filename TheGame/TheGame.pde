@@ -191,6 +191,9 @@ void keyPressed(){
   else if(keyCode == ENTER){
     state = "game";
   }
+   else if(keyCode == 80){
+    state = "menu";
+  }
 }
 
 void keyReleased(){
