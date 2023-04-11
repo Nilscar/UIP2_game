@@ -19,6 +19,7 @@ final static float VERTICAL_MARGIN = 50;
 float viewX = 0;
 float viewY = height;
 float mapHeight;
+float mapWidth;
 
 
 Sprite player;
@@ -56,6 +57,8 @@ void setup(){
   String[] CSVrows = loadStrings("data/blocks/blockMap.csv");
   String[] mapFrame = loadStrings("data/blocks/mapFrame.csv");
   mapHeight = mapFrame.length;
+  mapWidth = split(mapFrame[0], ",").length - 1;
+  print(mapWidth);
   createMapFrame(mapFrame);
   createBlocks(CSVrows);
   //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
@@ -84,9 +87,9 @@ void draw(){
     for(Sprite mapBlock: frameBlocks){
       mapBlock.display();
     }
-    for(Sprite block: blocks){
+    /*for(Sprite block: blocks){
       block.display(); 
-    }
+    }*/
     if(treasure){
       reward.display();
     }
@@ -122,6 +125,11 @@ public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
    player.change_y += GRAVITY;
    player.center_y += player.change_y;
    ArrayList<Sprite> collisionList = checkCollisions(player, blocks);
+   if(player.getBottom() >= ((mapHeight - 1) * BLOCK_SIZE) && player.change_y > 0){
+      player.setBottom((mapHeight - 1) * BLOCK_SIZE);
+      player.isOnBlock = true;
+      player.change_y = 0;
+   }
    if(collisionList.size() > 0){
     Sprite collision = collisionList.get(0);
     if(player.change_y > 0){
@@ -133,14 +141,15 @@ public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
     }
     player.change_y = 0;
    }
-   if(player.getBottom() == ((mapHeight - 1) * BLOCK_SIZE) + 5 && player.change_y > 0){
-      player.setBottom((mapHeight - 1) * BLOCK_SIZE);
-      player.isOnBlock = true;
-      player.change_y = 0;
-   }
  
   player.center_x += player.change_x;
   collisionList = checkCollisions(player, blocks);
+  if(player.getLeft() <= BLOCK_SIZE && player.change_x < 0){
+    player.setLeft(BLOCK_SIZE);
+  }
+  else if(player.getRight() >= mapWidth * BLOCK_SIZE && player.change_x > 0){
+    player.setRight(mapWidth*BLOCK_SIZE);
+  }
  if(collisionList.size() > 0){
   Sprite collision = collisionList.get(0);
   if(collision.treasure && player.change_x > 0){
@@ -166,7 +175,7 @@ public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
 
 //boolean for checking collisions between player and blocks
 boolean checkCollision(Sprite player, Sprite block){
-  boolean noXOverlap = player.getRight() <= block.getLeft() || player.getLeft() >= block.getRight() || player.getRight() == 20*BLOCK_SIZE || player.getLeft() == BLOCK_SIZE;
+  boolean noXOverlap = player.getRight() <= block.getLeft() || player.getLeft() >= block.getRight();
   boolean noYOverlap = player.getBottom() <= block.getTop() || player.getTop() >= block.getBottom();
   if(noXOverlap || noYOverlap){
     return false;
