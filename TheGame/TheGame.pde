@@ -1,12 +1,12 @@
 // Global variables
 final static float WALK_SPEED = 6;
 final static float JUMP_SPEED = 14.4;
-final static float BLOCK_SIZE = 50;
+/*final static float BLOCK_SIZE = 50;
 final static float BLOCK_SCALEW = BLOCK_SIZE/128;
 final static float BLOCK_SCALEH = BLOCK_SIZE/146;
 final static float CHEST_SIZE = BLOCK_SIZE/3;
 final static float CHEST_SCALEW = CHEST_SIZE/62;
-final static float CHEST_SCALEH = CHEST_SIZE/55;
+final static float CHEST_SCALEH = CHEST_SIZE/55;*/
 final static float GRAVITY = 0.5;
 PImage menu;
 String state ="menu";
@@ -23,12 +23,15 @@ float mapWidth;
 
 
 Sprite player;
-Sprite reward;
+Map map;
+/*Sprite reward;
 PImage dirt, grass, sand, snow, stone, wood, chest, treasure1;
 ArrayList<Sprite> blocks;
 ArrayList<Sprite> frameBlocks;
-boolean treasure = false;
+boolean treasure = false;*/
 
+ArrayList<Sprite> blocks;
+ArrayList<Sprite> frameBlocks;
 
 void setup(){
  //size(1280, 720);
@@ -43,9 +46,16 @@ void setup(){
   menu = loadImage("data/menutest.png");
   menu.resize(displayWidth, displayHeight);
   
-  blocks = new ArrayList<Sprite>();
-  frameBlocks = new ArrayList<Sprite>();
+  map = new Map();
+  blocks = map.getBlocks();
+  frameBlocks = map.getMapBlocks();
+  mapHeight = map.getMapHeight;
+  mapWidth = map.getMapWidth;
   
+  //blocks = new ArrayList<Sprite>();
+  //frameBlocks = new ArrayList<Sprite>();
+  
+  /*
   dirt = loadImage("data/blocks/tileDirt.png");
   grass = loadImage("data/blocks/tileGrass.png");
   sand = loadImage("data/blocks/tileSand.png");
@@ -57,15 +67,14 @@ void setup(){
   String[] CSVrows = loadStrings("data/blocks/blockMap.csv");
   String[] mapFrame = loadStrings("data/blocks/mapFrame.csv");
   mapHeight = mapFrame.length;
-  mapWidth = split(mapFrame[0], ",").length - 1;
-  print(mapWidth);
-  createMapFrame(mapFrame);
-  createBlocks(CSVrows);
+  mapWidth = split(mapFrame[0], ",").length - 1;*/
+  //createMapFrame(mapFrame);
+  //createBlocks(CSVrows);
   //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
   //player = new Sprite("data/orcspritesheet.png", 1.0, 100, 300, 10);
   //player = new Sprite("data/anima.jpg", 1.0, 100, 300, 7);
   frameRate(60);
-  createTreasure();
+  //createTreasure();
   
 }
 
@@ -207,7 +216,6 @@ void keyPressed(){
     player.isOnBlock = false;
   }
   else if(key == 'a' && player.treasure){
-    treasure = true;
     player.treasure = false;
     print("a pressed. ");
   }
@@ -339,5 +347,5 @@ void createMapFrame(String[] blockrows){
      //print(block);
     }
    }
-  } 
+  }
 }//End of createMapFrame()
