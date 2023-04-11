@@ -1,7 +1,7 @@
 // Global variables
 final static float WALK_SPEED = 6;
 final static float JUMP_SPEED = 14.4;
-final static float BLOCK_SIZE = 100.0;
+final static float BLOCK_SIZE = 50;
 final static float BLOCK_SCALEW = BLOCK_SIZE/128;
 final static float BLOCK_SCALEH = BLOCK_SIZE/146;
 final static float CHEST_SIZE = BLOCK_SIZE/3;
@@ -34,7 +34,7 @@ void setup(){
   imageMode(CENTER);
  // player = new Sprite("data/zombie_stand.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 1); //Sprite("path", scale, xPos, yPos, frames)
   player = new Player( 1.5 * BLOCK_SIZE, height - BLOCK_SIZE);
-  //player = new Sprite("data/zombie_walk.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 2);
+  //player = new Sprite("data/zombie_walk.png", 0.8, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 2);
   player.change_x = 0;
   player.change_y = 0;
   menu = loadImage("data/menutest.png");
@@ -50,8 +50,8 @@ void setup(){
   wood = loadImage("data/blocks/tileWood.png");
   chest = loadImage("data/blocks/box_treasure.png");
   treasure1 = loadImage("data/treasures/runeBlack_slab_002.png");
-  
-  createBlocks("data/blocks/blockMap.csv");
+  String[] CSVrows = loadStrings("data/blocks/blockMap.csv");
+  createBlocks(CSVrows);
   //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
   //player = new Sprite("data/orcspritesheet.png", 1.0, 100, 300, 10);
   //player = new Sprite("data/anima.jpg", 1.0, 100, 300, 7);
@@ -214,8 +214,8 @@ void createTreasure(){
 }
 
 //Creating the game map from csv file
-void createBlocks(String filename){
-  String[] rows = loadStrings(filename);
+void createBlocks(String[] blockrows){
+  String[] rows = blockrows;
   for(int row = 0; row < rows.length; row++){
    String[] columns = split(rows[row], ",");
    for(int col = 0; col < columns.length; col++){

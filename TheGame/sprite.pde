@@ -12,7 +12,7 @@ public class Sprite{
   boolean isOnBlock;
   boolean treasure;
   
-  //Constructor for player
+  //Constructor for sprite
   public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames){
     img = loadImage(filename);
     w = img.width * scale;
