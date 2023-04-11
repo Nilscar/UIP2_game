@@ -27,6 +27,8 @@ public class Player extends Sprite{
   }
   @Override
   public void display(){
+    //image(pl_stand[0], center_x, center_y, fr_w, h);
+    
     if(change_x==0){
       image(pl_stand[(int(currentFrame))% stand_frames], center_x, center_y, fr_w, h);
     }

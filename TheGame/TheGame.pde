@@ -18,12 +18,15 @@ final static float VERTICAL_MARGIN = 50;
 
 float viewX = 0;
 float viewY = height;
+float mapHeight;
+float mapWidth;
 
 
 Sprite player;
 Sprite reward;
 PImage dirt, grass, sand, snow, stone, wood, chest, treasure1;
 ArrayList<Sprite> blocks;
+ArrayList<Sprite> frameBlocks;
 boolean treasure = false;
 
 
@@ -33,7 +36,7 @@ void setup(){
   //print(height);
   imageMode(CENTER);
  // player = new Sprite("data/zombie_stand.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 1); //Sprite("path", scale, xPos, yPos, frames)
-  player = new Player( 1.5 * BLOCK_SIZE, height - BLOCK_SIZE);
+  player = new Player( 1.5 * BLOCK_SIZE, 500);
   //player = new Sprite("data/zombie_walk.png", 0.8, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 2);
   player.change_x = 0;
   player.change_y = 0;
@@ -41,6 +44,7 @@ void setup(){
   menu.resize(displayWidth, displayHeight);
   
   blocks = new ArrayList<Sprite>();
+  frameBlocks = new ArrayList<Sprite>();
   
   dirt = loadImage("data/blocks/tileDirt.png");
   grass = loadImage("data/blocks/tileGrass.png");
@@ -51,6 +55,11 @@ void setup(){
   chest = loadImage("data/blocks/box_treasure.png");
   treasure1 = loadImage("data/treasures/runeBlack_slab_002.png");
   String[] CSVrows = loadStrings("data/blocks/blockMap.csv");
+  String[] mapFrame = loadStrings("data/blocks/mapFrame.csv");
+  mapHeight = mapFrame.length;
+  mapWidth = split(mapFrame[0], ",").length - 1;
+  print(mapWidth);
+  createMapFrame(mapFrame);
   createBlocks(CSVrows);
   //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
   //player = new Sprite("data/orcspritesheet.png", 1.0, 100, 300, 10);
@@ -75,9 +84,12 @@ void draw(){
     player.display();
     blockCollisions(player, blocks);
     player.update();
-    for(Sprite block: blocks){
-      block.display(); 
+    for(Sprite mapBlock: frameBlocks){
+      mapBlock.display();
     }
+    /*for(Sprite block: blocks){
+      block.display(); 
+    }*/
     if(treasure){
       reward.display();
     }
@@ -113,6 +125,11 @@ public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
    player.change_y += GRAVITY;
    player.center_y += player.change_y;
    ArrayList<Sprite> collisionList = checkCollisions(player, blocks);
+   if(player.getBottom() >= ((mapHeight - 1) * BLOCK_SIZE) && player.change_y > 0){
+      player.setBottom((mapHeight - 1) * BLOCK_SIZE);
+      player.isOnBlock = true;
+      player.change_y = 0;
+   }
    if(collisionList.size() > 0){
     Sprite collision = collisionList.get(0);
     if(player.change_y > 0){
@@ -127,6 +144,12 @@ public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
  
   player.center_x += player.change_x;
   collisionList = checkCollisions(player, blocks);
+  if(player.getLeft() <= BLOCK_SIZE && player.change_x < 0){
+    player.setLeft(BLOCK_SIZE);
+  }
+  else if(player.getRight() >= mapWidth * BLOCK_SIZE && player.change_x > 0){
+    player.setRight(mapWidth*BLOCK_SIZE);
+  }
  if(collisionList.size() > 0){
   Sprite collision = collisionList.get(0);
   if(collision.treasure && player.change_x > 0){
@@ -265,3 +288,56 @@ void createBlocks(String[] blockrows){
    }
   } 
 }//End of createBlocks()
+
+//Creating the game map from csv file
+void createMapFrame(String[] blockrows){
+  String[] rows = blockrows;
+  for(int row = 0; row < rows.length; row++){
+   String[] columns = split(rows[row], ",");
+   for(int col = 0; col < columns.length; col++){
+    if(columns[col].equals("1")){
+     Sprite block = new Sprite(dirt, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+     frameBlocks.add(block);
+    }
+    else if(columns[col].equals("2")){
+     Sprite block = new Sprite(grass, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+     frameBlocks.add(block);
+    }
+    else if(columns[col].equals("3")){
+     Sprite block = new Sprite(sand, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+     frameBlocks.add(block);
+    }
+    else if(columns[col].equals("4")){
+     Sprite block = new Sprite(snow, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+     frameBlocks.add(block);
+    }
+    else if(columns[col].equals("5")){
+     Sprite block = new Sprite(stone, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+     frameBlocks.add(block);
+    }
+    else if(columns[col].equals("6")){
+     Sprite block = new Sprite(wood, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+     frameBlocks.add(block);
+    }
+    else if(columns[col].equals("7")){
+     Sprite block = new Sprite(chest, CHEST_SCALEW, CHEST_SCALEH, 1, true);
+     block.center_x = CHEST_SIZE + col * BLOCK_SIZE;
+     block.center_y = CHEST_SIZE/2 + row * BLOCK_SIZE + BLOCK_SIZE - CHEST_SIZE;
+     frameBlocks.add(block);
+     //print(block);
+    }
+   }
+  } 
+}//End of createMapFrame()
