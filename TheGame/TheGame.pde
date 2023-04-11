@@ -51,6 +51,7 @@ void setup(){
   chest = loadImage("data/blocks/box_treasure.png");
   treasure1 = loadImage("data/treasures/runeBlack_slab_002.png");
   String[] CSVrows = loadStrings("data/blocks/blockMap.csv");
+  String[] mapFrame = loadStrings("data/blocks/mapFrame");
   createBlocks(CSVrows);
   //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
   //player = new Sprite("data/orcspritesheet.png", 1.0, 100, 300, 10);
@@ -265,3 +266,49 @@ void createBlocks(String[] blockrows){
    }
   } 
 }//End of createBlocks()
+
+//Creating the game map from csv file
+void createMapFrame(String[] blockrows){
+  String[] rows = blockrows;
+  for(int row = 0; row < rows.length; row++){
+   String[] columns = split(rows[row], ",");
+   for(int col = 0; col < columns.length; col++){
+    if(columns[col].equals("1")){
+     Sprite block = new Sprite(dirt, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+    }
+    else if(columns[col].equals("2")){
+     Sprite block = new Sprite(grass, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+    }
+    else if(columns[col].equals("3")){
+     Sprite block = new Sprite(sand, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+    }
+    else if(columns[col].equals("4")){
+     Sprite block = new Sprite(snow, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+    }
+    else if(columns[col].equals("5")){
+     Sprite block = new Sprite(stone, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+    }
+    else if(columns[col].equals("6")){
+     Sprite block = new Sprite(wood, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+    }
+    else if(columns[col].equals("7")){
+     Sprite block = new Sprite(chest, CHEST_SCALEW, CHEST_SCALEH, 1, true);
+     block.center_x = CHEST_SIZE + col * BLOCK_SIZE;
+     block.center_y = CHEST_SIZE/2 + row * BLOCK_SIZE + BLOCK_SIZE - CHEST_SIZE;
+     //print(block);
+    }
+   }
+  } 
+}//End of createMapFrame()
