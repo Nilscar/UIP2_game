@@ -5,31 +5,43 @@ public class Map extends Sprite{
   final static float CHEST_SIZE = BLOCK_SIZE/3;
   final static float CHEST_SCALEW = CHEST_SIZE/62;
   final static float CHEST_SCALEH = CHEST_SIZE/55;
+  final static int BLOCK_AMOUNT = 8;
   
   float mapHeight;
   float mapWidth;
   
-  PImage dirt, grass, sand, snow, stone, wood, chest, treasure1;
+  /*final static PImage dirt = loadImage("data/blocks/tileDirt.png");
+  final static PImage grass = loadImage("data/blocks/tileGrass.png");
+  final static PImage sand = loadImage("data/blocks/tileSand.png");
+  final static PImage snow = loadImage("data/blocks/tileSnow.png");
+  final static PImage stone = loadImage("data/blocks/tileStone.png");
+  final static PImage wood = loadImage("data/blocks/tileWood.png");
+  final static PImage chest = loadImage("data/blocks/box_treasure.png");
+  final static PImage treasure1 = loadImage("data/treasures/runeBlack_slab_002.png");
+  */
+  //PImage dirt, grass, sand, snow, stone, wood, chest, treasure1;
+  PImage[] mapBlocks = new PImage[BLOCK_AMOUNT];
   PImage img, mapImg;
   ArrayList<Sprite> blocks;
   ArrayList<Sprite> frameBlocks;
   
   Sprite reward;
   boolean treasure = false;
+  boolean tChest;
   
   public Map(){
-    super(PImage image, float scaleW, float scaleH, int num_of_frames, boolean chest);
+    super(filename, BLOCK_SCALEW, BLOCK_SCALEH, 1, tChest);
     blocks = new ArrayList<Sprite>();
     frameBlocks = new ArrayList<Sprite>();
     
-    dirt = loadImage("data/blocks/tileDirt.png");
-    grass = loadImage("data/blocks/tileGrass.png");
-    sand = loadImage("data/blocks/tileSand.png");
-    snow = loadImage("data/blocks/tileSnow.png");
-    stone = loadImage("data/blocks/tileStone.png");
-    wood = loadImage("data/blocks/tileWood.png");
-    chest = loadImage("data/blocks/box_treasure.png");
-    treasure1 = loadImage("data/treasures/runeBlack_slab_002.png");
+    mapBlocks[0] = loadImage("data/blocks/tileDirt.png");
+    mapBlocks[1] = loadImage("data/blocks/tileGrass.png");
+    mapBlocks[2] = loadImage("data/blocks/tileSand.png");
+    mapBlocks[3] = loadImage("data/blocks/tileSnow.png");
+    mapBlocks[4] = loadImage("data/blocks/tileStone.png");
+    mapBlocks[5] = loadImage("data/blocks/tileWood.png");
+    mapBlocks[6] = loadImage("data/blocks/box_treasure.png");
+    mapBlocks[7] = loadImage("data/treasures/runeBlack_slab_002.png");
     String[] CSVrows = loadStrings("data/blocks/blockMap.csv");
     String[] mapFrame = loadStrings("data/blocks/mapFrame.csv");
     
@@ -43,10 +55,10 @@ public class Map extends Sprite{
   
   @Override
   public void display(){
-    image(mapImg);
+    //image(mapImg);
   }
   
-  void createMapImg(){
+  PImage createMapImg(){
     for(Sprite block: blocks){
       // create PImage or image with the blocks and frameBlocks
       img = image(block.img, block.center_x, block.center_y, block.fr_w, block.h);
@@ -54,19 +66,19 @@ public class Map extends Sprite{
     }
   }
   
-  void getMapHeight(){
-    return float mapHeight;
+  float getMapHeight(){
+     return mapHeight;
   }
   
-  void getMapWidth(){
-    return float mapWidth;
+  float getMapWidth(){
+     return mapWidth;
   }
   
-  void getBlocks(){
+  ArrayList<Sprite> getBlocks(){
     return ArrayList<Sprite> blocks;
   }
   
-  void getFrameBlocks(){
+  ArrayList<Sprite> getFrameBlocks(){
     return ArrayList<Sprite> frameBlocks;
   }
   
@@ -84,43 +96,43 @@ void createBlocks(String[] blockrows){
    String[] columns = split(rows[row], ",");
    for(int col = 0; col < columns.length; col++){
     if(columns[col].equals("1")){
-     Sprite block = new Sprite(dirt, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     Sprite block = new Sprite(mapBlocks[col], BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
     }
     else if(columns[col].equals("2")){
-     Sprite block = new Sprite(grass, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     Sprite block = new Sprite(mapBlocks[col], BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
     }
     else if(columns[col].equals("3")){
-     Sprite block = new Sprite(sand, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     Sprite block = new Sprite(mapBlocks[col], BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
     }
     else if(columns[col].equals("4")){
-     Sprite block = new Sprite(snow, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     Sprite block = new Sprite(mapBlocks[col], BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
     }
     else if(columns[col].equals("5")){
-     Sprite block = new Sprite(stone, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     Sprite block = new Sprite(mapBlocks[col], BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
     }
     else if(columns[col].equals("6")){
-     Sprite block = new Sprite(wood, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     Sprite block = new Sprite(mapBlocks[col], BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
     }
     else if(columns[col].equals("7")){
-     Sprite block = new Sprite(chest, CHEST_SCALEW, CHEST_SCALEH, 1, true);
+     Sprite block = new Sprite(mapBlocks[col], CHEST_SCALEW, CHEST_SCALEH, 1, true);
      block.center_x = CHEST_SIZE + col * BLOCK_SIZE;
      block.center_y = CHEST_SIZE/2 + row * BLOCK_SIZE + BLOCK_SIZE - CHEST_SIZE;
      blocks.add(block);
@@ -137,43 +149,43 @@ void createMapFrame(String[] blockrows){
    String[] columns = split(rows[row], ",");
    for(int col = 0; col < columns.length; col++){
     if(columns[col].equals("1")){
-     Sprite block = new Sprite(dirt, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     Sprite block = new Sprite(mapBlocks[col], BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      frameBlocks.add(block);
     }
     else if(columns[col].equals("2")){
-     Sprite block = new Sprite(grass, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     Sprite block = new Sprite(mapBlocks[col], BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      frameBlocks.add(block);
     }
     else if(columns[col].equals("3")){
-     Sprite block = new Sprite(sand, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     Sprite block = new Sprite(mapBlocks[col], BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      frameBlocks.add(block);
     }
     else if(columns[col].equals("4")){
-     Sprite block = new Sprite(snow, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     Sprite block = new Sprite(mapBlocks[col], BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      frameBlocks.add(block);
     }
     else if(columns[col].equals("5")){
-     Sprite block = new Sprite(stone, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     Sprite block = new Sprite(mapBlocks[col], BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      frameBlocks.add(block);
     }
     else if(columns[col].equals("6")){
-     Sprite block = new Sprite(wood, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+     Sprite block = new Sprite(mapBlocks[col], BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      frameBlocks.add(block);
     }
     else if(columns[col].equals("7")){
-     Sprite block = new Sprite(chest, CHEST_SCALEW, CHEST_SCALEH, 1, true);
+     Sprite block = new Sprite(mapBlocks[col], CHEST_SCALEW, CHEST_SCALEH, 1, true);
      block.center_x = CHEST_SIZE + col * BLOCK_SIZE;
      block.center_y = CHEST_SIZE/2 + row * BLOCK_SIZE + BLOCK_SIZE - CHEST_SIZE;
      frameBlocks.add(block);

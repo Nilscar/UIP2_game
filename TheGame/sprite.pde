@@ -45,8 +45,8 @@ public class Sprite{
     this(filename, scale, 0, 0, n_frames );
   }
   //Constructor for blocks
-  public Sprite(PImage image, float scaleW, float scaleH, int num_of_frames, boolean chest){
-   img = image;
+  public Sprite(String filename, float scaleW, float scaleH, int num_of_frames, boolean chest){
+   img = loadImage(filename);
    w = img.width * scaleW;
    h = img.height * scaleH;
    center_x = 0;

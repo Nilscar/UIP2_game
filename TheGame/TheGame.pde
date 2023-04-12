@@ -1,8 +1,8 @@
 // Global variables
 final static float WALK_SPEED = 6;
 final static float JUMP_SPEED = 14.4;
-/*final static float BLOCK_SIZE = 50;
-final static float BLOCK_SCALEW = BLOCK_SIZE/128;
+final static float BLOCK_SIZE = 50;
+/*final static float BLOCK_SCALEW = BLOCK_SIZE/128;
 final static float BLOCK_SCALEH = BLOCK_SIZE/146;
 final static float CHEST_SIZE = BLOCK_SIZE/3;
 final static float CHEST_SCALEW = CHEST_SIZE/62;
@@ -99,9 +99,9 @@ void draw(){
     for(Sprite block: blocks){
       block.display(); 
     }
-    if(treasure){
+    /*if(treasure){
       reward.display();
-    }
+    }*/
   }
   
 }
@@ -161,7 +161,7 @@ public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
   }
  if(collisionList.size() > 0){
   Sprite collision = collisionList.get(0);
-  if(collision.treasure && player.change_x > 0){
+  /*if(collision.treasure && player.change_x > 0){
     player.setRight(collision.getLeft());
     reward.center_x = player.center_x + CHEST_SIZE;
     reward.center_y = player.center_y;
@@ -172,7 +172,7 @@ public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
     reward.center_x = player.center_x + CHEST_SIZE;
     reward.center_y = player.center_y;
     player.treasure = true;
-  }
+  }*/
   else if(player.change_x < 0){
    player.setLeft(collision.getRight()); 
   }
