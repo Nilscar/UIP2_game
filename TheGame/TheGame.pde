@@ -25,7 +25,7 @@ float mapWidth;
 Sprite player;
 Sprite reward;
 PImage dirt, grass, sand, snow, stone, wood, chest, treasure1;
-PImage theMap;
+PImage theMapImg;
 ArrayList<Sprite> blocks;
 ArrayList<Sprite> frameBlocks;
 boolean treasure = false;
@@ -59,19 +59,22 @@ void setup(){
   createMapFrame(mapFrame);
   createBlocks(CSVrows);
   createTreasure();
-  theMap = createMap(blocks);
+  theMapImg = createMap(blocks);
+  
   frameRate(60);
   
 }
 
 void draw(){
+  
   if( state !="game"){
     background(menu);
     }
    
   else if( state == "game"){
     background(255);
-    image(theMap, 0, 0);
+    
+    //image(theMapImg, 0, 0);
     scroll();
     player.display();
     blockCollisions(player, blocks);
@@ -85,6 +88,7 @@ void draw(){
     if(treasure){
       reward.display();
     }
+    image(theMapImg, theMapImg.width/2 - BLOCK_SIZE/2, theMapImg.height/2 - BLOCK_SIZE/2);
   }
   
 }
@@ -336,15 +340,12 @@ void createMapFrame(String[] blockrows){
 }//End of createMapFrame()
 
 PImage createMap(ArrayList<Sprite> blocks){
-  PImage mapImage = createImage(int(mapWidth * BLOCK_SIZE), int(mapHeight * BLOCK_SIZE), 255);
+  PImage mapImage = createImage(int(mapWidth * BLOCK_SIZE + BLOCK_SIZE/2), int(mapHeight * BLOCK_SIZE), 255);
   print("In createMap: ");
-  
-  int counter = 0;
   print(mapImage.width, "+", mapImage.height);
-  /*
-  for(int i = 0; i < mapImage.width; i += int(BLOCK_SIZE)){
-    mapImage.set(i, i, blocks.get(counter).img);
-    counter += 1;
-  }*/
+  for(Sprite block: blocks){
+    block.img.resize(int(block.w), int(block.w));
+    mapImage.set(int(block.center_x), int(block.center_y), block.img);
+  }
   return mapImage;
 }//End of createMap()

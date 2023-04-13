@@ -67,6 +67,18 @@ public class Sprite{
       }
     }
   }
+  //Constructor for the map image
+  public Sprite(PImage image){
+    img = image;
+     w = img.width;
+     h = img.height;
+     center_x = 0;
+     center_y = 0;
+     change_x = 0;
+     change_y = 0;
+     n_frames = 1;
+     treasure = false;
+  }
   
   public void display(){
    // image(img,center_x, center_y, w, h);
