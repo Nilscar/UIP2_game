@@ -1,17 +1,16 @@
 // Global variables
 final static float WALK_SPEED = 6;
 final static float JUMP_SPEED = 14.4;
-final static float BLOCK_SIZE = 70.0;
+final static float BLOCK_SIZE = 100.0;
 final static float BLOCK_SCALEW = BLOCK_SIZE/128;
 final static float BLOCK_SCALEH = BLOCK_SIZE/146;
 final static float CHEST_SIZE = BLOCK_SIZE/3;
 final static float CHEST_SCALEW = CHEST_SIZE/62;
 final static float CHEST_SCALEH = CHEST_SIZE/55;
 final static float GRAVITY = 0.5;
-
 PImage menu;
-PImage map;
-String state ="game";
+String state ="menu";
+
 
 final static float RIGHT_MARGIN = 400;
 final static float LEFT_MARGIN = 60;
@@ -20,22 +19,21 @@ final static float VERTICAL_MARGIN = 50;
 float viewX = 0;
 float viewY = height;
 
+
 Sprite player;
 Sprite reward;
 PImage dirt, grass, sand, snow, stone, wood, chest, treasure1;
 ArrayList<Sprite> blocks;
-public PGraphics blockBuffer; // new variable
 boolean treasure = false;
 
 
 void setup(){
-   size(1470, 1400);
-  //fullScreen();
+ //size(1280, 720);
+  fullScreen();
   //print(height);
   imageMode(CENTER);
  // player = new Sprite("data/zombie_stand.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 1); //Sprite("path", scale, xPos, yPos, frames)
-  //player = new Player( 1.5 * BLOCK_SIZE, height - BLOCK_SIZE);
-  player = new Player( 1.5 * BLOCK_SIZE, 100);
+  player = new Player( 1.5 * BLOCK_SIZE, height - BLOCK_SIZE);
   //player = new Sprite("data/zombie_walk.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 2);
   player.change_x = 0;
   player.change_y = 0;
@@ -44,10 +42,6 @@ void setup(){
   
   blocks = new ArrayList<Sprite>();
   
-  String[] mapFrame = loadStrings("data/blocks/mapFrame.csv");
-  int mapHeight = mapFrame.length-1;
-  int  mapWidth = split(mapFrame[0], ",").length -2;
-  print(int(mapWidth*BLOCK_SIZE), int(mapHeight*BLOCK_SIZE));
   dirt = loadImage("data/blocks/tileDirt.png");
   grass = loadImage("data/blocks/tileGrass.png");
   sand = loadImage("data/blocks/tileSand.png");
@@ -58,53 +52,38 @@ void setup(){
   treasure1 = loadImage("data/treasures/runeBlack_slab_002.png");
   
   createBlocks("data/blocks/blockMap.csv");
-  blockBuffer = createGraphics(int(mapWidth*BLOCK_SIZE), int(mapHeight*BLOCK_SIZE), JAVA2D); // initialize buffer
-  blockBuffer.beginDraw();
-  blockBuffer.background(255);
-  for (Sprite block : blocks) {
-    block.display(); // draw each block on the buffer
-  }
-  blockBuffer.endDraw();
-  //noLoop();
   //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
   //player = new Sprite("data/orcspritesheet.png", 1.0, 100, 300, 10);
   //player = new Sprite("data/anima.jpg", 1.0, 100, 300, 7);
   frameRate(60);
-  createTreasure(); 
-   map = blockBuffer.get();
-   map.resize(1280, 720);
-   print(blockBuffer);
+  createTreasure();
+  
 }
 
 void draw(){
   if( state !="game"){
-    //print(menu);
     background(menu);
-    
-    
     }
    
   else if( state == "game"){
-     scroll();
-   // blockBuffer.clear();
-    background(blockBuffer);
-    game_process();
-    
-  }
-  
-}
-void game_process(){
+    background(255);
+    scroll();
     
     player.display();
     blockCollisions(player, blocks);
     player.update();
-    //image(blockBuffer, 0, 0); // display block buffer
-    /*for(Sprite block: blocks){
+    for(Sprite block: blocks){
       block.display(); 
-    }*/
+    }
     if(treasure){
       reward.display();
     }
+  }
+  
+}
+void draw_game(){
+
+
 }
 void scroll(){
  float rightBoundary = viewX + width - RIGHT_MARGIN;

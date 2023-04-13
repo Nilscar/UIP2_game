@@ -29,7 +29,7 @@ public class Sprite{
     imgs = new PImage[n_frames];
     if (n_frames < 2){
       fr_w = w;
-      imgs[0] = img;
+      //imgs[0] = img;
     }
     else{
       i_w = img.width / n_frames;
@@ -58,7 +58,7 @@ public class Sprite{
    imgs = new PImage[n_frames];
     if (n_frames < 2){
       fr_w = w;
-      imgs[0] = img;
+      //imgs[0] = img;
     }
     else{
       fr_w = w / n_frames;
@@ -69,10 +69,10 @@ public class Sprite{
   }
   
   public void display(){
-   // image(img,center_x, center_y, w, h);
+    // image(img,center_x, center_y, w, h);
     //image(imgs[0],center_x, center_y, w, h);
     if (n_frames < 2){
-    image(imgs[0], center_x, center_y, fr_w, h);
+    blockBuffer.image(img, center_x, center_y, fr_w, h);
     }
     else{
     image(imgs[(int(currentFrame))% n_frames], center_x, center_y, fr_w, h);
