@@ -48,9 +48,9 @@ void setup(){
   
   map = new Map();
   blocks = map.getBlocks();
-  frameBlocks = map.getMapBlocks();
-  mapHeight = map.getMapHeight;
-  mapWidth = map.getMapWidth;
+  frameBlocks = map.getFrameBlocks();
+  mapHeight = map.getMapHeight();
+  mapWidth = map.getMapWidth();
   
   //blocks = new ArrayList<Sprite>();
   //frameBlocks = new ArrayList<Sprite>();
@@ -173,7 +173,7 @@ public void blockCollisions(Sprite player, ArrayList<Sprite> blocks){
     reward.center_y = player.center_y;
     player.treasure = true;
   }*/
-  else if(player.change_x < 0){
+  if(player.change_x < 0){
    player.setLeft(collision.getRight()); 
   }
   else if(player.change_x > 0){
@@ -237,6 +237,7 @@ void keyReleased(){
   
 }
 
+/*
 void createTreasure(){
   Sprite t = new Sprite(treasure1, CHEST_SCALEW, CHEST_SCALEH, 1, false);
   t.center_x = player.center_x - 2*CHEST_SCALEW;
@@ -348,4 +349,4 @@ void createMapFrame(String[] blockrows){
     }
    }
   }
-}//End of createMapFrame()
+}//End of createMapFrame()*/

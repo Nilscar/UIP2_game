@@ -12,7 +12,7 @@ public class Sprite{
   boolean isOnBlock;
   boolean treasure;
   
-  //Constructor for sprite
+  //Constructor for sprite/player
   public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames){
     img = loadImage(filename);
     w = img.width * scale;
@@ -45,8 +45,8 @@ public class Sprite{
     this(filename, scale, 0, 0, n_frames );
   }
   //Constructor for blocks
-  public Sprite(String filename, float scaleW, float scaleH, int num_of_frames, boolean chest){
-   img = loadImage(filename);
+  public Sprite(PImage image, float scaleW, float scaleH, int num_of_frames, boolean chest){
+   img = image;
    w = img.width * scaleW;
    h = img.height * scaleH;
    center_x = 0;
@@ -66,8 +66,16 @@ public class Sprite{
         imgs[i] = img.get(int(fr_w*(i%n_frames)), 0, int(fr_w), int(h));
       }
     }
+  }//End of constructor for blocks
+  public Sprite(float scaleW, float scaleH, int num_of_frames){
+     w = img.width * scaleW;
+     h = img.height * scaleH;
+     center_x = 0;
+     center_y = 0;
+     change_x = 0;
+     change_y = 0;
+     n_frames = num_of_frames;
   }
-  
   public void display(){
    // image(img,center_x, center_y, w, h);
     //image(imgs[0],center_x, center_y, w, h);

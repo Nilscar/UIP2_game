@@ -10,7 +10,7 @@ public class Map extends Sprite{
   float mapHeight;
   float mapWidth;
   
-  /*final static PImage dirt = loadImage("data/blocks/tileDirt.png");
+  PImage dirt = loadImage("data/blocks/tileDirt.png");/*
   final static PImage grass = loadImage("data/blocks/tileGrass.png");
   final static PImage sand = loadImage("data/blocks/tileSand.png");
   final static PImage snow = loadImage("data/blocks/tileSnow.png");
@@ -22,6 +22,7 @@ public class Map extends Sprite{
   //PImage dirt, grass, sand, snow, stone, wood, chest, treasure1;
   PImage[] mapBlocks = new PImage[BLOCK_AMOUNT];
   PImage img, mapImg;
+  PImage image = loadImage("data/blocks/tileDirt.png");
   ArrayList<Sprite> blocks;
   ArrayList<Sprite> frameBlocks;
   
@@ -30,7 +31,7 @@ public class Map extends Sprite{
   boolean tChest;
   
   public Map(){
-    super(filename, BLOCK_SCALEW, BLOCK_SCALEH, 1, tChest);
+    super(BLOCK_SCALEW, BLOCK_SCALEH, 1);
     blocks = new ArrayList<Sprite>();
     frameBlocks = new ArrayList<Sprite>();
     
@@ -45,26 +46,30 @@ public class Map extends Sprite{
     String[] CSVrows = loadStrings("data/blocks/blockMap.csv");
     String[] mapFrame = loadStrings("data/blocks/mapFrame.csv");
     
+    for(PImage img: mapBlocks){
+      image = img;
+    }
+    
     mapHeight = mapFrame.length;
     mapWidth = split(mapFrame[0], ",").length - 1;
     
     createMapFrame(mapFrame);
     createBlocks(CSVrows);
-    mapImg = createMapImg();
+    //mapImg = createMapImg();
   }
   
   @Override
   public void display(){
     //image(mapImg);
   }
-  
+  /*
   PImage createMapImg(){
     for(Sprite block: blocks){
       // create PImage or image with the blocks and frameBlocks
-      img = image(block.img, block.center_x, block.center_y, block.fr_w, block.h);
+      //img = image(block.img, block.center_x, block.center_y, block.fr_w, block.h);
       return img;
     }
-  }
+  }*/
   
   float getMapHeight(){
      return mapHeight;
@@ -75,19 +80,19 @@ public class Map extends Sprite{
   }
   
   ArrayList<Sprite> getBlocks(){
-    return ArrayList<Sprite> blocks;
+    return blocks;
   }
   
   ArrayList<Sprite> getFrameBlocks(){
-    return ArrayList<Sprite> frameBlocks;
+    return frameBlocks;
   }
-  
+  /*
   void createTreasure(){
   Sprite t = new Sprite(treasure1, CHEST_SCALEW, CHEST_SCALEH, 1, false);
   t.center_x = player.center_x - 2*CHEST_SCALEW;
   t.center_y = player.center_y;
   reward = t;
-}
+}*/
   
   //Creating the game map from csv file
 void createBlocks(String[] blockrows){
