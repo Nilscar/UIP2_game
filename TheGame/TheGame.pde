@@ -31,13 +31,9 @@ boolean treasure = false;
 
 
 void setup(){
- //size(1280, 720);
   fullScreen();
-  //print(height);
   imageMode(CENTER);
- // player = new Sprite("data/zombie_stand.png", PLAYER_SCALE, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 1); //Sprite("path", scale, xPos, yPos, frames)
   player = new Player( 1.5 * BLOCK_SIZE, 500);
-  //player = new Sprite("data/zombie_walk.png", 0.8, 1.5 * BLOCK_SIZE, height - VERTICAL_MARGIN, 2);
   player.change_x = 0;
   player.change_y = 0;
   menu = loadImage("data/menutest.png");
