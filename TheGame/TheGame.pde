@@ -25,6 +25,7 @@ float mapWidth;
 Sprite player;
 Sprite reward;
 PImage dirt, grass, sand, snow, stone, wood, chest, treasure1;
+PImage theMap;
 ArrayList<Sprite> blocks;
 ArrayList<Sprite> frameBlocks;
 boolean treasure = false;
@@ -54,38 +55,33 @@ void setup(){
   String[] mapFrame = loadStrings("data/blocks/mapFrame.csv");
   mapHeight = mapFrame.length;
   mapWidth = split(mapFrame[0], ",").length - 1;
-  print(mapWidth);
+  //print(mapWidth);
   createMapFrame(mapFrame);
   createBlocks(CSVrows);
-  //player = new Sprite("data/player.png", 0.1, 100, 300, 1);
-  //player = new Sprite("data/orcspritesheet.png", 1.0, 100, 300, 10);
-  //player = new Sprite("data/anima.jpg", 1.0, 100, 300, 7);
-  frameRate(60);
   createTreasure();
+  theMap = createMap(blocks);
+  frameRate(60);
   
 }
 
 void draw(){
   if( state !="game"){
-    //print(menu);
     background(menu);
-    
-    
     }
    
   else if( state == "game"){
     background(255);
+    image(theMap, 0, 0);
     scroll();
-    
     player.display();
     blockCollisions(player, blocks);
     player.update();
-    for(Sprite mapBlock: frameBlocks){
-      mapBlock.display();
+    for(Sprite frameBlock: frameBlocks){
+      frameBlock.display();
     }
-    for(Sprite block: blocks){
+    /*for(Sprite block: blocks){
       block.display(); 
-    }
+    }*/
     if(treasure){
       reward.display();
     }
@@ -232,7 +228,7 @@ void createTreasure(){
   reward = t;
 }
 
-//Creating the game map from csv file
+//Creating the game map blocks from a csv file
 void createBlocks(String[] blockrows){
   String[] rows = blockrows;
   for(int row = 0; row < rows.length; row++){
@@ -243,6 +239,7 @@ void createBlocks(String[] blockrows){
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      blocks.add(block);
+     block.display();
     }
     else if(columns[col].equals("2")){
      Sprite block = new Sprite(grass, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
@@ -285,7 +282,7 @@ void createBlocks(String[] blockrows){
   } 
 }//End of createBlocks()
 
-//Creating the game map from csv file
+//Creating the frame blocks from a csv file
 void createMapFrame(String[] blockrows){
   String[] rows = blockrows;
   for(int row = 0; row < rows.length; row++){
@@ -337,3 +334,17 @@ void createMapFrame(String[] blockrows){
    }
   } 
 }//End of createMapFrame()
+
+PImage createMap(ArrayList<Sprite> blocks){
+  PImage mapImage = createImage(int(mapWidth * BLOCK_SIZE), int(mapHeight * BLOCK_SIZE), 255);
+  print("In createMap: ");
+  
+  int counter = 0;
+  print(mapImage.width, "+", mapImage.height);
+  /*
+  for(int i = 0; i < mapImage.width; i += int(BLOCK_SIZE)){
+    mapImage.set(i, i, blocks.get(counter).img);
+    counter += 1;
+  }*/
+  return mapImage;
+}//End of createMap()
