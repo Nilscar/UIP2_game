@@ -73,7 +73,7 @@ void setup(){
   createTreasure(); 
    map = blockBuffer.get();
    map.resize(1280, 720);
-   print(blockBuffer);
+   //print(blockBuffer);
 }
 
 void draw(){
@@ -85,11 +85,12 @@ void draw(){
     }
    
   else if( state == "game"){
-     scroll();
+      scroll();
    // blockBuffer.clear();
+    
     background(blockBuffer);
     game_process();
-    
+    //camera(0,0,0, player.center_x, player.center_y, 0, 0,1,0);
   }
   
 }
