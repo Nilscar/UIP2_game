@@ -1,7 +1,7 @@
 // Global variables
 final static float WALK_SPEED = 6;
 final static float JUMP_SPEED = 14.4;
-final static float BLOCK_SIZE = 100;
+final static float BLOCK_SIZE = 70;
 final static float BLOCK_SCALEW = BLOCK_SIZE/128;
 final static float BLOCK_SCALEH = BLOCK_SIZE/146;
 final static float CHEST_SIZE = BLOCK_SIZE/3;
@@ -33,7 +33,7 @@ boolean treasure = false;
 
 void setup(){
   fullScreen();
-  //size(width, height);
+  //size(1470, 1400);
   imageMode(CENTER);
   //print(viewY,"\n", viewX, "\n");
   player = new Player( 1.5 * BLOCK_SIZE, 500);
