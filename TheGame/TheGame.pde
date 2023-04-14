@@ -77,6 +77,7 @@ void draw(){
   else if( state == "game"){
     background(255);
     camera(0, 0, 0, player.center_x, player.center_y, 0, -1, -1, 0);
+    //camera(width/2.0, height/2.0, (height/2.0) / tan(PI*30.0 / 180.0), width/2.0, height/2.0, 0, 0, 1, 0) //Default values of the camera func
     //camera();
     //scroll();
     player.display();
