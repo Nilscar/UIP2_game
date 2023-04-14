@@ -17,7 +17,7 @@ final static float LEFT_MARGIN = 60;
 final static float VERTICAL_MARGIN = 50;
 
 float viewX = 0;
-float viewY = height;
+float viewY = 0;
 float mapHeight;
 float mapWidth;
 
@@ -34,6 +34,7 @@ boolean treasure = false;
 void setup(){
   fullScreen();
   imageMode(CENTER);
+  print(viewY,"\n", viewX, "\n");
   player = new Player( 1.5 * BLOCK_SIZE, 500);
   player.change_x = 0;
   player.change_y = 0;
@@ -73,7 +74,6 @@ void draw(){
    
   else if( state == "game"){
     background(255);
-    
     //image(theMapImg, 0, 0);
     scroll();
     player.display();
@@ -277,8 +277,8 @@ void createBlocks(String[] blockrows){
     }
     else if(columns[col].equals("7")){
      Sprite block = new Sprite(chest, CHEST_SCALEW, CHEST_SCALEH, 1, true);
-     block.center_x = CHEST_SIZE + col * BLOCK_SIZE;
-     block.center_y = CHEST_SIZE/2 + row * BLOCK_SIZE + BLOCK_SIZE - CHEST_SIZE;
+     block.center_x = BLOCK_SIZE/2 + CHEST_SIZE + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 - CHEST_SIZE + row * BLOCK_SIZE + BLOCK_SIZE;
      blocks.add(block);
      //print(block);
     }
