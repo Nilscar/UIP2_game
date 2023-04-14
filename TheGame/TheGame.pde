@@ -74,7 +74,6 @@ void draw(){
    
   else if( state == "game"){
     background(255);
-    //image(theMapImg, 0, 0);
     //scroll();
     player.display();
     blockCollisions(player, blocks);
@@ -82,9 +81,6 @@ void draw(){
     for(Sprite frameBlock: frameBlocks){
       frameBlock.display();
     }
-    /*for(Sprite block: blocks){
-      block.display(); 
-    }*/
     if(treasure){
       reward.display();
     }
