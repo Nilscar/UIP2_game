@@ -1,7 +1,7 @@
 // Global variables
 final static float WALK_SPEED = 6;
 final static float JUMP_SPEED = 14.4;
-final static float BLOCK_SIZE = 50;
+final static float BLOCK_SIZE = 70;
 final static float BLOCK_SCALEW = BLOCK_SIZE/128;
 final static float BLOCK_SCALEH = BLOCK_SIZE/146;
 final static float CHEST_SIZE = BLOCK_SIZE/3;
@@ -17,7 +17,7 @@ final static float LEFT_MARGIN = 60;
 final static float VERTICAL_MARGIN = 50;
 
 float viewX = 0;
-float viewY = 0;
+float viewY = 700;
 float mapHeight;
 float mapWidth;
 
@@ -75,7 +75,7 @@ void draw(){
   else if( state == "game"){
     background(255);
     //image(theMapImg, 0, 0);
-    scroll();
+    //scroll();
     player.display();
     blockCollisions(player, blocks);
     player.update();
