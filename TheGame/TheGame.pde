@@ -1,7 +1,7 @@
 // Global variables
 final static float WALK_SPEED = 6;
 final static float JUMP_SPEED = 14.4;
-final static float BLOCK_SIZE = 70;
+final static float BLOCK_SIZE = 100;
 final static float BLOCK_SCALEW = BLOCK_SIZE/128;
 final static float BLOCK_SCALEH = BLOCK_SIZE/146;
 final static float CHEST_SIZE = BLOCK_SIZE/3;
@@ -33,8 +33,9 @@ boolean treasure = false;
 
 void setup(){
   fullScreen();
+  //size(width, height);
   imageMode(CENTER);
-  print(viewY,"\n", viewX, "\n");
+  //print(viewY,"\n", viewX, "\n");
   player = new Player( 1.5 * BLOCK_SIZE, 500);
   player.change_x = 0;
   player.change_y = 0;
@@ -68,12 +69,14 @@ void setup(){
 
 void draw(){
   
+  //print("x: ", player.getCenterX(), "y: ", player.getCenterY(), "\n");
   if( state !="game"){
     background(menu);
     }
    
   else if( state == "game"){
     background(255);
+    camera(0, 0, 0, player.getCenterX(), player.getCenterY(), 0, 0, 1, 0);
     //scroll();
     player.display();
     blockCollisions(player, blocks);
@@ -337,8 +340,8 @@ void createMapFrame(String[] blockrows){
 
 PImage createMap(ArrayList<Sprite> blocks){
   PImage mapImage = createImage(int(mapWidth * BLOCK_SIZE + BLOCK_SIZE/2), int(mapHeight * BLOCK_SIZE), 255);
-  print("In createMap: ");
-  print(mapImage.width, "+", mapImage.height);
+  //print("In createMap: ");
+  //print(mapImage.width, "+", mapImage.height);
   for(Sprite block: blocks){
     block.img.resize(int(block.w), int(block.w));
     mapImage.set(int(block.center_x), int(block.center_y), block.img);
