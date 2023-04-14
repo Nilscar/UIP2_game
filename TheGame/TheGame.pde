@@ -76,7 +76,8 @@ void draw(){
    
   else if( state == "game"){
     background(255);
-    camera(0, 0, 0, player.getCenterX(), player.getCenterY(), 0, 0, 1, 0);
+    camera(0, 0, 0, player.center_x, player.center_y, 0, -1, -1, 0);
+    //camera();
     //scroll();
     player.display();
     blockCollisions(player, blocks);

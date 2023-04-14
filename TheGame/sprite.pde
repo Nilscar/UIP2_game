@@ -119,10 +119,4 @@ public class Sprite{
   float getBottom(){
     return center_y + h/2;
   }
-  float getCenterX(){
-    return center_x;
-  }
-  float getCenterY(){
-    return center_y;
-  }
 }
