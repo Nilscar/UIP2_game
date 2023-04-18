@@ -1,7 +1,7 @@
 // Global variables
 final static float WALK_SPEED = 6;
 final static float JUMP_SPEED = 14.4;
-final static float BLOCK_SIZE = 50;
+final static float BLOCK_SIZE = 100;
 final static float BLOCK_SCALEW = BLOCK_SIZE/128;
 final static float BLOCK_SCALEH = BLOCK_SIZE/146;
 final static float CHEST_SIZE = BLOCK_SIZE/3;
@@ -21,6 +21,8 @@ float viewY = height;
 float mapHeight;
 float mapWidth;
 
+public PGraphics blockGraphics;
+PImage mapimg;
 
 Sprite player;
 Sprite reward;
@@ -67,6 +69,13 @@ void setup(){
   frameRate(60);
   createTreasure();
   
+  blockGraphics = createGraphics(int(mapWidth*BLOCK_SIZE), int(mapHeight*BLOCK_SIZE));
+  blockGraphics.beginDraw();
+    for(Sprite block: blocks){
+      block.display(); 
+    }
+  blockGraphics.endDraw();
+  mapimg = blockGraphics.get();
 }
 
 void draw(){
@@ -80,16 +89,16 @@ void draw(){
   else if( state == "game"){
     background(255);
     scroll();
-    
+    image(mapimg, (mapimg.width-100)/2, (mapimg.height-100)/2);
     player.display();
     blockCollisions(player, blocks);
     player.update();
-    for(Sprite mapBlock: frameBlocks){
+   /* for(Sprite mapBlock: frameBlocks){
       mapBlock.display();
     }
     for(Sprite block: blocks){
       block.display(); 
-    }
+    }*/
     if(treasure){
       reward.display();
     }

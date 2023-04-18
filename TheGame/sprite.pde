@@ -72,7 +72,7 @@ public class Sprite{
    // image(img,center_x, center_y, w, h);
     //image(imgs[0],center_x, center_y, w, h);
     if (n_frames < 2){
-    image(imgs[0], center_x, center_y, fr_w, h);
+    blockGraphics.image(imgs[0], center_x, center_y, fr_w, h);
     }
     else{
     image(imgs[(int(currentFrame))% n_frames], center_x, center_y, fr_w, h);
