@@ -59,6 +59,7 @@ public class Sprite{
     if (n_frames < 2){
       fr_w = w;
       imgs[0] = img;
+      print("one got through");
     }
     else{
       fr_w = w / n_frames;
@@ -72,7 +73,7 @@ public class Sprite{
    // image(img,center_x, center_y, w, h);
     //image(imgs[0],center_x, center_y, w, h);
     if (n_frames < 2){
-    blockGraphics.image(imgs[0], center_x, center_y, fr_w, h);
+    image(imgs[0], center_x, center_y, fr_w, h);
     }
     else{
     image(imgs[(int(currentFrame))% n_frames], center_x, center_y, fr_w, h);
