@@ -44,20 +44,20 @@ void setup(){
 }
  
 void draw(){
- int playerrow = int(player.center_x)/100;
- int playercol = int(player.center_y)/100;
- if(int(player.center_y)/100 < 3){
-   
- }
- 
-  for (int i = playerrow-1; i<playerrow+10; i++){
-    for (int j = playercol-4; j<playercol+10; j++){
-     // cells.get(i).display();
-      Mapcells[i][j].display();
+ int playercol = int(player.center_x/Cell.BLOCK_SIZE);
+ int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
+  if(playercol > 0 && playercol < 13){
+    for (int i = playercol-1; i<playercol+10; i++){
+      for (int j = playerrow-4; j<playerrow+10; j++){
+       // cells.get(i).display();
+        Mapcells[i][j].display();
+      }
     }
   }
   player.display();
   player.update();
+  blockCollisions(player, Mapcells, playercol, playerrow);
+  scroll();
 }
 
 void scroll(){
@@ -83,8 +83,14 @@ void scroll(){
  translate(-viewX, -viewY);
 }
 
-//Checking for collisions and setting the correct SPEED in both x&y directions
 
+//Checking for collisions and setting the correct SPEED in both x&y directions
+public void blockCollisions(Sprite player, Cell[][] blocks, int posX, int posY){
+   //player.change_y += GRAVITY;
+   player.center_y += player.change_y;
+   player.center_x += player.change_x;
+   
+} // End of blockCollisions()
 
 //boolean for checking collisions between player and blocks
 boolean checkCollision(Sprite player, Sprite block){
@@ -132,13 +138,22 @@ void keyPressed(){
   }
 }
 
+void keyReleased(){
+  if(keyCode == RIGHT){
+    player.change_x = 0;
+  }
+  else if(keyCode == LEFT){
+    player.change_x = 0;
+  }
+}
+
 //Creating the game map from csv file
 void createMap(String[] blockrows){
-  print("HEEEERE:        ", blocks[1]);
+  //print("HEEEERE:        ", blocks[1]);
   String[] rows = blockrows;
   for(int row = 0; row < rows.length; row++){
    String[] columns = split(rows[row], ";");
-   print("Col length is" ,columns.length);
+   //print("Col length is" ,columns.length);
    for(int col = 0; col < columns.length; col++){
      Cell cell = new Cell(int(columns[col]), col, row, blocks[int(columns[col])]);
      cells.add(cell);

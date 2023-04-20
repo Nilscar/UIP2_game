@@ -1,5 +1,5 @@
 public class Cell{
-  final static float BLOCK_SIZE = 100;
+  final static public float BLOCK_SIZE = 100;
   final static float BLOCK_SCALEW = BLOCK_SIZE/128;
   final static float BLOCK_SCALEH = BLOCK_SIZE/146;
   final static float CHEST_SIZE = BLOCK_SIZE/3;
