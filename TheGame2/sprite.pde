@@ -47,6 +47,7 @@ public class Sprite{
   //Constructor for blocks
   public Sprite(PImage image, float scaleW, float scaleH, int num_of_frames, boolean chest){
    img = image;
+   
    w = img.width * scaleW;
    h = img.height * scaleH;
    center_x = 0;
