@@ -14,6 +14,8 @@ float viewX = 0;
 float viewY = height;
 float mapHeight;
 float mapWidth;
+int[] xZone = new int[2];
+int[] yZone = new int[2];
 
 public PGraphics blockGraphics;
 PImage mapimg;
@@ -40,24 +42,32 @@ void setup(){
   blocks[6] = loadImage("data/blocks/box_treasure.png");
   blocks[7] = loadImage("data/treasures/runeBlack_slab_002.png");
   createMap(CSVrows);
-  player = new Player( 150, 500);
+  player = new Player( 500, 500);
 }
  
 void draw(){
  int playercol = int(player.center_x/Cell.BLOCK_SIZE);
  int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
   if(playercol > 0 && playercol < 13){
-    for (int i = playercol-1; i<playercol+10; i++){
-      for (int j = playerrow-4; j<playerrow+10; j++){
+   xZone[0] = playercol-1;
+   xZone[1] = playercol+10;
+  }
+  if(playerrow > 0 && playerrow < 11){
+   yZone[0] = playerrow-1;
+   yZone[1] = playerrow+10;
+  }
+    for (int i = xZone[0]; i<xZone[1]; i++){
+      for (int j = yZone[0]; j<yZone[1]; j++){
+        //print("  i = ", i, "        j = ",j);
        // cells.get(i).display();
         Mapcells[i][j].display();
       }
     }
-  }
+  
   player.display();
   player.update();
-  blockCollisions(player, Mapcells, playercol, playerrow);
-  scroll();
+  blockCollisions(player, Mapcells);
+  //scroll();
 }
 
 void scroll(){
@@ -85,11 +95,36 @@ void scroll(){
 
 
 //Checking for collisions and setting the correct SPEED in both x&y directions
-public void blockCollisions(Sprite player, Cell[][] blocks, int posX, int posY){
-   //player.change_y += GRAVITY;
+public void blockCollisions(Sprite player, Cell[][] blocks){
+   player.change_y += GRAVITY;
    player.center_y += player.change_y;
    player.center_x += player.change_x;
+   ArrayList<Sprite> collisionList = new ArrayList<Sprite>();
+   for(int i = int(player.getLeft()/Cell.BLOCK_SIZE); i < int(player.getRight()/Cell.BLOCK_SIZE) + 1; i++){
+     for(int j = int(player.getTop()/Cell.BLOCK_SIZE); j < int(player.getBottom()/Cell.BLOCK_SIZE) + 1; j++){
+       if(blocks[i][j].visable){
+         collisionList.add(blocks[i][j].block);
+       }
+     }
+   }
+   if(collisionList.size() > 0){
+    Sprite collision = collisionList.get(0);
+    if(player.change_y > 0){
+      player.setBottom(collision.getTop());
+      player.isOnBlock = true;
+    }
+    else if(player.change_y < 0){
+     player.setTop(collision.getBottom()); 
+    }
+    player.change_y = 0;
    
+     if(player.change_x < 0){
+       player.setLeft(collision.getRight());
+     }
+     else if(player.change_x > 0){
+       player.setRight(collision.getLeft());
+     }
+   }
 } // End of blockCollisions()
 
 //boolean for checking collisions between player and blocks
