@@ -235,7 +235,6 @@ void keyReleased(){
   else if(keyCode == LEFT){
     player.change_x = 0;
   }
-  
 }
 
 void createTreasure(){
