@@ -12,8 +12,8 @@ final static float VERTICAL_MARGIN = 50;
 
 float viewX = 0;
 float viewY = height;
-float mapHeight;
-float mapWidth;
+int mapHeight;
+int mapWidth;
 int[] xZone = new int[2];
 int[] yZone = new int[2];
 
@@ -31,8 +31,11 @@ void setup(){
   fullScreen(P2D);
   imageMode(CENTER);
   String[] CSVrows = loadStrings("data/blocks/blockMap.csv");
+  mapHeight = CSVrows.length;
+  mapWidth = split(CSVrows[0], ";").length;
+  print("Height: ", mapHeight, " ==> Width: ", mapWidth);
   cells = new ArrayList<Cell>();
-  Mapcells = new Cell[23][21];
+  Mapcells = new Cell[mapWidth][mapHeight];
   blocks[0] = loadImage("data/blocks/tileDirt.png");
   blocks[1] = loadImage("data/blocks/tileGrass.png");
   blocks[2] = loadImage("data/blocks/tileSand.png");
@@ -99,14 +102,15 @@ public void blockCollisions(Sprite player, Cell[][] blocks){
    player.change_y += GRAVITY;
    player.center_y += player.change_y;
    player.center_x += player.change_x;
-   ArrayList<Sprite> collisionList = new ArrayList<Sprite>();
-   for(int i = int(player.getLeft()/Cell.BLOCK_SIZE); i < int(player.getRight()/Cell.BLOCK_SIZE) + 1; i++){
-     for(int j = int(player.getTop()/Cell.BLOCK_SIZE); j < int(player.getBottom()/Cell.BLOCK_SIZE) + 1; j++){
+   ArrayList<Sprite> collisionList = new ArrayList<Sprite>(); // make an array instead and sort according to the needs later!!
+   for(int i = int(player.getLeft()/Cell.BLOCK_SIZE); i < int(player.getRight()/Cell.BLOCK_SIZE) + 2; i++){
+     for(int j = int(player.getTop()/Cell.BLOCK_SIZE); j < int(player.getBottom()/Cell.BLOCK_SIZE) + 2; j++){
        if(blocks[i][j].visable){
          collisionList.add(blocks[i][j].block);
        }
      }
    }
+   //print("   <<collisionList: ", collisionList.size(), "  end of it!!!");
    if(collisionList.size() > 0){
     Sprite collision = collisionList.get(0);
     if(player.change_y > 0){
