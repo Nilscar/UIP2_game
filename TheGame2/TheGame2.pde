@@ -103,8 +103,8 @@ public void blockCollisions(Sprite player, Cell[][] blocks){
    player.center_y += player.change_y;
    player.center_x += player.change_x;
    ArrayList<Sprite> collisionList = new ArrayList<Sprite>(); // make an array instead and sort according to the needs later!!
-   for(int i = int(player.getLeft()/Cell.BLOCK_SIZE); i < int(player.getRight()/Cell.BLOCK_SIZE) + 2; i++){
-     for(int j = int(player.getTop()/Cell.BLOCK_SIZE); j < int(player.getBottom()/Cell.BLOCK_SIZE) + 2; j++){
+   for(int i = int(player.getLeft()/Cell.BLOCK_SIZE); i < int(player.getRight()/Cell.BLOCK_SIZE) + 1; i++){
+     for(int j = int(player.getTop()/Cell.BLOCK_SIZE); j < int(player.getBottom()/Cell.BLOCK_SIZE) + 1; j++){
        if(blocks[i][j].visable){
          collisionList.add(blocks[i][j].block);
        }
@@ -112,7 +112,7 @@ public void blockCollisions(Sprite player, Cell[][] blocks){
    }
    //print("   <<collisionList: ", collisionList.size(), "  end of it!!!");
    if(collisionList.size() > 0){
-    Sprite collision = collisionList.get(0);
+    Sprite collision = euclideanDist(player, collisionList);
     if(player.change_y > 0){
       player.setBottom(collision.getTop());
       player.isOnBlock = true;
@@ -144,13 +144,29 @@ boolean checkCollision(Sprite player, Sprite block){
 }
 
 //Checking collisions between player and blocks
-public ArrayList<Sprite> checkCollisions(Sprite player, ArrayList<Sprite> blockList){
+public ArrayList<Sprite> checkCollDist(Sprite player, ArrayList<Sprite> blockList){
   ArrayList<Sprite> collisionList = new ArrayList<Sprite>();
   for(Sprite block: blockList){
     if(checkCollision(player, block))
       collisionList.add(block);
   }
   return collisionList;
+}
+
+public Sprite euclideanDist(Sprite player, ArrayList<Sprite> collisionList){
+  float minDist = Cell.BLOCK_SIZE;
+  int position = -1;
+  int finalPos = 0;
+  for(Sprite collision: collisionList){
+    position += 1;
+    float d = dist(player.center_x, player.center_y, collision.center_x, collision.center_y);
+    if(d < minDist){
+      minDist = d;
+      finalPos = position;
+    }
+  }
+  
+  return collisionList.get(finalPos);
 }
 
 void keyPressed(){
