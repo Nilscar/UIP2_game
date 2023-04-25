@@ -101,38 +101,41 @@ void scroll(){
 public void blockCollisions(Sprite player, Cell[][] blocks){
    player.change_y += GRAVITY;
    player.center_y += player.change_y;
-   player.center_x += player.change_x;
-   ArrayList<Sprite> collisionList = new ArrayList<Sprite>(); // make an array instead and sort according to the needs later!!
-   for(int i = int(player.getLeft()/Cell.BLOCK_SIZE); i < int(player.getRight()/Cell.BLOCK_SIZE) + 1; i++){
-     for(int j = int(player.getTop()/Cell.BLOCK_SIZE); j < int(player.getBottom()/Cell.BLOCK_SIZE) + 1; j++){
-       if(blocks[i][j].visable){
-         collisionList.add(blocks[i][j].block);
-       }
-     }
-   }
+   ArrayList<Sprite> collisionList = checkCollDist(player, blocks);
    //print("   <<collisionList: ", collisionList.size(), "  end of it!!!");
    if(collisionList.size() > 0){
-    Sprite collision = euclideanDist(player, collisionList);
     if(player.change_y > 0){
-      player.setBottom(collision.getTop());
+      int pos = 0;
+      int minDist = int(Cell.BLOCK_SIZE);
+      for(int i = 0; i < collisionList.size(); i++){
+        float d = dist(player.center_x, player.getBottom(), collisionList.get(i).center_x, collisionList.get(i).getTop());
+        if(d < minDist){
+          pos = i;
+      }
+      
+      player.setBottom(collisionList.get(pos).getTop());
       player.isOnBlock = true;
-    }
-    else if(player.change_y < 0){
-     player.setTop(collision.getBottom()); 
-    }
-    player.change_y = 0;
-   
-     if(player.change_x < 0){
-       player.setLeft(collision.getRight());
      }
-     else if(player.change_x > 0){
-       player.setRight(collision.getLeft());
-     }
-   }
+    }
+    /*
+      else if(player.change_y < 0){
+       player.setTop(collision.getBottom()); 
+      }
+      player.change_y = 0;
+       
+      player.center_x = player.change_x;
+      if(player.change_x < 0){
+         player.setLeft(collision.getRight());
+      }
+      else if(player.change_x > 0){
+         player.setRight(collision.getLeft());
+      }
+    */
+  }
 } // End of blockCollisions()
 
 //boolean for checking collisions between player and blocks
-boolean checkCollision(Sprite player, Sprite block){
+/*boolean checkCollision(Sprite player, Sprite block){
   boolean noXOverlap = player.getRight() <= block.getLeft() || player.getLeft() >= block.getRight();
   boolean noYOverlap = player.getBottom() <= block.getTop() || player.getTop() >= block.getBottom();
   if(noXOverlap || noYOverlap){
@@ -141,19 +144,22 @@ boolean checkCollision(Sprite player, Sprite block){
   else{
     return true;
   }
-}
+}*/
 
 //Checking collisions between player and blocks
-public ArrayList<Sprite> checkCollDist(Sprite player, ArrayList<Sprite> blockList){
-  ArrayList<Sprite> collisionList = new ArrayList<Sprite>();
-  for(Sprite block: blockList){
-    if(checkCollision(player, block))
-      collisionList.add(block);
-  }
-  return collisionList;
+public ArrayList<Sprite> checkCollDist(Sprite player, Cell[][] blockList){
+  ArrayList<Sprite> collisionList = new ArrayList<Sprite>(); // make an array instead and sort according to the needs later!!
+   for(int i = int(player.getLeft()/Cell.BLOCK_SIZE); i < int(player.getRight()/Cell.BLOCK_SIZE) + 1; i++){
+     for(int j = int(player.getTop()/Cell.BLOCK_SIZE); j < int(player.getBottom()/Cell.BLOCK_SIZE) + 1; j++){
+       //if(blockList[i][j].visable){ //This .visable replaces the checkCollision function
+         collisionList.add(blockList[i][j].block);
+       //}
+     }
+   }
+   return collisionList;
 }
 
-public Sprite euclideanDist(Sprite player, ArrayList<Sprite> collisionList){
+public Sprite euclideanMinDistSprite(Sprite player, ArrayList<Sprite> collisionList){
   float minDist = Cell.BLOCK_SIZE;
   int position = -1;
   int finalPos = 0;
