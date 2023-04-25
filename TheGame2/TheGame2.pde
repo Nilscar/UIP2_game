@@ -25,7 +25,7 @@ Sprite reward;
 PImage[] blocks = new PImage[8];
 ArrayList<Cell> cells;
 boolean treasure = false;
-Cell[][] Mapcells = new Cell[23][21];
+Cell[][] Mapcells;
 
 void setup(){
   fullScreen(P2D);
@@ -45,7 +45,7 @@ void setup(){
   blocks[6] = loadImage("data/blocks/box_treasure.png");
   blocks[7] = loadImage("data/treasures/runeBlack_slab_002.png");
   createMap(CSVrows);
-  player = new Player( 500, 500);
+  player = new Player(500, 500);
 }
  
 void draw(){
