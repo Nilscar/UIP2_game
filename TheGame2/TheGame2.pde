@@ -14,6 +14,8 @@ float viewX = 0;
 float viewY = height;
 float mapHeight;
 float mapWidth;
+int[] xZone = new int[2];
+int[] yZone = new int[2];
 
 public PGraphics blockGraphics;
 PImage mapimg;
@@ -23,14 +25,14 @@ Sprite reward;
 PImage[] blocks = new PImage[8];
 ArrayList<Cell> cells;
 boolean treasure = false;
-Cell[][] Mapcells = new Cell[23][21];
+Cell[][] Mapcells;
 
 void setup(){
   fullScreen(P2D);
   imageMode(CENTER);
   String[] CSVrows = loadStrings("data/blocks/blockMap.csv");
   cells = new ArrayList<Cell>();
-  Mapcells = new Cell[23][21];
+  Mapcells = new Cell[split(CSVrows[0], ";").length][CSVrows.length];
   blocks[0] = loadImage("data/blocks/tileDirt.png");
   blocks[1] = loadImage("data/blocks/tileGrass.png");
   blocks[2] = loadImage("data/blocks/tileSand.png");
@@ -40,7 +42,7 @@ void setup(){
   blocks[6] = loadImage("data/blocks/box_treasure.png");
   blocks[7] = loadImage("data/treasures/runeBlack_slab_002.png");
   createMap(CSVrows);
-  player = new Player( 150, 500);
+  player = new Player(500, 500);
 }
  
 void draw(){
@@ -61,12 +63,17 @@ void draw(){
         Mapcells[i][j].display();
       }
     }
+  player.display();
+  player.update();
   movement(player);
 }
 
 public void movement(Sprite player){
-  player.center_x = player.change_x;
-  player.center_y = player.change_y;
+  player.center_x += player.change_x;
+  player.center_y += player.change_y;
+}
+
+public void collisions(){
   
 }
 
@@ -83,12 +90,6 @@ void keyPressed(){
   }
   else if(keyCode == DOWN){
     player.change_y = WALK_SPEED;
-  }
-  else if(keyCode == ENTER){
-    state = "game";
-  }
-   else if(keyCode == 80){
-    state = "menu";
   }
 }
 
