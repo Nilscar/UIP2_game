@@ -101,25 +101,30 @@ void scroll(){
 public void blockCollisions(Sprite player, Cell[][] blocks){
    player.change_y += GRAVITY;
    player.center_y += player.change_y;
-   ArrayList<Sprite> collisionList = checkCollDist(player, blocks);
+   ArrayList<Cell> collisionList = checkCollDist(player, blocks);
    //print("   <<collisionList: ", collisionList.size(), "  end of it!!!");
    if(collisionList.size() > 0){
-    if(player.change_y > 0 && collisionList.get(0) != null){
+    if(player.change_y > 0){
       int pos = 0;
       float minDist = int(Cell.BLOCK_SIZE);
-      for(int i = 0; i < collisionList.size(); i++){
-        if(collisionList.get(i)!= null){
-          float d = dist(player.center_x, player.getBottom(), collisionList.get(i).center_x, collisionList.get(i).getTop());
+      for(int i = 2; i < collisionList.size(); i += 3){
+        if(collisionList.get(i).visable){
+          float d = dist(player.center_x, player.getBottom(), collisionList.get(i).block.center_x, collisionList.get(i).block.getTop());
           if(d < minDist){
             minDist = d;
             pos = i;
+            print("position is: ", pos, "\n");
             print(" >>> player.change_y > 0 <<<minDist is: ", minDist, "   with position: ", pos, " in collisionList >>>", " size: ", collisionList.size());
             println(" \n << d is: ", d, " >>");
           }
         }
        }
-       player.setBottom(collisionList.get(pos).getTop());
-       player.isOnBlock = true;
+       if(collisionList.get(pos).visable){
+         //print(collisionList.get(pos).block);
+         //print(collisionList.get(pos).block.getTop());
+         player.setBottom(collisionList.get(pos).block.getTop());
+         player.isOnBlock = true;
+       }
      }
     
      else if(player.change_y < 0){
@@ -151,13 +156,13 @@ public void blockCollisions(Sprite player, Cell[][] blocks){
 }*/
 
 //Checking collisions between player and blocks
-public ArrayList<Sprite> checkCollDist(Sprite player, Cell[][] blockList){
-  ArrayList<Sprite> collisionList = new ArrayList<Sprite>(); // make an array instead and sort according to the needs later!!
+public ArrayList<Cell> checkCollDist(Sprite player, Cell[][] blockList){
+  ArrayList<Cell> collisionList = new ArrayList<Cell>(); // make an array instead and sort according to the needs later!!
    for(int i = int(player.getLeft()/Cell.BLOCK_SIZE); i < int(player.getRight()/Cell.BLOCK_SIZE) + 1; i++){
      for(int j = int(player.getTop()/Cell.BLOCK_SIZE); j < int(player.getBottom()/Cell.BLOCK_SIZE) + 1; j++){
-       if(blockList[i][j].visable){ //This .visable replaces the checkCollision function
-         collisionList.add(blockList[i][j].block);
-       }
+       //if(blockList[i][j].visable){ //This .visable replaces the checkCollision function
+         collisionList.add(blockList[i][j]);
+       //}
      }
    }
    return collisionList;
