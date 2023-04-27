@@ -60,53 +60,8 @@ void draw(){
   player.update();
 }
 
-void scroll(){
- float rightBoundary = viewX + width - RIGHT_MARGIN;
- if(player.getRight() > rightBoundary){
-   viewX += player.getRight() - rightBoundary;
- }
- 
- float leftBoundary = viewX + LEFT_MARGIN;
- if(player.getLeft() < leftBoundary){
-   viewX -= leftBoundary - player.getLeft();
- }
- 
- float bottomBoundary = viewY + height - VERTICAL_MARGIN;
- if(player.getBottom() > bottomBoundary){
-   viewY += player.getBottom() - bottomBoundary;
- }
- 
- float topBoundary = viewY + VERTICAL_MARGIN;
- if(player.getTop() < topBoundary){
-   viewY -= topBoundary - player.getTop();
- }
- translate(-viewX, -viewY);
-}
-
-//Checking for collisions and setting the correct SPEED in both x&y directions
 
 
-//boolean for checking collisions between player and blocks
-boolean checkCollision(Sprite player, Sprite block){
-  boolean noXOverlap = player.getRight() <= block.getLeft() || player.getLeft() >= block.getRight();
-  boolean noYOverlap = player.getBottom() <= block.getTop() || player.getTop() >= block.getBottom();
-  if(noXOverlap || noYOverlap){
-    return false;
-  }
-  else{
-    return true;
-  }
-}
-
-//Checking collisions between player and blocks
-public ArrayList<Sprite> checkCollisions(Sprite player, ArrayList<Sprite> blockList){
-  ArrayList<Sprite> collisionList = new ArrayList<Sprite>();
-  for(Sprite block: blockList){
-    if(checkCollision(player, block))
-      collisionList.add(block);
-  }
-  return collisionList;
-}
 
 void keyPressed(){
   if(keyCode == RIGHT){
@@ -115,14 +70,11 @@ void keyPressed(){
   else if(keyCode == LEFT){
     player.change_x = -WALK_SPEED;
   }
-  else if(keyCode == UP && player.change_y==0){
-    player.change_y = -JUMP_SPEED;
-    player.isOnBlock = false;
+  else if(keyCode == UP){
+    player.change_y = -WALK_SPEED;
   }
-  else if(key == 'a' && player.treasure){
-    treasure = true;
-    player.treasure = false;
-    print("a pressed. ");
+  else if(keyCode == DOWN){
+    player.change_y = WALK_SPEED;
   }
   else if(keyCode == ENTER){
     state = "game";
