@@ -78,6 +78,8 @@ public void collisions(){
 }
 
 
+
+
 void keyPressed(){
   if(keyCode == RIGHT){
     player.change_x = WALK_SPEED;
