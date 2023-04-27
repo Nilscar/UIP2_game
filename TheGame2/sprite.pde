@@ -60,7 +60,7 @@ public class Sprite{
     if (n_frames < 2){
       fr_w = w;
       imgs[0] = img;
-      print("one got through");
+      //print("one got through");
     }
     else{
       fr_w = w / n_frames;

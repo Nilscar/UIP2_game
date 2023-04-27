@@ -58,9 +58,14 @@ void draw(){
   }
   player.display();
   player.update();
+  movement(player);
 }
 
-
+public void movement(Sprite player){
+  player.center_x = player.change_x;
+  player.center_y = player.change_y;
+  
+}
 
 
 void keyPressed(){
@@ -84,13 +89,28 @@ void keyPressed(){
   }
 }
 
+void keyReleased(){
+  if(keyCode == RIGHT){
+    player.change_x = 0;
+  }
+  else if(keyCode == LEFT){
+    player.change_x = 0;
+  }
+  else if(keyCode == UP){
+    player.change_y = 0;
+  }
+  else if(keyCode == DOWN){
+    player.change_y = 0;
+  }
+}
+
 //Creating the game map from csv file
 void createMap(String[] blockrows){
-  print("HEEEERE:        ", blocks[1]);
+  //print("HEEEERE:        ", blocks[1]);
   String[] rows = blockrows;
   for(int row = 0; row < rows.length; row++){
    String[] columns = split(rows[row], ";");
-   print("Col length is" ,columns.length);
+   //print("Col length is" ,columns.length);
    for(int col = 0; col < columns.length; col++){
      Cell cell = new Cell(int(columns[col]), col, row, blocks[int(columns[col])]);
      cells.add(cell);
