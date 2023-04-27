@@ -44,20 +44,23 @@ void setup(){
 }
  
 void draw(){
- int playerrow = int(player.center_x)/100;
- int playercol = int(player.center_y)/100;
- if(int(player.center_y)/100 < 3){
-   
- }
- 
-  for (int i = playerrow-1; i<playerrow+10; i++){
-    for (int j = playercol-4; j<playercol+10; j++){
-     // cells.get(i).display();
-      Mapcells[i][j].display();
-    }
+ int playercol = int(player.center_x/Cell.BLOCK_SIZE);
+ int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
+  if(playercol > 0 && playercol < 13){
+   xZone[0] = playercol-1;
+   xZone[1] = playercol+10;
   }
-  player.display();
-  player.update();
+  if(playerrow > 0 && playerrow < 11){
+   yZone[0] = playerrow-1;
+   yZone[1] = playerrow+10;
+  }
+    for (int i = xZone[0]; i<xZone[1]; i++){
+      for (int j = yZone[0]; j<yZone[1]; j++){
+        //print("  i = ", i, "        j = ",j);
+       // cells.get(i).display();
+        Mapcells[i][j].display();
+      }
+    }
   movement(player);
 }
 
