@@ -66,6 +66,7 @@ void draw(){
   player.display();
   player.update();
   movement(player);
+  collisions(player, Mapcells);
 }
 
 public void movement(Sprite player){
@@ -73,12 +74,31 @@ public void movement(Sprite player){
   player.center_y += player.change_y;
 }
 
-public void collisions(){
-  
+public void collisions(Sprite player, Cell[][] mapBlocks){
+  player.center_y += player.change_y;
+  ArrayList<Cell> collisionList = checkColl(player, mapBlocks);
+  //print("  << size: ", collisionList.size());
+  if(player.change_y > 0){
+    for(int i = 2; i < collisionList.size(); i += 3){
+      if(collisionList.get(i).visable && player.getRight() >= collisionList.get(i).block.getLeft() || collisionList.get(i).visable && player.getLeft() <= collisionList.get(i).block.getRight()){
+        //print("  >> getTop():  ", collisionList.get(i).block.getTop());
+        player.setBottom(collisionList.get(i).block.getTop());
+      }
+    }
+  }
 }
 
-
-
+public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){
+  ArrayList<Cell> collisionList = new ArrayList<Cell>(); // make an array instead and sort according to the needs later!!
+   for(int i = int(player.center_x/Cell.BLOCK_SIZE) - 1; i < int(player.center_x/Cell.BLOCK_SIZE) + 2; i++){
+     for(int j = int(player.center_y/Cell.BLOCK_SIZE) - 1; j < int(player.center_y/Cell.BLOCK_SIZE) + 2; j++){
+       //if(blockList[i][j].visable){ //This .visable replaces the checkCollision function
+         collisionList.add(blockList[i][j]);
+       //}
+     }
+   }
+   return collisionList;
+}
 
 void keyPressed(){
   if(keyCode == RIGHT){
