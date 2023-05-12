@@ -10,13 +10,13 @@ final static float RIGHT_MARGIN = 400;
 final static float LEFT_MARGIN = 60;
 final static float VERTICAL_MARGIN = 50;
 
+public boolean edgerunner = true;
 float viewX = 0;
 float viewY = height;
 float mapHeight;
 float mapWidth;
 int[] xZone = new int[2];
 int[] yZone = new int[2];
-public PGraphics blockGraphics;
 PImage mapimg;
 
 Sprite player;
@@ -45,7 +45,7 @@ void setup(){
 }
  
 void draw(){
-
+ edgerunning();
  int playercol = int(player.center_x/Cell.BLOCK_SIZE);
  int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
  float playerfractionx = (player.center_x%Cell.BLOCK_SIZE)/100;
@@ -65,9 +65,14 @@ void draw(){
     for (int j = yZone[0]; j < yZone[1]; j++){
       j2++;
      // cells.get(i).display();
-     
+     if(edgerunner){
       Mapcells[i][j].display(i2-playerfractionx, j2-playerfractiony);
-     
+       
+      }
+      else{
+        Mapcells[i][j].display(i2, j2);
+        
+      }
     }
   }
   
@@ -103,10 +108,25 @@ void scroll(){
  translate(-viewX, -viewY);
 }
 
-
+public void edgerunning(){
+  if (player.center_x < 250 && player.change_x < 0){
+    edgerunner = true;
+  }
+  else if ( player.center_x > 800 && player.change_x > 0){
+    edgerunner = true;
+  }
+  else if ( player.center_x > 800 && player.change_x < 0){
+    edgerunner = false;
+  }
+    else if ( player.center_x < 250 && player.change_x > 0){
+    edgerunner = false;
+  }
+}
+  
 //Checking for collisions and setting the correct SPEED in both x&y directions
 public void blockCollisions(Sprite player, Cell[][] blocks, int posX, int posY){
    //player.change_y += GRAVITY;
+   
    player.center_y += player.change_y;
    player.center_x += player.change_x;
    
