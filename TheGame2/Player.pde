@@ -26,7 +26,7 @@ public class Player extends Sprite{
       }
   }
   @Override
-  public void display(){
+  public void display(float i, float j){
     //image(pl_stand[0], center_x, center_y, fr_w, h);
     
     if(change_x==0){

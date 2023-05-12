@@ -45,28 +45,39 @@ void setup(){
 }
  
 void draw(){
+
  int playercol = int(player.center_x/Cell.BLOCK_SIZE);
  int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
+ float playerfractionx = (player.center_x%Cell.BLOCK_SIZE)/100;
+ float playerfractiony = (player.center_y%Cell.BLOCK_SIZE)/100;
  if(playercol > 0 && playercol < 13){
-   xZone[0] = playercol-1;
-   xZone[1] = playercol+2;
+   xZone[0] = playercol-2;
+   xZone[1] = playercol+9;
   }
-  if(playerrow > 0 && playerrow < 11){
-   yZone[0] = playerrow-1;
-   yZone[1] = playerrow+2;
+  if(playerrow > 2 && playerrow < 11){
+   yZone[0] = playerrow-2;
+   yZone[1] = playerrow+9;
   }
+  float i2 = 0;
   for (int i = xZone[0]; i< xZone[1]; i++){
+    i2++;
+    float j2 = 0;
     for (int j = yZone[0]; j < yZone[1]; j++){
+      j2++;
      // cells.get(i).display();
-      Mapcells[i][j].display();
-    // print("I:  ",i,"   j  :   ",j);
+     
+      Mapcells[i][j].display(i2-playerfractionx, j2-playerfractiony);
+     
     }
   }
   
-  player.display();
+  player.display(1,1);
   player.update();
   blockCollisions(player, Mapcells, playercol, playerrow);
-  scroll();
+  rect(0,0,1800,150);
+  rect(1200,0,250,1200);
+  rect(0,750,1800,150);
+  rect(0,0,200,1200);
 }
 
 void scroll(){

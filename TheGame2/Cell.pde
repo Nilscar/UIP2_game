@@ -25,12 +25,12 @@ public class Cell{
      visable = true;
     }
   }
-  public void display(){
+  public void display(float i, float j){
     if (visable){
-    block.display();
+    block.display(i,j);
     }
     else{
-      rect( this_col * BLOCK_SIZE,  this_row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+      rect( i * BLOCK_SIZE,  j * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
    // rect(BLOCK_SIZE + this_col * BLOCK_SIZE, BLOCK_SIZE + this_row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
   }}
 }
