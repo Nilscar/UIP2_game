@@ -75,53 +75,62 @@ public void movement(Sprite player){
 }
 
 public void collisions(Sprite player, Cell[][] mapBlocks){
-  //player.change_y += GRAVITY;
-  player.center_y += player.change_y;
   ArrayList<Cell> collisionList = checkColl(player, mapBlocks);
-  //print("  << size: ", collisionList.size());
-  if(player.change_y > 0){
-    if(collisionList.get(5).visable){
-      player.setBottom(collisionList.get(5).block.getTop());
+  if(player.isOnBlock == false){
+    player.change_y += GRAVITY;
     }
-    /*
-    for(int i = 2; i < collisionList.size(); i += 3){
-      if(collisionList.get(i).visable && player.getRight() >= collisionList.get(i).block.getLeft() || collisionList.get(i).visable && player.getLeft() <= collisionList.get(i).block.getRight()){
-        //print("  >> getTop():  ", collisionList.get(i).block.getTop());
-        player.setBottom(collisionList.get(i).block.getTop());
+    player.center_y += player.change_y;
+    
+    //print("  << size: ", collisionList.size());
+    if(player.change_y > 0){
+      if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop()){
+        player.setBottom(collisionList.get(5).block.getTop());
+        player.isOnBlock = true;
       }
-    }*/
-  }
-  if(player.change_y < 0){
-     if(collisionList.get(3).visable){
-       player.setTop(collisionList.get(3).block.getBottom());
-     }
-  }
+      if(collisionList.get(5).visable == false){
+        player.isOnBlock = false;
+      }
+      /*
+      for(int i = 2; i < collisionList.size(); i += 3){
+        if(collisionList.get(i).visable && player.getRight() >= collisionList.get(i).block.getLeft() || collisionList.get(i).visable && player.getLeft() <= collisionList.get(i).block.getRight()){
+          //print("  >> getTop():  ", collisionList.get(i).block.getTop());
+          player.setBottom(collisionList.get(i).block.getTop());
+        }
+      }*/
+    }
+    if(player.change_y < 0){
+       if(collisionList.get(3).visable && player.getTop() <= collisionList.get(3).block.getBottom()){
+         player.setTop(collisionList.get(3).block.getBottom());
+         player.isOnBlock = false;
+       }
+    }
+  
   player.center_x += player.change_x;
   if(player.change_x > 0){
-    if(collisionList.get(7).visable){
+    if(collisionList.get(7).visable && player.getRight() >= collisionList.get(7).block.getLeft()){
        player.setRight(collisionList.get(7).block.getLeft());
+       if(collisionList.get(5).visable == false){
+        player.isOnBlock = false;
+       }
      }
   }
   if(player.change_x < 0){
-    if(collisionList.get(1).visable){
+    if(collisionList.get(1).visable && player.getLeft() >= collisionList.get(1).block.getRight()){
        player.setLeft(collisionList.get(1).block.getRight());
+       if(collisionList.get(5).visable == false || collisionList.get(2).visable == false){
+        player.isOnBlock = false;
+       }
      }
   }
 }
 
 public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){
-   int playercol = int(player.center_x/Cell.BLOCK_SIZE);
-   int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
    ArrayList<Cell> collisionList = new ArrayList<Cell>(); // make an array instead and sort according to the needs later!!
-   if(playercol > 1 && playercol <20){
-       if(playerrow >1 && playerrow < 22){
    for(int i = int(player.center_x/Cell.BLOCK_SIZE) - 1; i < int(player.center_x/Cell.BLOCK_SIZE) + 2; i++){
      for(int j = int(player.center_y/Cell.BLOCK_SIZE) - 1; j < int(player.center_y/Cell.BLOCK_SIZE) + 2; j++){
        //if(blockList[i][j].visable){ //This .visable replaces the checkCollision function
          collisionList.add(blockList[i][j]);
        //}
-       }
-      }
      }
    }
    return collisionList;
@@ -134,11 +143,9 @@ void keyPressed(){
   else if(keyCode == LEFT){
     player.change_x = -WALK_SPEED;
   }
-  else if(keyCode == UP){
-    player.change_y = -WALK_SPEED;
-  }
-  else if(keyCode == DOWN){
-    player.change_y = WALK_SPEED;
+  else if(keyCode == UP && player.isOnBlock){
+    player.change_y = -JUMP_SPEED;
+    player.isOnBlock = false;
   }
 }
 
@@ -148,12 +155,6 @@ void keyReleased(){
   }
   else if(keyCode == LEFT){
     player.change_x = 0;
-  }
-  else if(keyCode == UP){
-    player.change_y = 0;
-  }
-  else if(keyCode == DOWN){
-    player.change_y = 0;
   }
 }
 
