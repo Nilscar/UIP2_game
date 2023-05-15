@@ -65,7 +65,7 @@ void draw(){
     }
   player.display();
   player.update();
-  movement(player);
+  //movement(player);
   collisions(player, Mapcells);
 }
 
@@ -75,26 +75,53 @@ public void movement(Sprite player){
 }
 
 public void collisions(Sprite player, Cell[][] mapBlocks){
+  //player.change_y += GRAVITY;
   player.center_y += player.change_y;
   ArrayList<Cell> collisionList = checkColl(player, mapBlocks);
   //print("  << size: ", collisionList.size());
   if(player.change_y > 0){
+    if(collisionList.get(5).visable){
+      player.setBottom(collisionList.get(5).block.getTop());
+    }
+    /*
     for(int i = 2; i < collisionList.size(); i += 3){
       if(collisionList.get(i).visable && player.getRight() >= collisionList.get(i).block.getLeft() || collisionList.get(i).visable && player.getLeft() <= collisionList.get(i).block.getRight()){
         //print("  >> getTop():  ", collisionList.get(i).block.getTop());
         player.setBottom(collisionList.get(i).block.getTop());
       }
-    }
+    }*/
+  }
+  if(player.change_y < 0){
+     if(collisionList.get(3).visable){
+       player.setTop(collisionList.get(3).block.getBottom());
+     }
+  }
+  player.center_x += player.change_x;
+  if(player.change_x > 0){
+    if(collisionList.get(7).visable){
+       player.setRight(collisionList.get(7).block.getLeft());
+     }
+  }
+  if(player.change_x < 0){
+    if(collisionList.get(1).visable){
+       player.setLeft(collisionList.get(1).block.getRight());
+     }
   }
 }
 
 public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){
-  ArrayList<Cell> collisionList = new ArrayList<Cell>(); // make an array instead and sort according to the needs later!!
+   int playercol = int(player.center_x/Cell.BLOCK_SIZE);
+   int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
+   ArrayList<Cell> collisionList = new ArrayList<Cell>(); // make an array instead and sort according to the needs later!!
+   if(playercol > 1 && playercol <20){
+       if(playerrow >1 && playerrow < 22){
    for(int i = int(player.center_x/Cell.BLOCK_SIZE) - 1; i < int(player.center_x/Cell.BLOCK_SIZE) + 2; i++){
      for(int j = int(player.center_y/Cell.BLOCK_SIZE) - 1; j < int(player.center_y/Cell.BLOCK_SIZE) + 2; j++){
        //if(blockList[i][j].visable){ //This .visable replaces the checkCollision function
          collisionList.add(blockList[i][j]);
        //}
+       }
+      }
      }
    }
    return collisionList;
