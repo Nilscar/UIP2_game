@@ -79,7 +79,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
   player.center_y += player.change_y;
   ArrayList<Cell> collisionList = checkColl(player, mapBlocks);
   //print("  << size: ", collisionList.size());
-  if(player.change_y > 0){
+  if(player.change_y > 0 && collisionList.size() > 8){
     if(collisionList.get(5).visable){
       player.setBottom(collisionList.get(5).block.getTop());
     }
