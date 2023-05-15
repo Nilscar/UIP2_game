@@ -6,9 +6,9 @@ PImage menu;
 String state ="game";
 
 
-final static float RIGHT_MARGIN = 500;
-final static float LEFT_MARGIN = 500;
-final static float VERTICAL_MARGIN = 500;
+final static float RIGHT_MARGIN = 400;
+final static float LEFT_MARGIN = 60;
+final static float VERTICAL_MARGIN = 50;
 
 float viewX = 0;
 float viewY = height;
@@ -42,65 +42,36 @@ void setup(){
   blocks[6] = loadImage("data/blocks/box_treasure.png");
   blocks[7] = loadImage("data/treasures/runeBlack_slab_002.png");
   createMap(CSVrows);
-  player = new Player(600, 600);
+  print(CSVrows.length, split(CSVrows[0], ";").length);
   mapHeight = CSVrows.length;
   mapWidth = split(CSVrows[0], ";").length;
+  player = new Player(500, 500);
 }
  
 void draw(){
-  background(0);
  int playercol = int(player.center_x/Cell.BLOCK_SIZE);
  int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
-     scroll();
-  //if(playercol > 0 && playercol < 13){
-   xZone[0] = playercol-10;
+  if(playercol > 0 && playercol < 13){
+   xZone[0] = playercol-1;
    xZone[1] = playercol+10;
- // }
- // if(playerrow > 0 && playerrow < 11){
-   yZone[0] = playerrow-6;
-   yZone[1] = playerrow+6;
- // }
+  }
+  if(playerrow > 0 && playerrow < 11){
+   yZone[0] = playerrow-1;
+   yZone[1] = playerrow+10;
+  }
     for (int i = xZone[0]; i<xZone[1]; i++){
       for (int j = yZone[0]; j<yZone[1]; j++){
-        print(mapHeight-1, " AND " , mapWidth-1);
-        //cells.get(i).display();
-        if(i >= 0 && i < mapWidth){
-                // print("   i :      "  , i,"    j    :    " ,j);
-
-          if(j >= 0 && j < mapHeight){
-            Mapcells[i][j].display();
-          }
-        }
+        //print("  i = ", i, "        j = ",j);
+       // cells.get(i).display();
+        Mapcells[i][j].display();
       }
     }
-    
   player.display();
   player.update();
   //movement(player);
   collisions(player, Mapcells);
 }
-void scroll(){
- float rightBoundary = viewX + displayWidth - RIGHT_MARGIN;
- if(player.getRight() > rightBoundary){
-   viewX += player.getRight() - rightBoundary;
- }
- 
- float leftBoundary = viewX + LEFT_MARGIN;
- if(player.getLeft() < leftBoundary){
-   viewX -= leftBoundary - player.getLeft();
- }
- 
- float bottomBoundary = viewY + displayHeight - VERTICAL_MARGIN;
- if(player.getBottom() > bottomBoundary){
-   viewY += player.getBottom() - bottomBoundary;
- }
- 
- float topBoundary = viewY + VERTICAL_MARGIN;
- if(player.getTop() < topBoundary){
-   viewY -= topBoundary - player.getTop();
- }
- translate(-viewX, -viewY);
-}
+
 public void movement(Sprite player){
   player.center_x += player.change_x;
   player.center_y += player.change_y;
@@ -142,13 +113,17 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
 }
 
 public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){
+
    ArrayList<Cell> collisionList = new ArrayList<Cell>(); // make an array instead and sort according to the needs later!!
+   
    for(int i = int(player.center_x/Cell.BLOCK_SIZE) - 1; i < int(player.center_x/Cell.BLOCK_SIZE) + 2; i++){
      for(int j = int(player.center_y/Cell.BLOCK_SIZE) - 1; j < int(player.center_y/Cell.BLOCK_SIZE) + 2; j++){
        //if(blockList[i][j].visable){ //This .visable replaces the checkCollision function
          collisionList.add(blockList[i][j]);
        //}
-     }
+       }
+      
+        // if(playerrow >1 && playerrow < mapWidth-1){
    }
    return collisionList;
 }
