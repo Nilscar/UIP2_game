@@ -115,7 +115,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
      }
   }
   if(player.change_x < 0){
-    if(collisionList.get(1).visable && player.getLeft() >= collisionList.get(1).block.getRight()){
+    if(collisionList.get(1).visable && player.getLeft() <= collisionList.get(1).block.getRight()){
        player.setLeft(collisionList.get(1).block.getRight());
        if(collisionList.get(5).visable == false || collisionList.get(2).visable == false){
         player.isOnBlock = false;
