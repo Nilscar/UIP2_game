@@ -62,7 +62,6 @@ void draw(){
  // }
     for (int i = xZone[0]; i<xZone[1]; i++){
       for (int j = yZone[0]; j<yZone[1]; j++){
-        print(mapHeight-1, " AND " , mapWidth-1);
         //cells.get(i).display();
         if(i >= 0 && i < mapWidth){
                 // print("   i :      "  , i,"    j    :    " ,j);
@@ -108,9 +107,9 @@ public void movement(Sprite player){
 
 public void collisions(Sprite player, Cell[][] mapBlocks){
   ArrayList<Cell> collisionList = checkColl(player, mapBlocks);
-  if(player.isOnBlock == false){
+  //if(player.isOnBlock == false){
     player.change_y += GRAVITY;
-    }
+  //  }
     player.center_y += player.change_y;
     
     //print("  << size: ", collisionList.size());
@@ -118,6 +117,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
       if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop()){
         player.setBottom(collisionList.get(5).block.getTop());
         player.isOnBlock = true;
+        player.change_y = 0;
       }
       if(collisionList.get(5).visable == false){
         player.isOnBlock = false;
@@ -134,6 +134,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        if(collisionList.get(3).visable && player.getTop() <= collisionList.get(3).block.getBottom()){
          player.setTop(collisionList.get(3).block.getBottom());
          player.isOnBlock = false;
+         player.change_y = 0;
        }
     }
   
@@ -147,7 +148,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
      }
   }
   if(player.change_x < 0){
-    if(collisionList.get(1).visable && player.getLeft() >= collisionList.get(1).block.getRight()){
+    if(collisionList.get(1).visable && player.getLeft() <= collisionList.get(1).block.getRight()){
        player.setLeft(collisionList.get(1).block.getRight());
        if(collisionList.get(5).visable == false || collisionList.get(2).visable == false){
         player.isOnBlock = false;
