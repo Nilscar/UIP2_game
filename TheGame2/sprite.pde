@@ -63,9 +63,11 @@ public class Sprite{
       //print("one got through");
     }
     else{
-      fr_w = w / n_frames;
+      fr_w = img.width * (Cell.BLOCK_SIZE/img.width);
+      img.resize(int(Cell.BLOCK_SIZE*n_frames),img.height);
       for (int i = 0; i < n_frames; i++) {
         imgs[i] = img.get(int(fr_w*(i%n_frames)), 0, int(fr_w), int(h));
+        //imgs[i].resize(int(100),int(100));
       }
     }
   }
@@ -77,14 +79,17 @@ public class Sprite{
     image(imgs[0], center_x, center_y, fr_w, h);
     }
     else{
-    image(imgs[(int(currentFrame))% n_frames], center_x, center_y, fr_w, h);
+    //image(imgs[(int(currentFrame))% n_frames], center_x, center_y, fr_w, h);
+    image(imgs[(int(currentFrame%n_frames))], center_x, center_y, fr_w, h);
+    //image(imgs[4], center_x, center_y, fr_w, h);
     }
   }
   
-  public void update(){
-    currentFrame = (currentFrame+(n_frames/90.0));
-  }
+  public void update(boolean updated){
+    if (!updated && currentFrame < n_frames-1){currentFrame++;}
   
+   
+  }
   void setLeft(float left){
     center_x = left + fr_w/2;
   }

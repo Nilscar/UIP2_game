@@ -20,6 +20,12 @@ public class Cell{
      
       visable = false;
     }
+    else if( blocknum == 4){
+     block = new Sprite(img, BLOCK_SCALEW, BLOCK_SCALEH, 5, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+     visable = true;
+    }
     else {
      block = new Sprite(img, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;

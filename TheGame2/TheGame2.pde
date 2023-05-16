@@ -9,7 +9,7 @@ String state ="game";
 final static float RIGHT_MARGIN = 500;
 final static float LEFT_MARGIN = 500;
 final static float VERTICAL_MARGIN = 500;
-
+boolean updated = false;
 int blocktype; 
 float viewX = 0;
 float viewY = height;
@@ -38,7 +38,7 @@ void setup(){
   blocks[1] = loadImage("data/blocks/tileGrass.png");
   blocks[2] = loadImage("data/blocks/tileSand.png");
   blocks[3] = loadImage("data/blocks/tileSnow.png");
-  blocks[4] = loadImage("data/blocks/tileStone.png");
+  blocks[4] = loadImage("data/blocks/tileseq_stone.png");
   blocks[5] = loadImage("data/blocks/tileWood.png");
   blocks[6] = loadImage("data/blocks/box_treasure.png");
   blocks[7] = loadImage("data/treasures/runeBlack_slab_002.png");
@@ -75,7 +75,7 @@ void draw(){
     }
     
   player.display();
-  player.update();
+  player.update(updated);
   //movement(player);
   collisions(player, Mapcells);
 }
@@ -122,6 +122,10 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         blocktype = collisionList.get(5).block_num;
         if(blocktype != 3 && (player.change_x == 2||player.change_x == -2)){ 
           player.change_x = 0;
+       }
+       if ( blocktype == 4){
+         collisionList.get(5).block.update(updated);
+         updated = true; 
        }
       }
       if(collisionList.get(5).visable == false){
@@ -184,6 +188,7 @@ void keyPressed(){
   else if(keyCode == UP && player.isOnBlock){
     player.change_y = -JUMP_SPEED;
     player.isOnBlock = false;
+    updated = false; 
   }
 }
 

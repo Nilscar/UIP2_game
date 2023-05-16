@@ -25,6 +25,11 @@ public class Player extends Sprite{
         pl_walk_left[i].resize(int(i_w*PLAYER_SCALE),int(player_walk.height*PLAYER_SCALE));
       }
   }
+   @Override
+   public void update(boolean updated){
+    currentFrame = (currentFrame+(n_frames/90.0));
+    
+  }
   @Override
   public void display(){
     //image(pl_stand[0], center_x, center_y, fr_w, h);
