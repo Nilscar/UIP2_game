@@ -10,6 +10,7 @@ final static float RIGHT_MARGIN = 500;
 final static float LEFT_MARGIN = 500;
 final static float VERTICAL_MARGIN = 500;
 
+int blocktype; 
 float viewX = 0;
 float viewY = height;
 float mapHeight;
@@ -30,7 +31,7 @@ Cell[][] Mapcells;
 void setup(){
   fullScreen(P2D);
   imageMode(CENTER);
-  String[] CSVrows = loadStrings("data/blocks/blockMap.csv");
+  String[] CSVrows = loadStrings("data/blocks/blockMapPelle.csv");
   cells = new ArrayList<Cell>();
   Mapcells = new Cell[split(CSVrows[0], ";").length][CSVrows.length];
   blocks[0] = loadImage("data/blocks/tileDirt.png");
@@ -118,6 +119,10 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.setBottom(collisionList.get(5).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
+        blocktype = collisionList.get(5).block_num;
+        if(blocktype != 3 && (player.change_x == 2||player.change_x == -2)){ 
+          player.change_x = 0;
+       }
       }
       if(collisionList.get(5).visable == false){
         player.isOnBlock = false;
@@ -184,10 +189,20 @@ void keyPressed(){
 
 void keyReleased(){
   if(keyCode == RIGHT){
+    if(blocktype == 3){
+      player.change_x = 2;
+    }
+    else{
     player.change_x = 0;
+    }
   }
   else if(keyCode == LEFT){
+     if(blocktype == 3){
+      player.change_x = -2;
+    }
+    else{
     player.change_x = 0;
+    }
   }
 }
 

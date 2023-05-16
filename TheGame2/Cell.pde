@@ -9,11 +9,13 @@ public class Cell{
   Sprite block;
   int this_col;
   int this_row;
+  int block_num;
 
   
   public Cell(int blocknum, int col, int row, PImage img){
     this_col = col;
     this_row= row;
+    block_num = blocknum;
     if(blocknum == 0){
      
       visable = false;
