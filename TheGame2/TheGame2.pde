@@ -114,12 +114,27 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
     
     //print("  << size: ", collisionList.size());
     if(player.change_y > 0){
-      if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop()){
+      if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop() && collisionList.get(8).visable && collisionList.get(2).visable){
         player.setBottom(collisionList.get(5).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
       }
-      if(collisionList.get(5).visable == false){
+      else if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop()){
+        player.setBottom(collisionList.get(5).block.getTop());
+        player.isOnBlock = true;
+        player.change_y = 0;
+      }
+      else if(collisionList.get(8).visable && player.getRight() > collisionList.get(8).block.getLeft() && player.getBottom() >= collisionList.get(8).block.getTop()){
+        player.setBottom(collisionList.get(8).block.getTop());
+        player.isOnBlock = true;
+        player.change_y = 0;
+      }
+      else if(collisionList.get(2).visable && player.getLeft() < collisionList.get(2).block.getRight() && player.getBottom() >= collisionList.get(2).block.getTop()){
+        player.setBottom(collisionList.get(2).block.getTop());
+        player.isOnBlock = true;
+        player.change_y = 0;
+      }
+      else if(!collisionList.get(5).visable && !collisionList.get(8).visable && !collisionList.get(2).visable){
         player.isOnBlock = false;
       }
       /*
@@ -139,6 +154,17 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
     }
   
   player.center_x += player.change_x;
+  /*if(player.change_y > 0 && player.change_x > 0){
+    if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop() && collisionList.get(7).visable && player.getRight() >= collisionList.get(7).block.getLeft()){
+       player.setBottom(collisionList.get(5).block.getTop());
+       player.isOnBlock = true;
+       player.change_y = 0;
+       player.setRight(collisionList.get(7).block.getLeft());
+       if(collisionList.get(5).visable == false){
+        player.isOnBlock = false;
+       }
+    }
+  }*/
   if(player.change_x > 0){
     if(collisionList.get(7).visable && player.getRight() >= collisionList.get(7).block.getLeft()){
        player.setRight(collisionList.get(7).block.getLeft());
