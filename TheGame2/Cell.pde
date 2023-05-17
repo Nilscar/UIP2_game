@@ -10,6 +10,7 @@ public class Cell{
   int this_col;
   int this_row;
   int block_num;
+  int counter = 0; 
 
   
   public Cell(int blocknum, int col, int row, PImage img){

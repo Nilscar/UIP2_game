@@ -123,8 +123,12 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         if(blocktype != 3 && (player.change_x == 2||player.change_x == -2)){ 
           player.change_x = 0;
        }
-       if ( blocktype == 4){
+       if ( blocktype == 4 && !updated){
          collisionList.get(5).block.update(updated);
+         collisionList.get(5).counter++;
+         if (collisionList.get(5).counter > 4){
+           collisionList.get(5).visable = false;
+         }
          updated = true; 
        }
       }
