@@ -157,16 +157,30 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.setBottom(collisionList.get(5).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
+           land_block = collisionList.get(5).block_num;
+        if(land_block != 3 && (player.change_x == 2||player.change_x == -2)){ 
+          player.change_x = 0;
+       }
+       if ( land_block == 4 && !updated){
+         collisionList.get(5).block.update(updated);
+         collisionList.get(5).counter++;
+         if (collisionList.get(5).counter > 4){
+           collisionList.get(5).visable = false;
+         }
+         updated = true; 
+       }
       }
       else if(collisionList.get(8).visable && player.getRight() > collisionList.get(8).block.getLeft() && player.getBottom() >= collisionList.get(8).block.getTop()){
         player.setBottom(collisionList.get(8).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
+        println(" col 3");
       }
       else if(collisionList.get(2).visable && player.getLeft() < collisionList.get(2).block.getRight() && player.getBottom() >= collisionList.get(2).block.getTop()){
         player.setBottom(collisionList.get(2).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
+        println(" col 4");
       }
       else if(!collisionList.get(5).visable && !collisionList.get(8).visable && !collisionList.get(2).visable){
         player.isOnBlock = false;
