@@ -19,10 +19,11 @@ float mapHeight;
 float mapWidth;
 int[] xZone = new int[2];
 int[] yZone = new int[2];
+int z = 0;
 
 public PGraphics blockGraphics;
 PImage mapimg;
-
+PImage bakgroundimg;
 Sprite player;
 Sprite reward;
 PImage[] blocks = new PImage[10];
@@ -33,6 +34,9 @@ Cell[][] Mapcells;
 void setup(){
   fullScreen(P2D);
   imageMode(CENTER);
+  
+  bakgroundimg = loadImage("data/blocks/background.png");
+  bakgroundimg.resize(displayWidth+400,displayHeight);
   String[] CSVrows = loadStrings("data/blocks/blockMapPelle.csv");
   cells = new ArrayList<Cell>();
   Mapcells = new Cell[split(CSVrows[0], ";").length][CSVrows.length];
@@ -40,7 +44,7 @@ void setup(){
   blocks[1] = loadImage("data/blocks/dirt_grass.png");
   blocks[2] = loadImage("data/blocks/dirt_sand.png");
   blocks[3] = loadImage("data/blocks/dirt_snow.png");
-  blocks[4] = loadImage("data/blocks/gravelseq.png");
+  blocks[4] = loadImage("data/blocks/gravelseq2.png");
   blocks[5] = loadImage("data/blocks/wood_red.png");
   blocks[6] = loadImage("data/blocks/box_treasure.png");
   blocks[7] = loadImage("data/treasures/runeBlack_slab_002.png");
@@ -53,7 +57,7 @@ void setup(){
 }
  
 void draw(){
-  background(0);
+  draw_background();
  int playercol = int(player.center_x/Cell.BLOCK_SIZE);
  int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
      scroll();
@@ -83,15 +87,28 @@ void draw(){
   //movement(player);
   collisions(player, Mapcells);
 }
+void draw_background(){
+  
+  int x = z % bakgroundimg.width;
+  
+
+  for (int i = -x ; i < width ; i += bakgroundimg.width) {
+      copy(bakgroundimg, 0, 0, bakgroundimg.width, height, i, 0, bakgroundimg.width, height);    
+  }
+}
+
+
 void scroll(){
  float rightBoundary = viewX + displayWidth - RIGHT_MARGIN;
  if(player.getRight() > rightBoundary){
    viewX += player.getRight() - rightBoundary;
+   z+=2;
  }
  
  float leftBoundary = viewX + LEFT_MARGIN;
  if(player.getLeft() < leftBoundary){
    viewX -= leftBoundary - player.getLeft();
+   z-=2;
  }
  
  float bottomBoundary = viewY + displayHeight - VERTICAL_MARGIN;
@@ -166,10 +183,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
   
   player.center_x += player.change_x;
   if(player.change_x > 0){
-    if(side_block == 9){collisionList.get(7).block.change_x = player.change_x;}
-      
-      
-    else if(collisionList.get(7).visable && player.getRight() >= collisionList.get(7).block.getLeft()){
+    if(collisionList.get(7).visable && player.getRight() >= collisionList.get(7).block.getLeft()){
        player.setRight(collisionList.get(7).block.getLeft());
        side_block = collisionList.get(7).block_num;
        if(collisionList.get(5).visable == false){

@@ -39,7 +39,7 @@ public class Cell{
     block.display();
     }
     else{
-      rect( this_col * BLOCK_SIZE,  this_row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+      //rect( this_col * BLOCK_SIZE,  this_row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
    // rect(BLOCK_SIZE + this_col * BLOCK_SIZE, BLOCK_SIZE + this_row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
   }}
 }
