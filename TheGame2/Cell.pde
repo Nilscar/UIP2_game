@@ -6,6 +6,7 @@ public class Cell{
   final static float CHEST_SCALEW = CHEST_SIZE/62;
   final static float CHEST_SCALEH = CHEST_SIZE/55;
   boolean visable;
+  boolean ladder;
   Sprite block;
   int this_col;
   int this_row;
@@ -15,18 +16,26 @@ public class Cell{
     this_col = col;
     this_row= row;
     if(blocknum == 0){
-     
       visable = false;
+      ladder = false;
+    }
+    else if(blocknum == 8){
+      block = new Sprite(img, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
+      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+      visable = false;
+      ladder = true;
     }
     else {
      block = new Sprite(img, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      visable = true;
+     ladder = false;
     }
   }
   public void display(){
-    if (visable){
+    if (visable || ladder){
     block.display();
     }
     else{

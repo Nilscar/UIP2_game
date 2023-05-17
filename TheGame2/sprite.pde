@@ -10,6 +10,7 @@ public class Sprite{
   float Scale;
   PImage[] imgs;
   boolean isOnBlock;
+  boolean isOnLadder;
   boolean treasure;
   
   //Constructor for sprite
@@ -23,6 +24,7 @@ public class Sprite{
     change_y = 0;
     n_frames = num_of_frames;
     isOnBlock = false;
+    isOnLadder = false;
     treasure = false;
     Scale = scale;
     
@@ -83,6 +85,10 @@ public class Sprite{
   
   public void update(){
     currentFrame = (currentFrame+(n_frames/90.0));
+  }
+  
+  public void euclideanDist(float x1, float y1, float x2, float y2){
+    
   }
   
   void setLeft(float left){

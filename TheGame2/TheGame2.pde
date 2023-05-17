@@ -22,7 +22,8 @@ PImage mapimg;
 
 Sprite player;
 Sprite reward;
-PImage[] blocks = new PImage[8];
+Sprite ladder;
+PImage[] blocks = new PImage[9];
 ArrayList<Cell> cells;
 boolean treasure = false;
 Cell[][] Mapcells;
@@ -41,10 +42,12 @@ void setup(){
   blocks[5] = loadImage("data/blocks/tileWood.png");
   blocks[6] = loadImage("data/blocks/box_treasure.png");
   blocks[7] = loadImage("data/treasures/runeBlack_slab_002.png");
+  blocks[8] = loadImage("data/blocks/ladder_large.png");
   createMap(CSVrows);
   player = new Player(600, 600);
   mapHeight = CSVrows.length;
   mapWidth = split(CSVrows[0], ";").length;
+  //print("dispWidth: ", displayWidth, " <<< dispHeight: ", displayHeight);
 }
  
 void draw(){
@@ -108,8 +111,9 @@ public void movement(Sprite player){
 
 public void collisions(Sprite player, Cell[][] mapBlocks){
   ArrayList<Cell> collisionList = checkColl(player, mapBlocks);
-  
+  if(!player.isOnLadder){
     player.change_y += GRAVITY;
+  }
     player.center_y += player.change_y;
     
     //print("  << size: ", collisionList.size());
@@ -154,17 +158,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
     }
   
   player.center_x += player.change_x;
-  /*if(player.change_y > 0 && player.change_x > 0){
-    if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop() && collisionList.get(7).visable && player.getRight() >= collisionList.get(7).block.getLeft()){
-       player.setBottom(collisionList.get(5).block.getTop());
-       player.isOnBlock = true;
-       player.change_y = 0;
-       player.setRight(collisionList.get(7).block.getLeft());
-       if(collisionList.get(5).visable == false){
-        player.isOnBlock = false;
-       }
-    }
-  }*/
   if(player.change_x > 0){
     if(collisionList.get(7).visable && player.getRight() >= collisionList.get(7).block.getLeft()){
        player.setRight(collisionList.get(7).block.getLeft());
@@ -181,6 +174,15 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        }
      }
   }
+  for(int i = 0; i < collisionList.size(); i += 1){
+        if(collisionList.get(i).ladder && dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= player.w/4){
+          ladder = collisionList.get(i).block;
+          player.isOnLadder = true;
+        }
+      }
+   if(ladder != null && dist(player.center_x, player.center_y, ladder.center_x, ladder.center_y) > player.w/4){
+     player.isOnLadder = false;
+   }
 }
 
 public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){
@@ -202,8 +204,12 @@ void keyPressed(){
   else if(keyCode == LEFT){
     player.change_x = -WALK_SPEED;
   }
-  else if(keyCode == UP && player.isOnBlock){
+  else if(keyCode == UP && player.isOnBlock && !player.isOnLadder){
     player.change_y = -JUMP_SPEED;
+    player.isOnBlock = false;
+  }
+  else if(keyCode == UP && player.isOnLadder){
+    player.change_y = -WALK_SPEED;
     player.isOnBlock = false;
   }
 }
@@ -214,6 +220,10 @@ void keyReleased(){
   }
   else if(keyCode == LEFT){
     player.change_x = 0;
+  }
+  else if(keyCode == UP && player.isOnLadder){
+    player.change_y = 0;
+    player.isOnBlock = false;
   }
 }
 
