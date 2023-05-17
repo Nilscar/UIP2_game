@@ -87,10 +87,6 @@ public class Sprite{
     currentFrame = (currentFrame+(n_frames/90.0));
   }
   
-  public void euclideanDist(float x1, float y1, float x2, float y2){
-    
-  }
-  
   void setLeft(float left){
     center_x = left + fr_w/2;
   }

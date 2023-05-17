@@ -138,6 +138,13 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.isOnBlock = true;
         player.change_y = 0;
       }
+      /*else if(collisionList.get(5).ladder && player.getBottom() >= collisionList.get(5).block.getTop()){//if-ladder do center_y=center_y
+        player.setBottom(collisionList.get(5).block.getTop());
+        player.isOnBlock = true;
+        player.isOnLadder = true;
+        player.change_y = 0;
+      }*/
+      
       else if(!collisionList.get(5).visable && !collisionList.get(8).visable && !collisionList.get(2).visable){
         player.isOnBlock = false;
       }
@@ -175,12 +182,18 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
      }
   }
   for(int i = 0; i < collisionList.size(); i += 1){
-        if(collisionList.get(i).ladder && dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= player.w/4){
+        if(collisionList.get(i).ladder && 
+           (player.getLeft() < collisionList.get(i).block.getRight() ||
+            player.getRight() > collisionList.get(i).block.getLeft() ||
+            player.getBottom() > collisionList.get(i).block.getTop())){
+          //dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= abs(player.w/2 - collisionList.get(i).block.w/2)
           ladder = collisionList.get(i).block;
           player.isOnLadder = true;
         }
       }
-   if(ladder != null && dist(player.center_x, player.center_y, ladder.center_x, ladder.center_y) > player.w/4){
+   if(ladder != null && player.getLeft() > ladder.getRight() ||
+   ladder != null && player.getRight() < ladder.getLeft() ||
+   ladder != null && player.getBottom() + WALK_SPEED < ladder.getTop()){ //abs(player.center_y - ladder.center_y)
      player.isOnLadder = false;
    }
 }
@@ -208,9 +221,18 @@ void keyPressed(){
     player.change_y = -JUMP_SPEED;
     player.isOnBlock = false;
   }
-  else if(keyCode == UP && player.isOnLadder){
-    player.change_y = -WALK_SPEED;
-    player.isOnBlock = false;
+  else if(keyCode == UP && player.isOnLadder && ladder != null){
+    if(player.getBottom() <= ladder.getTop()){
+      player.isOnBlock = true;
+      player.setBottom(ladder.getTop());
+    }
+    else if(player.getBottom() >= ladder.getTop()){
+      player.change_y = -WALK_SPEED/2;
+      player.isOnBlock = false;
+    }
+  }
+  else if(keyCode == DOWN && player.isOnLadder){
+    player.change_y = WALK_SPEED/2;
   }
 }
 
@@ -221,9 +243,19 @@ void keyReleased(){
   else if(keyCode == LEFT){
     player.change_x = 0;
   }
-  else if(keyCode == UP && player.isOnLadder){
+  else if(keyCode == UP && player.isOnLadder && ladder != null){
+    if(player.getBottom() <= ladder.getTop()){
+      player.isOnBlock = true;
+      player.setBottom(ladder.getTop());
+    }
+    else{
+      player.center_y = player.center_y;
+      player.change_y = 0;
+      player.isOnBlock = false;
+    }
+  }
+  else if(keyCode == DOWN && player.isOnLadder){
     player.change_y = 0;
-    player.isOnBlock = false;
   }
 }
 
