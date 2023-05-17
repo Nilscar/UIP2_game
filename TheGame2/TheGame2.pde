@@ -10,7 +10,9 @@ final static float RIGHT_MARGIN = 500;
 final static float LEFT_MARGIN = 500;
 final static float VERTICAL_MARGIN = 500;
 boolean updated = false;
-int blocktype; 
+int land_block; 
+int head_block;
+int side_block;
 float viewX = 0;
 float viewY = height;
 float mapHeight;
@@ -23,7 +25,7 @@ PImage mapimg;
 
 Sprite player;
 Sprite reward;
-PImage[] blocks = new PImage[8];
+PImage[] blocks = new PImage[10];
 ArrayList<Cell> cells;
 boolean treasure = false;
 Cell[][] Mapcells;
@@ -34,14 +36,16 @@ void setup(){
   String[] CSVrows = loadStrings("data/blocks/blockMapPelle.csv");
   cells = new ArrayList<Cell>();
   Mapcells = new Cell[split(CSVrows[0], ";").length][CSVrows.length];
-  blocks[0] = loadImage("data/blocks/tileDirt.png");
-  blocks[1] = loadImage("data/blocks/tileGrass.png");
-  blocks[2] = loadImage("data/blocks/tileSand.png");
-  blocks[3] = loadImage("data/blocks/tileSnow.png");
-  blocks[4] = loadImage("data/blocks/tileseq_stone.png");
-  blocks[5] = loadImage("data/blocks/tileWood.png");
+  blocks[0] = loadImage("data/blocks/dirt.png");
+  blocks[1] = loadImage("data/blocks/dirt_grass.png");
+  blocks[2] = loadImage("data/blocks/dirt_sand.png");
+  blocks[3] = loadImage("data/blocks/dirt_snow.png");
+  blocks[4] = loadImage("data/blocks/gravelseq.png");
+  blocks[5] = loadImage("data/blocks/wood_red.png");
   blocks[6] = loadImage("data/blocks/box_treasure.png");
   blocks[7] = loadImage("data/treasures/runeBlack_slab_002.png");
+  blocks[8] = loadImage("data/blocks/dirt.png");
+  blocks[9] = loadImage("data/blocks/trunk_top.png");
   createMap(CSVrows);
   player = new Player(600, 600);
   mapHeight = CSVrows.length;
@@ -119,11 +123,11 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.setBottom(collisionList.get(5).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
-        blocktype = collisionList.get(5).block_num;
-        if(blocktype != 3 && (player.change_x == 2||player.change_x == -2)){ 
+        land_block = collisionList.get(5).block_num;
+        if(land_block != 3 && (player.change_x == 2||player.change_x == -2)){ 
           player.change_x = 0;
        }
-       if ( blocktype == 4 && !updated){
+       if ( land_block == 4 && !updated){
          collisionList.get(5).block.update(updated);
          collisionList.get(5).counter++;
          if (collisionList.get(5).counter > 4){
@@ -147,17 +151,32 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        if(collisionList.get(3).visable && player.getTop() <= collisionList.get(3).block.getBottom()){
          player.setTop(collisionList.get(3).block.getBottom());
          player.isOnBlock = false;
+         head_block = collisionList.get(3).block_num;
          player.change_y = 0;
+          if ( head_block == 4 && !updated){
+         collisionList.get(3).block.update(updated);
+         collisionList.get(3).counter++;
+         if (collisionList.get(3).counter > 4){
+           collisionList.get(3).visable = false;
+         }
+         updated = true; 
+       }
        }
     }
   
   player.center_x += player.change_x;
   if(player.change_x > 0){
-    if(collisionList.get(7).visable && player.getRight() >= collisionList.get(7).block.getLeft()){
+    if(side_block == 9){collisionList.get(7).block.change_x = player.change_x;}
+      
+      
+    else if(collisionList.get(7).visable && player.getRight() >= collisionList.get(7).block.getLeft()){
        player.setRight(collisionList.get(7).block.getLeft());
+       side_block = collisionList.get(7).block_num;
        if(collisionList.get(5).visable == false){
         player.isOnBlock = false;
        }
+       
+       
      }
   }
   if(player.change_x < 0){
@@ -198,7 +217,7 @@ void keyPressed(){
 
 void keyReleased(){
   if(keyCode == RIGHT){
-    if(blocktype == 3){
+    if(land_block == 3){
       player.change_x = 2;
     }
     else{
@@ -206,7 +225,7 @@ void keyReleased(){
     }
   }
   else if(keyCode == LEFT){
-     if(blocktype == 3){
+     if(land_block == 3){
       player.change_x = -2;
     }
     else{
