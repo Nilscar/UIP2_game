@@ -137,24 +137,14 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.isOnBlock = true;
         player.change_y = 0;
       }
-      else if(collisionList.get(5).ladder && player.getBottom() >= collisionList.get(5).block.getTop()){//if-ladder do center_y=center_y
-        //player.setBottom(collisionList.get(5).block.getTop());
-        //player.isOnBlock = true;
+      else if(collisionList.get(5).ladder && player.getBottom() >= collisionList.get(5).block.getTop()){
         player.isOnLadder = true;
         player.isOnTop = true;
-        //player.change_y = 0;
       }
       
       else if(!collisionList.get(5).visable && !collisionList.get(8).visable && !collisionList.get(2).visable){
         player.isOnBlock = false;
       }
-      /*
-      for(int i = 2; i < collisionList.size(); i += 3){
-        if(collisionList.get(i).visable && player.getRight() >= collisionList.get(i).block.getLeft() || collisionList.get(i).visable && player.getLeft() <= collisionList.get(i).block.getRight()){
-          //print("  >> getTop():  ", collisionList.get(i).block.getTop());
-          player.setBottom(collisionList.get(i).block.getTop());
-        }
-      }*/
     }
     if(player.change_y < 0){
        if(collisionList.get(3).visable && player.getTop() <= collisionList.get(3).block.getBottom()){
@@ -188,23 +178,19 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
   //float minDist = Cell.BLOCK_SIZE;
   for(int i = 0; i < collisionList.size(); i += 1){
         if(collisionList.get(i).ladder && 
-            dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= collisionList.get(i).block.w){ // <= ... what??
-              // &&
-           // dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) < minDist
-          //minDist = dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y);
+            dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= collisionList.get(i).block.w){
           ladder = collisionList.get(i).block;
           player.isOnLadder = true;
-          //player.isOnBlock = false;
         }
       }
    if(ladder != null && player.getLeft() > ladder.getRight() ||
-   ladder != null && player.getRight() < ladder.getLeft()){ //abs(player.center_y - ladder.center_y)
+   ladder != null && player.getRight() < ladder.getLeft()){
      player.isOnLadder = false;
      player.isOnTop = false;
    }
 }
 
-public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){
+public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates a 3x3 matrix containing the surrounding blocks of the player
    ArrayList<Cell> collisionList = new ArrayList<Cell>();
    for(int i = int(player.center_x/Cell.BLOCK_SIZE) - 1; i < int(player.center_x/Cell.BLOCK_SIZE) + 2; i++){
      for(int j = int(player.center_y/Cell.BLOCK_SIZE) - 1; j < int(player.center_y/Cell.BLOCK_SIZE) + 2; j++){
