@@ -152,7 +152,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
          player.isOnBlock = false;
          player.change_y = 0;
        }
-       else if(collisionList.get(3).ladder && player.getBottom() <= collisionList.get(3).block.getTop() || collisionList.get(4).ladder && player.getBottom() <= collisionList.get(4).block.getTop()){//else?
+       else if(collisionList.get(3).ladder && player.getBottom() <= collisionList.get(3).block.getTop() || collisionList.get(4).ladder && player.getBottom() <= collisionList.get(4).block.getTop()){
          player.isOnTop = true;
          player.change_y = 0;
        }
@@ -215,6 +215,12 @@ void keyPressed(){
       player.change_y = -WALK_SPEED/2;
       player.isOnBlock = false;
       player.isOnTop = false;
+      if(player.getBottom() <= ladder.getTop()){
+        player.change_y = -JUMP_SPEED;
+        player.isOnBlock = false;
+        player.isOnLadder = false;
+        player.isOnTop = false;
+      }
     }
     else if(player.getBottom() <= ladder.getTop()){
       player.isOnTop = true;
