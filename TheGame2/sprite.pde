@@ -11,6 +11,7 @@ public class Sprite{
   PImage[] imgs;
   boolean isOnBlock;
   boolean treasure;
+  boolean dead = false; 
   
   //Constructor for sprite
   public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames){
@@ -85,7 +86,13 @@ public class Sprite{
     }
   }
   
-  public void update(boolean updated){
+  public void update(){
+    currentFrame = (currentFrame+(n_frames/90.0));
+  
+   
+  }
+  public void stone_update(boolean updated){
+    
     if (!updated && currentFrame < n_frames-1){currentFrame++;}
   
    

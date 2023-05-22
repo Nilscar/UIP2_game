@@ -7,6 +7,10 @@ public class Player extends Sprite{
   PImage player_walk_left = loadImage("data/zombie_walk_left.png");
   PImage[] pl_walk_right = new PImage[walk_frames];
   PImage[] pl_walk_left = new PImage[walk_frames];
+  PImage player_drown = loadImage("data/zombie_drown.png");
+  PImage[] pl_drown = new PImage[7];
+  boolean onlydieonce = false;
+  
 
   final static float PLAYER_SCALE = 0.8;
   
@@ -24,17 +28,34 @@ public class Player extends Sprite{
         pl_walk_left[i] = player_walk_left.get(int(i_w*(i%walk_frames)), 0, int(i_w), int(player_walk.height));
         pl_walk_left[i].resize(int(i_w*PLAYER_SCALE),int(player_walk.height*PLAYER_SCALE));
       }
+      i_w = player_drown.width / 7;
+      for (int i = 0; i < 7; i++) {
+        pl_drown[i] = player_drown.get(int(i_w*(i%7)), 0, int(i_w), int(player_drown.height));
+        pl_drown[i].resize(int(i_w*PLAYER_SCALE),int(player_drown.height*PLAYER_SCALE));
+       
+      }
   }
    @Override
-   public void update(boolean updated){
+   public void update(){
+     if( !dead){
     currentFrame = (currentFrame+(n_frames/90.0));
-    
+     }
+     else{
+       if (currentFrame < 6){
+         currentFrame = (currentFrame+(n_frames/120.0));}
+     }
+     
   }
   @Override
   public void display(){
     //image(pl_stand[0], center_x, center_y, fr_w, h);
+    if(dead){
+      if(!onlydieonce){ currentFrame = 0;
+          onlydieonce = true;}
+      image(pl_drown[(int(currentFrame))%7], center_x, center_y, fr_w, h);
+    }
     
-    if(change_x==0){
+    else if(change_x==0){
       image(pl_stand[(int(currentFrame))% stand_frames], center_x, center_y, fr_w, h);
     }
     else if (change_x<0){
