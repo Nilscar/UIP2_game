@@ -222,8 +222,6 @@ void keyPressed(){
       player.isOnBlock = false;
       player.isOnLadder = false;
       player.isOnTop = false;
-      //player.setBottom(ladder.getTop());
-      //player.change_y = 0;
     }
   }
   else if(keyCode == UP && (player.isOnBlock || player.isOnTop)){
@@ -236,7 +234,6 @@ void keyPressed(){
   else if(keyCode == DOWN && (player.isOnTop || player.isOnLadder)){
     player.change_y = WALK_SPEED/2;
     player.isOnTop = false;
-    print("down key pressed!! \n");
   }
   else if(key == 'a' && ladder != null){
     print("top: ", player.isOnTop);
