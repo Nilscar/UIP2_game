@@ -11,9 +11,10 @@ public class Sprite{
   PImage[] imgs;
   boolean isOnBlock;
   boolean isOnLadder;
+  boolean isOnTop = false;
   boolean treasure;
   
-  //Constructor for sprite
+  //Constructor for sprite /or player
   public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames){
     img = loadImage(filename);
     w = img.width * scale;

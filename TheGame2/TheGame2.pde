@@ -42,7 +42,7 @@ void setup(){
   blocks[5] = loadImage("data/blocks/tileWood.png");
   blocks[6] = loadImage("data/blocks/box_treasure.png");
   blocks[7] = loadImage("data/treasures/runeBlack_slab_002.png");
-  blocks[8] = loadImage("data/blocks/ladder_large.png");
+  blocks[8] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
   player = new Player(600, 600);
   mapHeight = CSVrows.length;
@@ -116,7 +116,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
   }
     player.center_y += player.change_y;
     
-    //print("  << size: ", collisionList.size());
     if(player.change_y > 0){
       if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop() && collisionList.get(8).visable && collisionList.get(2).visable){
         player.setBottom(collisionList.get(5).block.getTop());
@@ -138,12 +137,13 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.isOnBlock = true;
         player.change_y = 0;
       }
-      /*else if(collisionList.get(5).ladder && player.getBottom() >= collisionList.get(5).block.getTop()){//if-ladder do center_y=center_y
-        player.setBottom(collisionList.get(5).block.getTop());
-        player.isOnBlock = true;
+      else if(collisionList.get(5).ladder && player.getBottom() >= collisionList.get(5).block.getTop()){//if-ladder do center_y=center_y
+        //player.setBottom(collisionList.get(5).block.getTop());
+        //player.isOnBlock = true;
         player.isOnLadder = true;
-        player.change_y = 0;
-      }*/
+        player.isOnTop = true;
+        //player.change_y = 0;
+      }
       
       else if(!collisionList.get(5).visable && !collisionList.get(8).visable && !collisionList.get(2).visable){
         player.isOnBlock = false;
@@ -160,6 +160,10 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        if(collisionList.get(3).visable && player.getTop() <= collisionList.get(3).block.getBottom()){
          player.setTop(collisionList.get(3).block.getBottom());
          player.isOnBlock = false;
+         player.change_y = 0;
+       }
+       else if(collisionList.get(3).ladder && player.getBottom() <= collisionList.get(3).block.getTop() || collisionList.get(4).ladder && player.getBottom() <= collisionList.get(4).block.getTop()){//else?
+         player.isOnTop = true;
          player.change_y = 0;
        }
     }
@@ -181,27 +185,30 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        }
      }
   }
+  //float minDist = Cell.BLOCK_SIZE;
   for(int i = 0; i < collisionList.size(); i += 1){
         if(collisionList.get(i).ladder && 
-            dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= collisionList.get(i).block.w){
-          //dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= abs(player.w/2 - collisionList.get(i).block.w/2)
+            dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= collisionList.get(i).block.w){ // <= ... what??
+              // &&
+           // dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) < minDist
+          //minDist = dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y);
           ladder = collisionList.get(i).block;
           player.isOnLadder = true;
-          player.isOnBlock = false;
+          //player.isOnBlock = false;
         }
       }
    if(ladder != null && player.getLeft() > ladder.getRight() ||
-   ladder != null && player.getRight() < ladder.getLeft() ||
-   ladder != null && player.getBottom() < ladder.getTop()){ //abs(player.center_y - ladder.center_y)
+   ladder != null && player.getRight() < ladder.getLeft()){ //abs(player.center_y - ladder.center_y)
      player.isOnLadder = false;
+     player.isOnTop = false;
    }
 }
 
 public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){
-   ArrayList<Cell> collisionList = new ArrayList<Cell>(); // make an array instead and sort according to the needs later!!
+   ArrayList<Cell> collisionList = new ArrayList<Cell>();
    for(int i = int(player.center_x/Cell.BLOCK_SIZE) - 1; i < int(player.center_x/Cell.BLOCK_SIZE) + 2; i++){
      for(int j = int(player.center_y/Cell.BLOCK_SIZE) - 1; j < int(player.center_y/Cell.BLOCK_SIZE) + 2; j++){
-       //if(blockList[i][j].visable){ //This .visable replaces the checkCollision function
+       //if(blockList[i][j].visable){
          collisionList.add(blockList[i][j]);
        //}
      }
@@ -216,23 +223,38 @@ void keyPressed(){
   else if(keyCode == LEFT){
     player.change_x = -WALK_SPEED;
   }
-  else if(keyCode == UP && player.isOnBlock){
-    player.change_y = -JUMP_SPEED;
-    player.isOnBlock = false;
-  }
-  else if(keyCode == UP && player.isOnLadder && ladder != null){
-    if(player.getBottom() <= ladder.getTop()){
-      player.isOnBlock = true;
-      //player.setBottom(ladder.getTop());
-      player.change_y = 0;
-    }
-    else if(player.getBottom() >= ladder.getTop()){
+  else if(keyCode == UP && player.isOnLadder && ladder != null){ // hmm this needed???
+    
+    if(player.getBottom() >= ladder.getTop()){
       player.change_y = -WALK_SPEED/2;
       player.isOnBlock = false;
+      player.isOnTop = false;
+    }
+    else if(player.getBottom() <= ladder.getTop()){
+      player.isOnTop = true;
+      player.change_y = -JUMP_SPEED;
+      player.isOnBlock = false;
+      player.isOnLadder = false;
+      player.isOnTop = false;
+      //player.setBottom(ladder.getTop());
+      //player.change_y = 0;
     }
   }
-  else if(keyCode == DOWN && player.isOnLadder){
+  else if(keyCode == UP && (player.isOnBlock || player.isOnTop)){
+    player.change_y = -JUMP_SPEED;
+    player.isOnBlock = false;
+    player.isOnLadder = false;
+    player.isOnTop = false;
+  }
+  
+  else if(keyCode == DOWN && (player.isOnTop || player.isOnLadder)){
     player.change_y = WALK_SPEED/2;
+    player.isOnTop = false;
+    print("down key pressed!! \n");
+  }
+  else if(key == 'a' && ladder != null){
+    print("top: ", player.isOnTop);
+    print("\n ladder: ", player.isOnLadder, "\n block: ", player.isOnBlock, "\n");
   }
 }
 
@@ -244,18 +266,11 @@ void keyReleased(){
     player.change_x = 0;
   }
   else if(keyCode == UP && player.isOnLadder && ladder != null){
-    if(player.getBottom() <= ladder.getTop()){
-      player.isOnBlock = true;
-      player.setBottom(ladder.getTop());
-    }
-    else{
-      player.center_y = player.center_y;
-      player.change_y = 0;
-      player.isOnBlock = false;
-    }
-  }
-  else if(keyCode == DOWN && player.isOnLadder){
     player.change_y = 0;
+  }
+  else if(keyCode == DOWN && (player.isOnLadder || player.isOnTop)){
+    player.change_y = 0;
+    player.isOnTop = false;
   }
 }
 
