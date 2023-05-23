@@ -327,7 +327,6 @@ void keyPressed(){
     player.change_x = -WALK_SPEED;
   }
   else if(keyCode == UP && player.isOnLadder && ladder != null){
-    
     if(player.getBottom() >= ladder.getTop()){
       player.change_y = -WALK_SPEED/2;
       //player.center_y = constrain(player.center_y, ladder.getBottom() - player.h/2, ladder.getTop());
@@ -342,8 +341,7 @@ void keyPressed(){
       player.isOnTop = false;
     }
   }
-  else if(keyCode == UP && (player.isOnBlock || player.isOnTop)){
-  else if(keyCode == UP && player.isOnBlock && !player.dead){
+  else if(keyCode == UP && (player.isOnBlock || player.isOnTop) && !player.dead){
     player.change_y = -JUMP_SPEED;
     player.isOnBlock = false;
     updated = false;
