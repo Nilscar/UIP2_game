@@ -13,6 +13,8 @@ public class Sprite{
   boolean isOnLadder;
   boolean isOnTop = false;
   boolean treasure;
+  boolean dead = false; 
+  float deadspot;
   
   //Constructor for sprite /or player
   public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames){
@@ -88,7 +90,13 @@ public class Sprite{
     }
   }
   
-  public void update(boolean updated){
+  public void update(){
+    currentFrame = (currentFrame+(n_frames/90.0));
+  
+   
+  }
+  public void stone_update(boolean updated){
+    
     if (!updated && currentFrame < n_frames-1){currentFrame++;}
   
    
