@@ -33,6 +33,12 @@ public class Cell{
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      visable = true;
     }
+    else if( blocknum == 11){
+     block = new Sprite(img, BLOCK_SCALEW, BLOCK_SCALEH, 4, false);
+     block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
+     block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
+     visable = true;
+    }
     else {
      block = new Sprite(img, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
@@ -43,7 +49,7 @@ public class Cell{
   public void display(){
     if (visable){
       block.display();
-      if(block_num == 10){
+      if(block_num == 10 ||block_num == 11){
         block.update();
       }
     }

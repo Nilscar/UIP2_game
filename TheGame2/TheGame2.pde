@@ -26,7 +26,7 @@ PImage mapimg;
 PImage bakgroundimg;
 Sprite player;
 Sprite reward;
-PImage[] blocks = new PImage[11];
+PImage[] blocks = new PImage[12];
 ArrayList<Cell> cells;
 boolean treasure = false;
 Cell[][] Mapcells;
@@ -50,7 +50,8 @@ void setup(){
   blocks[7] = loadImage("data/treasures/runeBlack_slab_002.png");
   blocks[8] = loadImage("data/blocks/dirt.png");
   blocks[9] = loadImage("data/blocks/trunk_top.png");
-  blocks[10] = loadImage("data/blocks/Waterdeep.png");
+  blocks[10] = loadImage("data/blocks/Watershallow.png");
+  blocks[11] = loadImage("data/blocks/Waterdeep.png");
   createMap(CSVrows);
   player = new Player(600, 600);
   mapHeight = CSVrows.length;
@@ -138,7 +139,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
     if(player.center_y/Cell.BLOCK_SIZE < 19 && player.dead){
        player.change_y = 1;
        }
-    else if (player.center_y/Cell.BLOCK_SIZE > 19.6 && player.dead){
+    else if (player.center_y/Cell.BLOCK_SIZE > player.deadspot && player.dead){
        player.change_y = -GRAVITY;
        }
           

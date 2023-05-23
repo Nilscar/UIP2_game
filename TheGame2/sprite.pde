@@ -12,6 +12,7 @@ public class Sprite{
   boolean isOnBlock;
   boolean treasure;
   boolean dead = false; 
+  float deadspot;
   
   //Constructor for sprite
   public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames){

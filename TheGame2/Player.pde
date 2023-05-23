@@ -11,6 +11,7 @@ public class Player extends Sprite{
   PImage[] pl_drown = new PImage[7];
   boolean onlydieonce = false;
   
+  
 
   final static float PLAYER_SCALE = 0.8;
   
@@ -51,6 +52,8 @@ public class Player extends Sprite{
     //image(pl_stand[0], center_x, center_y, fr_w, h);
     if(dead){
       if(!onlydieonce){ currentFrame = 0;
+          deadspot = (center_y + 200)/100;
+          print("Here sjould we stay  ", deadspot);
           onlydieonce = true;}
       image(pl_drown[(int(currentFrame))%7], center_x, center_y, fr_w, h);
     }
