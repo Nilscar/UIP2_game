@@ -4,6 +4,9 @@ final static float JUMP_SPEED = 14.4;
 final static float GRAVITY = 0.5;
 PImage menu;
 String state ="game";
+import ddf.minim.*;
+AudioPlayer Audioplayer;
+Minim minim;//audio context
 
 
 final static float RIGHT_MARGIN = 500;
@@ -36,6 +39,9 @@ Cell[][] Mapcells;
 void setup(){
   fullScreen(P2D);
   imageMode(CENTER);
+  minim = new Minim(this);
+  Audioplayer = minim.loadFile("data/music/backSong", 2048);
+  Audioplayer.play();
   
   bakgroundimg = loadImage("data/blocks/background.png");
   bakgroundimg.resize(displayWidth+400,displayHeight);
