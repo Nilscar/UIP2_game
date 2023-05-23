@@ -209,18 +209,12 @@ void keyPressed(){
   else if(keyCode == LEFT){
     player.change_x = -WALK_SPEED;
   }
-  else if(keyCode == UP && player.isOnLadder && ladder != null){ // hmm this needed???
+  else if(keyCode == UP && player.isOnLadder && ladder != null){
     
     if(player.getBottom() >= ladder.getTop()){
       player.change_y = -WALK_SPEED/2;
       player.isOnBlock = false;
       player.isOnTop = false;
-      if(player.getBottom() <= ladder.getTop()){
-        player.change_y = -JUMP_SPEED;
-        player.isOnBlock = false;
-        player.isOnLadder = false;
-        player.isOnTop = false;
-      }
     }
     else if(player.getBottom() <= ladder.getTop()){
       player.isOnTop = true;
