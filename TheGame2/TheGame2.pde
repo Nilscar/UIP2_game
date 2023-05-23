@@ -178,13 +178,13 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.setBottom(collisionList.get(8).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
-        println(" col 3");
+        //println(" col 3");
       }
       else if(collisionList.get(2).visable && player.getLeft() < collisionList.get(2).block.getRight() && player.getBottom() >= collisionList.get(2).block.getTop()){
         player.setBottom(collisionList.get(2).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
-        println(" col 4");
+        //println(" col 4");
       }
       else if(collisionList.get(5).ladder && player.getBottom() >= collisionList.get(5).block.getTop()){
         player.isOnLadder = true;
@@ -274,6 +274,7 @@ void keyPressed(){
     
     if(player.getBottom() >= ladder.getTop()){
       player.change_y = -WALK_SPEED/2;
+      //player.center_y = constrain(player.center_y, ladder.getBottom() - player.h/2, ladder.getTop());
       player.isOnBlock = false;
       player.isOnTop = false;
     }
