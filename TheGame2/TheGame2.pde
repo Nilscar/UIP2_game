@@ -342,8 +342,8 @@ void keyPressed(){
       player.isOnTop = false;
     }
   }
-  else if(keyCode == UP && (player.isOnBlock || player.isOnTop)){
-  else if(keyCode == UP && player.isOnBlock && !player.dead){
+  else if(keyCode == UP && (player.isOnBlock || player.isOnTop)&& !player.dead){
+  
     player.change_y = -JUMP_SPEED;
     player.isOnBlock = false;
     updated = false;
