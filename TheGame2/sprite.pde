@@ -15,9 +15,13 @@ public class Sprite{
   boolean treasure;
   boolean dead = false; 
   float deadspot;
+  int land_block; 
+  int head_block;
+  int side_block;
+  boolean isPlayer; 
   
   //Constructor for sprite /or player
-  public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames){
+  public Sprite(String filename, float scale, float xPos, float yPos, int num_of_frames, boolean is_player){
     img = loadImage(filename);
     w = img.width * scale;
     h = img.height * scale;
@@ -30,7 +34,7 @@ public class Sprite{
     isOnLadder = false;
     treasure = false;
     Scale = scale;
-    
+    isPlayer=is_player;
     imgs = new PImage[n_frames];
     if (n_frames < 2){
       fr_w = w;
@@ -47,7 +51,7 @@ public class Sprite{
   }
   //Constructor for stuff in upper left corner?? idk
   public Sprite(String filename, float scale, int n_frames){
-    this(filename, scale, 0, 0, n_frames );
+    this(filename, scale, 0, 0, n_frames, false );
   }
   //Constructor for blocks
   public Sprite(PImage image, float scaleW, float scaleH, int num_of_frames, boolean chest){

@@ -13,9 +13,7 @@ final static float RIGHT_MARGIN = 500;
 final static float LEFT_MARGIN = 500;
 final static float VERTICAL_MARGIN = 500;
 boolean updated = false;
-int land_block; 
-int head_block;
-int side_block;
+
 float viewX = 0;
 float viewY = height;
 float mapHeight;
@@ -27,7 +25,8 @@ int z = 0;
 public PGraphics blockGraphics;
 PImage mapimg;
 PImage bakgroundimg;
-Sprite player;
+Player player;
+Mob pig;
 Sprite reward;
 PImage[] blocks = new PImage[13];
 
@@ -40,7 +39,7 @@ void setup(){
   fullScreen(P2D);
   imageMode(CENTER);
   minim = new Minim(this);
-  Audioplayer = minim.loadFile("data/music/backSong", 2048);
+  Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
   Audioplayer.play();
   
   bakgroundimg = loadImage("data/blocks/background.png");
@@ -63,6 +62,7 @@ void setup(){
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
   player = new Player(600, 600);
+  pig = new Mob(200,600);
   mapHeight = CSVrows.length;
   mapWidth = split(CSVrows[0], ";").length;
   //print("dispWidth: ", displayWidth, " <<< dispHeight: ", displayHeight);
@@ -97,9 +97,13 @@ void draw(){
     
   player.display();
   player.update();
-  
+  pig.display();
+  pig.update();
   //movement(player);
   collisions(player, Mapcells);
+  collisions(pig, Mapcells);
+  
+  
 }
 void draw_background(){
   
@@ -154,20 +158,19 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        player.change_y = -GRAVITY;
        }
           
-          
+    
     //print("  << size: ", collisionList.size());
     if(player.change_y > 0){
       if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop() && collisionList.get(8).visable && collisionList.get(2).visable && !player.dead){
         player.setBottom(collisionList.get(5).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
-        land_block = collisionList.get(5).block_num;
+        player.land_block = collisionList.get(5).block_num;
         
-        
-        if(land_block != 3 && (player.change_x == 2||player.change_x == -2)){ 
+        if(player.land_block != 3 && (player.change_x == 2||player.change_x == -2)&& player.isPlayer){ 
           player.change_x = 0;
        }
-       if(land_block == 10 && !player.dead){ 
+       if(player.land_block == 10 && !player.dead && player.isPlayer){ 
          println("coll water 1");
          print(player.center_y/Cell.BLOCK_SIZE);
           player.dead = true;
@@ -175,7 +178,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.isOnBlock = false;
           
        }
-        else if ( land_block == 4 && !updated){
+        else if ( player.land_block == 4 && !updated && player.isPlayer){
          collisionList.get(5).block.stone_update(updated);
          collisionList.get(5).counter++;
          if (collisionList.get(5).counter > 4){
@@ -188,12 +191,12 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.setBottom(collisionList.get(5).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
-           land_block = collisionList.get(5).block_num;
-        if(land_block != 3 && (player.change_x == 2||player.change_x == -2)){ 
+           player.land_block = collisionList.get(5).block_num;
+        if(player.land_block != 3 && (player.change_x == 2||player.change_x == -2)&& player.isPlayer){ 
           player.change_x = 0;
        }
 
-       if ( land_block == 4 && !updated){
+       if ( player.land_block == 4 && !updated && player.isPlayer){
          collisionList.get(5).block.stone_update(updated);
          collisionList.get(5).counter++;
          if (collisionList.get(5).counter > 4){
@@ -201,7 +204,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
          }
          updated = true; 
        }
-       if(land_block == 10 && !player.dead){ 
+       if(player.land_block == 10 && !player.dead && player.isPlayer){ 
          println("coll water 2");
          print(player.center_y/Cell.BLOCK_SIZE);
           player.dead = true;
@@ -214,9 +217,9 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.setBottom(collisionList.get(8).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
-        land_block = collisionList.get(8).block_num;
+        player.land_block = collisionList.get(8).block_num;
         
-        if(land_block == 10 && !player.dead){ 
+        if(player.land_block == 10 && !player.dead && player.isPlayer){ 
           println("coll water 3");
          print(player.center_y/Cell.BLOCK_SIZE);
           player.dead = true;
@@ -229,8 +232,8 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.setBottom(collisionList.get(2).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
-        land_block = collisionList.get(2).block_num;
-        if(land_block == 10 && !player.dead){ 
+        player.land_block = collisionList.get(2).block_num;
+        if(player.land_block == 10 && !player.dead && player.isPlayer){ 
           println("coll water 4");
          print(player.center_y/Cell.BLOCK_SIZE);
           player.dead = true;
@@ -261,9 +264,9 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        if(collisionList.get(3).visable && player.getTop() <= collisionList.get(3).block.getBottom()){
          player.setTop(collisionList.get(3).block.getBottom());
          player.isOnBlock = false;
-         head_block = collisionList.get(3).block_num;
+         player.head_block = collisionList.get(3).block_num;
          player.change_y = 0;
-          if ( head_block == 4 && !updated){
+          if ( player.head_block == 4 && !updated && player.isPlayer){
          collisionList.get(3).block.stone_update(updated);
          collisionList.get(3).counter++;
          if (collisionList.get(3).counter > 4){
@@ -282,7 +285,8 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
   if(player.change_x > 0){
     if(collisionList.get(7).visable && player.getRight() >= collisionList.get(7).block.getLeft()){
        player.setRight(collisionList.get(7).block.getLeft());
-       side_block = collisionList.get(7).block_num;
+       player.side_block = collisionList.get(7).block_num;
+       if(!player.isPlayer){player.change_x = - player.change_x;}
        if(collisionList.get(5).visable == false){
         player.isOnBlock = false;
        }
@@ -293,6 +297,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
   if(player.change_x < 0){
     if(collisionList.get(1).visable && player.getLeft() <= collisionList.get(1).block.getRight()){
        player.setLeft(collisionList.get(1).block.getRight());
+       if(!player.isPlayer){player.change_x = - player.change_x;}
        if(collisionList.get(5).visable == false || collisionList.get(2).visable == false){
         player.isOnBlock = false;
        }
@@ -339,6 +344,7 @@ void keyPressed(){
       //player.center_y = constrain(player.center_y, ladder.getBottom() - player.h/2, ladder.getTop());
       player.isOnBlock = false;
       player.isOnTop = false;
+      
     }
     else if(player.getBottom() <= ladder.getTop()){
       player.isOnTop = true;
@@ -348,7 +354,7 @@ void keyPressed(){
       player.isOnTop = false;
     }
   }
-  else if(keyCode == UP && (player.isOnBlock || player.isOnTop)&& !player.dead){
+  else if(keyCode == UP && (player.isOnBlock || player.isOnTop) && !player.dead){
   
     player.change_y = -JUMP_SPEED;
     player.isOnBlock = false;
@@ -369,7 +375,7 @@ void keyPressed(){
 
 void keyReleased(){
   if(keyCode == RIGHT && !player.dead){
-    if(land_block == 3){
+    if(player.land_block == 3){
       player.change_x = 2;
     }
     else{
@@ -377,7 +383,7 @@ void keyReleased(){
     }
   }
   else if(keyCode == LEFT && !player.dead){
-     if(land_block == 3){
+     if(player.land_block == 3){
       player.change_x = -2;
     }
     else{
