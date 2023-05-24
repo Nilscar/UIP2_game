@@ -341,6 +341,8 @@ void Punch(){
     println("-------------------");
     Pun.rewind();
     Pun.play();}
+    pig.life--;
+    pig.change_x = pig.change_x*2;
   }
   else{
   float PunchRadie = player.center_x -90;
@@ -350,6 +352,8 @@ void Punch(){
     println("-------------------");
     Pun.rewind();
     Pun.play();}
+    pig.life--;
+    
   }
   
   
