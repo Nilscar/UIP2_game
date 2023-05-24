@@ -6,6 +6,7 @@ PImage menu;
 String state ="game";
 import ddf.minim.*;
 AudioPlayer Audioplayer;
+AudioPlayer Pun;
 Minim minim;//audio context
 
 
@@ -41,6 +42,7 @@ void setup(){
   minim = new Minim(this);
   Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
   Audioplayer.play();
+  Pun = minim.loadFile("data/music/roblox.mp3", 2048);
   
   bakgroundimg = loadImage("data/blocks/background.png");
   bakgroundimg.resize(displayWidth+400,displayHeight);
@@ -329,10 +331,36 @@ public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates 
    }
    return collisionList;
 }
+void Punch(){
+  if (player.change_x >= 0){
+  float PunchRadie = player.center_x +90;
+  if(pig.center_x > player.center_x && pig.center_x < PunchRadie && (int(pig.center_y/100) == int(player.center_y/100))){
+    print("BAAAM");
+        print("pig.center_x  : ", pig.center_x, "player.center_x : ",player.center_x);
+    print("pig.center_y  : ", int(pig.center_y/100), "player.center_y : ",int(player.center_y/100));
+    println("-------------------");
+    Pun.rewind();
+    Pun.play();}
+  }
+  else{
+  float PunchRadie = player.center_x -90;
+  if(pig.center_x < player.center_x && pig.center_x > PunchRadie && (int(pig.center_y/100) == int(player.center_y/100))){
+    print("pig.center_x  : ", pig.center_x, "player.center_x : ",player.center_x);
+    print("pig.center_y  : ", int(pig.center_y/100), "player.center_y : ",int(player.center_y/100));
+    println("-------------------");
+    Pun.rewind();
+    Pun.play();}
+  }
+  
+  
+}
 
 void keyPressed(){
   if(keyCode == RIGHT && !player.dead){
     player.change_x = WALK_SPEED;
+  }
+  else if(keyCode == 32 && !player.dead){
+    Punch();
   }
   else if(keyCode == LEFT&& !player.dead){
     player.change_x = -WALK_SPEED;

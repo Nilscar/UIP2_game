@@ -107,7 +107,7 @@ void draw(){
 }
 
 void scroll(){
- float rightBoundary = viewX + width - RIGHT_MARGIN;
+ float rightBoundary = viewX + displayWidth - RIGHT_MARGIN;
  if(player.getRight() > rightBoundary){
    viewX += player.getRight() - rightBoundary;
  }
@@ -117,7 +117,7 @@ void scroll(){
    viewX -= leftBoundary - player.getLeft();
  }
  
- float bottomBoundary = viewY + height - VERTICAL_MARGIN;
+ float bottomBoundary = viewY + displayHeight - VERTICAL_MARGIN;
  if(player.getBottom() > bottomBoundary){
    viewY += player.getBottom() - bottomBoundary;
  }
