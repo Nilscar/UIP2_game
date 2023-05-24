@@ -3,9 +3,10 @@ final static float WALK_SPEED = 6;
 final static float JUMP_SPEED = 14.4;
 final static float GRAVITY = 0.5;
 PImage menu;
-String state ="game";
+boolean pause;
 
 
+final static float MENU_MARGIN = 100;
 final static float RIGHT_MARGIN = 500;
 final static float LEFT_MARGIN = 500;
 final static float VERTICAL_MARGIN = 500;
@@ -35,8 +36,11 @@ Cell[][] Mapcells;
 
 void setup(){
   fullScreen(P2D);
-  imageMode(CENTER);
+  imageMode(CORNER);
   
+  pause = true;
+  menu = loadImage("data/blocks/panel_blue.png");
+  //menu.resize(displayWidth, displayHeight);
   bakgroundimg = loadImage("data/blocks/background.png");
   bakgroundimg.resize(displayWidth+400,displayHeight);
   String[] CSVrows = loadStrings("data/blocks/blockMapPelle.csv");
@@ -63,18 +67,24 @@ void setup(){
 }
  
 void draw(){
-  draw_background();
- int playercol = int(player.center_x/Cell.BLOCK_SIZE);
- int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
-     scroll();
-  //if(playercol > 0 && playercol < 13){
-   xZone[0] = playercol-10;
-   xZone[1] = playercol+10;
- // }
- // if(playerrow > 0 && playerrow < 11){
-   yZone[0] = playerrow-6;
-   yZone[1] = playerrow+6;
- // }
+  if(pause){
+    background(#3890BF);
+    image(menu, displayWidth/2 + MENU_MARGIN, MENU_MARGIN, displayWidth/2 - 2*MENU_MARGIN, displayHeight - 2*MENU_MARGIN);
+  }
+  else{
+    imageMode(CENTER);
+    draw_background();
+    int playercol = int(player.center_x/Cell.BLOCK_SIZE);
+    int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
+       scroll();
+    //if(playercol > 0 && playercol < 13){
+     xZone[0] = playercol-10;
+     xZone[1] = playercol+10;
+   // }
+   // if(playerrow > 0 && playerrow < 11){
+     yZone[0] = playerrow-6;
+     yZone[1] = playerrow+6;
+   // }
     for (int i = xZone[0]; i<xZone[1]; i++){
       for (int j = yZone[0]; j<yZone[1]; j++){
         //print(mapHeight-1, " AND " , mapWidth-1);
@@ -88,12 +98,10 @@ void draw(){
         }
       }
     }
-    
-  player.display();
-  player.update();
-  
-  //movement(player);
-  collisions(player, Mapcells);
+    player.display();
+    player.update();
+    collisions(player, Mapcells);
+  }
 }
 void draw_background(){
   
@@ -356,6 +364,14 @@ void keyPressed(){
   else if(key == 'a' && ladder != null){
     print("top: ", player.isOnTop);
     print("\n ladder: ", player.isOnLadder, "\n block: ", player.isOnBlock, "\n");
+  }
+  else if(key == 'q'){
+    if(pause){
+      pause = false;
+    }
+    else{
+      pause = true;
+    }
   }
 }
 
