@@ -514,7 +514,7 @@ public void drawMenu(){
     text("Lvl: "+str(lvlCounter), displayWidth/2 + MENU_MARGIN, 3.5*MENU_MARGIN);
     text("Health: "+str(int(100*hpCounter/healthPoints))+"%", displayWidth/2 + MENU_MARGIN, 2.5*MENU_MARGIN);
     fill(#936F27);
-    text("Health: ", displayWidth/2 + 1.5*MENU_MARGIN, displayHeight/2 + 1.5*MENU_MARGIN);
+    text("Speed: ", displayWidth/2 + 1.5*MENU_MARGIN, displayHeight/2 + 1.5*MENU_MARGIN);
     imageMode(CENTER);
     image(closeButton, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height , MENU_MARGIN, MENU_MARGIN); //draws the closeButton of the top right corner
     image(cross, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height, 3*cross.get().width, 3*cross.get().height); //draws the cross of the closeButton
