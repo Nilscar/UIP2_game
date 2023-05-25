@@ -195,10 +195,6 @@ void scroll(){
  }
  translate(-viewX, -viewY);
 }
-public void movement(Sprite player){
-  player.center_x += player.change_x;
-  player.center_y += player.change_y;
-}
 
 public void collisions(Sprite player, Cell[][] mapBlocks){
   ArrayList<Cell> collisionList = checkColl(player, mapBlocks);
@@ -235,13 +231,22 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           hpCounter = 0;
           healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
        }
-        else if ( land_block == 4 && !updated){
+        else if ( land_block == 4 && !updated){// Add damage
          collisionList.get(5).block.stone_update(updated);
          collisionList.get(5).counter++;
+         hpCounter--;
          if (collisionList.get(5).counter > 4){
            collisionList.get(5).visable = false;
          }
          updated = true; 
+         if(abs(hpCounter - healthPoints) == 1){
+           healthBar[hpCounter] = lvlRight;
+           healthBar[hpCounter-1] = hpRight;
+         }
+         else if(hpCounter > 1 && abs(hpCounter - healthPoints) > 1){
+           healthBar[hpCounter] = lvlMid;
+           healthBar[hpCounter-1] = hpRight;
+         }
        }
       }
       else if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop() && !player.dead){
@@ -253,13 +258,22 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.change_x = 0;
        }
 
-       if ( land_block == 4 && !updated){
+       if ( land_block == 4 && !updated){ //Add damage
          collisionList.get(5).block.stone_update(updated);
          collisionList.get(5).counter++;
+         hpCounter--;
          if (collisionList.get(5).counter > 4){
            collisionList.get(5).visable = false;
          }
-         updated = true; 
+         updated = true;
+         if(abs(hpCounter - healthPoints) == 1){
+           healthBar[hpCounter] = lvlRight;
+           healthBar[hpCounter-1] = hpRight;
+         }
+         else if(hpCounter > 1 && abs(hpCounter - healthPoints) > 1){
+           healthBar[hpCounter] = lvlMid;
+           healthBar[hpCounter-1] = hpRight;
+         }
        }
        if(land_block == 10 && !player.dead){
           player.dead = true;
