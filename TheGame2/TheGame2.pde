@@ -8,6 +8,19 @@ PImage menuPanel;
 PImage closeButton;
 PImage cross;
 PImage playButton;
+PImage hpLeft;
+PImage hpRight;
+PImage hpMid;
+PImage lvlLeft;
+PImage lvlRight;
+PImage lvlMid;
+PImage lvlPointLeft;
+PImage lvlPointRight;
+PImage lvlPointMid;
+int healthPoints = 25;
+int lvlCounter = 0;
+PImage[] healthBar = new PImage[healthPoints];
+PImage[] lvlBar = new PImage[healthPoints];
 boolean pause;
 
 
@@ -43,13 +56,36 @@ void setup(){
   fullScreen(P2D);
   imageMode(CORNER);
   
-  pause = true;
   menuBoxBrown = loadImage("data/menu/panel_brown.png");
   menuBoxBlue = loadImage("data/menu/panel_blue.png");
   menuPanel = loadImage("data/menu/panelInset_beige.png");
   closeButton = loadImage("data/menu/buttonRound_blue.png");
   cross = loadImage("data/menu/iconCross_grey.png");
-  //menu.resize(displayWidth, displayHeight);
+  hpLeft = loadImage("data/menu/barRed_horizontalLeft.png");
+  hpRight = loadImage("data/menu/barRed_horizontalRight.png");
+  hpMid = loadImage("data/menu/barRed_horizontalMid.png");
+  hpLeft.resize(hpLeft.get().width*2, hpLeft.get().height*2);
+  hpRight.resize(hpRight.get().width*2, hpRight.get().height*2);
+  hpMid.resize(hpMid.get().width, hpMid.get().height*2);
+  healthBar = createBar(hpLeft, hpMid, hpRight, healthPoints);
+  
+  lvlLeft = loadImage("data/menu/barBack_horizontalLeft.png");
+  lvlRight = loadImage("data/menu/barBack_horizontalRight.png");
+  lvlMid = loadImage("data/menu/barBack_horizontalMid.png");
+  lvlLeft.resize(lvlLeft.get().width*2, lvlLeft.get().height*2);
+  lvlRight.resize(lvlRight.get().width*2, lvlRight.get().height*2);
+  lvlMid.resize(lvlMid.get().width, lvlMid.get().height*2);
+  lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+  
+  lvlPointLeft = loadImage("data/menu/barBlue_horizontalLeft.png");
+  lvlPointRight = loadImage("data/menu/barBlue_horizontalRight.png");
+  lvlPointMid = loadImage("data/menu/barBlue_horizontalBlue.png");
+  lvlPointLeft.resize(lvlPointLeft.get().width*2, lvlPointLeft.get().height*2);
+  lvlPointRight.resize(lvlPointRight.get().width*2, lvlPointRight.get().height*2);
+  lvlPointMid.resize(lvlPointMid.get().width, lvlPointMid.get().height*2);
+  
+  pause = true;
+
   bakgroundimg = loadImage("data/blocks/background.png");
   bakgroundimg.resize(displayWidth+400,displayHeight);
   String[] CSVrows = loadStrings("data/blocks/blockMapPelle.csv");
@@ -80,13 +116,18 @@ void draw(){
     background(#3890BF);
     imageMode(CORNER);
     image(menuBoxBrown, displayWidth/2 + MENU_MARGIN/2, MENU_MARGIN, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight - 2*MENU_MARGIN);
+    for(int i = 0; i < healthBar.length; i++){
+      image(healthBar[i], (displayWidth/2 + 3*MENU_MARGIN) + i*healthBar[i].width, 2.5*MENU_MARGIN);
+      image(lvlBar[i], (displayWidth/2 + 3*MENU_MARGIN) + i*healthBar[i].width, 3.5*MENU_MARGIN);
+    }
     image(menuBoxBrown, MENU_MARGIN, MENU_MARGIN, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight/2 - 1.5*MENU_MARGIN);
     image(menuBoxBlue, MENU_MARGIN, displayHeight/2 + MENU_MARGIN/2, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight/2 - 1.5*MENU_MARGIN);
     image(menuPanel, 1.5*MENU_MARGIN, 1.5*MENU_MARGIN, displayWidth/2 - 2.5*MENU_MARGIN, displayHeight/2 - 2.5*MENU_MARGIN);
-    image(menuPanel, displayWidth/2 + MENU_MARGIN, displayHeight/2 + 0.5*MENU_MARGIN, displayWidth/2 - 2.5*MENU_MARGIN, displayHeight/2 - 2*MENU_MARGIN);
+    image(menuPanel, displayWidth/2 + MENU_MARGIN, displayHeight/2 + MENU_MARGIN, displayWidth/2 - 2.5*MENU_MARGIN, displayHeight/2 - 2.5*MENU_MARGIN);
     imageMode(CENTER);
     image(closeButton, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height , MENU_MARGIN, MENU_MARGIN);
     image(cross, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height, 3*cross.get().width, 3*cross.get().height);
+    
   }
   else{
     imageMode(CENTER);
@@ -107,6 +148,10 @@ void draw(){
         }
       }
     }
+    for(int i = 0; i < healthBar.length; i++){
+      image(healthBar[i], player.center_x + 820 + i*healthBar[i].width, player.center_y - 510);
+      image(lvlBar[i], player.center_x + 820 + i*lvlBar[i].width, player.center_y - 510 + MENU_MARGIN/2);
+    }
     player.display();
     player.update();
     collisions(player, Mapcells);
@@ -125,16 +170,10 @@ void draw(){
         player.isOnTop = false;
       }
     }
-    /*else if(!keyPressed && player.isOnLadder && (keyCode == UP || keyCode == DOWN || keyCode == LEFT || keyCode == RIGHT)){
-      player.change_y = 0;
-    }*/
   }
 }
 void draw_background(){
-  
   int x = z % bakgroundimg.width;
-  
-
   for (int i = -x ; i < width ; i += bakgroundimg.width) {
       copy(bakgroundimg, 0, 0, bakgroundimg.width, height, i, 0, bakgroundimg.width, height);    
   }
@@ -183,8 +222,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        player.change_y = -GRAVITY;
        }
           
-          
-    //print("  << size: ", collisionList.size());
     if(player.change_y > 0){
       if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop() && collisionList.get(8).visable && collisionList.get(2).visable && !player.dead){
         player.setBottom(collisionList.get(5).block.getTop());
@@ -230,9 +267,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
          }
          updated = true; 
        }
-       if(land_block == 10 && !player.dead){ 
-         println("coll water 2");
-         print(player.center_y/Cell.BLOCK_SIZE);
+       if(land_block == 10 && !player.dead){
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -245,9 +280,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.change_y = 0;
         land_block = collisionList.get(8).block_num;
         
-        if(land_block == 10 && !player.dead){ 
-          println("coll water 3");
-         print(player.center_y/Cell.BLOCK_SIZE);
+        if(land_block == 10 && !player.dead){
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -259,9 +292,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.isOnBlock = true;
         player.change_y = 0;
         land_block = collisionList.get(2).block_num;
-        if(land_block == 10 && !player.dead){ 
-          println("coll water 4");
-         print(player.center_y/Cell.BLOCK_SIZE);
+        if(land_block == 10 && !player.dead){
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -327,7 +358,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        }
      }
   }
-  //float minDist = Cell.BLOCK_SIZE;
   for(int i = 0; i < collisionList.size(); i += 1){
         if(collisionList.get(i).ladder && 
             dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= collisionList.get(i).block.w){
@@ -346,9 +376,7 @@ public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates 
    ArrayList<Cell> collisionList = new ArrayList<Cell>();
    for(int i = int(player.center_x/Cell.BLOCK_SIZE) - 1; i < int(player.center_x/Cell.BLOCK_SIZE) + 2; i++){
      for(int j = int(player.center_y/Cell.BLOCK_SIZE) - 1; j < int(player.center_y/Cell.BLOCK_SIZE) + 2; j++){
-       //if(blockList[i][j].visable){
          collisionList.add(blockList[i][j]);
-       //}
      }
    }
    return collisionList;
@@ -361,21 +389,6 @@ void keyPressed(){
   else if(keyCode == LEFT&& !player.dead){
     player.change_x = -WALK_SPEED;
   }
-  /*else if(keyCode == UP && player.isOnLadder && ladder != null){
-    if(player.getBottom() >= ladder.getTop()){
-      player.change_y = -WALK_SPEED/2;
-      player.isOnBlock = false;
-      player.isOnTop = false;
-      
-    }
-    else if(player.getBottom() <= ladder.getTop()){
-      player.isOnTop = true;
-      player.change_y = -JUMP_SPEED;
-      player.isOnBlock = false;
-      player.isOnLadder = false;
-      player.isOnTop = false;
-    }
-  }*/
   else if(keyCode == UP && (player.isOnBlock || player.isOnTop) && !player.dead){
     player.change_y = -JUMP_SPEED;
     player.isOnBlock = false;
@@ -388,9 +401,19 @@ void keyPressed(){
     player.change_y = WALK_SPEED/2;
     player.isOnTop = false;
   }
-  else if(key == 'a' && ladder != null){
-    print("top: ", player.isOnTop);
-    print("\n ladder: ", player.isOnLadder, "\n block: ", player.isOnBlock, "\n");
+  else if(key == 'a' && !pause){
+    if(lvlCounter == 0){
+      lvlBar[lvlCounter] = lvlPointLeft;
+      lvlCounter += 1;
+    }
+    else if(lvlCounter > 0 && lvlCounter <= healthPoints - 2){
+      lvlBar[lvlCounter] = lvlPointMid;
+      lvlCounter += 1;
+    }
+    else{
+      lvlCounter = 0;
+      lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+    }
   }
   else if(key == 'q'){
     if(pause){
@@ -400,6 +423,10 @@ void keyPressed(){
       pause = true;
     }
   }
+  else if(key == 'w' && !pause){
+    print(" << dist x: ", dist(player.center_x, player.center_y, (displayWidth - RIGHT_MARGIN), player.center_y), "\n dist y: ", 
+          dist((displayWidth - RIGHT_MARGIN), 2.5*MENU_MARGIN, (displayWidth - RIGHT_MARGIN), player.center_y));
+    }
 }
 
 void keyReleased(){
@@ -434,6 +461,10 @@ void keyReleased(){
     player.change_y = 0;
     player.isOnTop = false;
   }
+  else if(key == 'a' && lvlCounter == healthPoints - 1){
+    lvlBar[lvlCounter] = lvlPointRight;
+    lvlCounter += 1;
+  }
 }
 
 void mouseClicked(){
@@ -441,6 +472,16 @@ void mouseClicked(){
      mouseY >= MENU_MARGIN && mouseY <= MENU_MARGIN + 2*closeButton.get().height){
        pause = false;
      }
+}
+
+PImage[] createBar(PImage left, PImage mid, PImage right, int hp){
+  PImage[] bar = new PImage[hp];
+  bar[0] = left;
+  for(int i = 1; i < bar.length - 1; i++){
+    bar[i] = mid;
+  }
+  bar[bar.length-1] = right;
+  return bar;
 }
 
 //Creating the game map from csv file
