@@ -1,10 +1,11 @@
 // Global variables
-final static float WALK_SPEED = 6;
-final static float JUMP_SPEED = 14.4;
+static float WALK_SPEED = 6;
+static float JUMP_SPEED = 14.4;
 final static float GRAVITY = 0.5;
 PImage menuBoxBrown;
 PImage menuBoxBlue;
 PImage menuPanel;
+PImage itemBox;
 PImage closeButton;
 PImage cross;
 PImage playButton;
@@ -18,6 +19,8 @@ PImage lvlPointLeft;
 PImage lvlPointRight;
 PImage lvlPointMid;
 int healthPoints = 25;
+int hpCounter = healthPoints;
+int expCounter = 0;
 int lvlCounter = 0;
 PImage[] healthBar = new PImage[healthPoints];
 PImage[] lvlBar = new PImage[healthPoints];
@@ -58,6 +61,7 @@ void setup(){
   
   menuBoxBrown = loadImage("data/menu/panel_brown.png");
   menuBoxBlue = loadImage("data/menu/panel_blue.png");
+  itemBox = loadImage("data/menu/buttonSquare_beige.png");
   menuPanel = loadImage("data/menu/panelInset_beige.png");
   closeButton = loadImage("data/menu/buttonRound_blue.png");
   cross = loadImage("data/menu/iconCross_grey.png");
@@ -113,20 +117,7 @@ void setup(){
  
 void draw(){
   if(pause){
-    background(#3890BF);
-    imageMode(CORNER);
-    image(menuBoxBrown, displayWidth/2 + MENU_MARGIN/2, MENU_MARGIN, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight - 2*MENU_MARGIN);
-    for(int i = 0; i < healthBar.length; i++){
-      image(healthBar[i], (displayWidth/2 + 3*MENU_MARGIN) + i*healthBar[i].width, 2.5*MENU_MARGIN);
-      image(lvlBar[i], (displayWidth/2 + 3*MENU_MARGIN) + i*healthBar[i].width, 3.5*MENU_MARGIN);
-    }
-    image(menuBoxBrown, MENU_MARGIN, MENU_MARGIN, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight/2 - 1.5*MENU_MARGIN);
-    image(menuBoxBlue, MENU_MARGIN, displayHeight/2 + MENU_MARGIN/2, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight/2 - 1.5*MENU_MARGIN);
-    image(menuPanel, 1.5*MENU_MARGIN, 1.5*MENU_MARGIN, displayWidth/2 - 2.5*MENU_MARGIN, displayHeight/2 - 2.5*MENU_MARGIN);
-    image(menuPanel, displayWidth/2 + MENU_MARGIN, displayHeight/2 + MENU_MARGIN, displayWidth/2 - 2.5*MENU_MARGIN, displayHeight/2 - 2.5*MENU_MARGIN);
-    imageMode(CENTER);
-    image(closeButton, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height , MENU_MARGIN, MENU_MARGIN);
-    image(cross, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height, 3*cross.get().width, 3*cross.get().height);
+    drawMenu();
     
   }
   else{
@@ -217,9 +208,13 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
     player.center_y += player.change_y;
     if(player.center_y/Cell.BLOCK_SIZE < 19 && player.dead){
        player.change_y = 1;
+       hpCounter = 0;
+       healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
        }
     else if (player.center_y/Cell.BLOCK_SIZE > player.deadspot && player.dead){
        player.change_y = -GRAVITY;
+       hpCounter = 0;
+       healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
        }
           
     if(player.change_y > 0){
@@ -233,13 +228,12 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         if(land_block != 3 && (player.change_x == 2||player.change_x == -2)){ 
           player.change_x = 0;
        }
-       if(land_block == 10 && !player.dead){ 
-         println("coll water 1");
-         print(player.center_y/Cell.BLOCK_SIZE);
+       if(land_block == 10 && !player.dead){
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
-          
+          hpCounter = 0;
+          healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
        }
         else if ( land_block == 4 && !updated){
          collisionList.get(5).block.stone_update(updated);
@@ -271,7 +265,8 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
-        
+          hpCounter = 0;
+          healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
        }
       }
       else if(collisionList.get(8).visable && player.getRight() > collisionList.get(8).block.getLeft() && player.getBottom() >= collisionList.get(8).block.getTop()){
@@ -284,7 +279,8 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
-
+          hpCounter = 0;
+          healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
        }
       }
       else if(collisionList.get(2).visable && player.getLeft() < collisionList.get(2).block.getRight() && player.getBottom() >= collisionList.get(2).block.getTop()){
@@ -296,6 +292,8 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
+          hpCounter = 0;
+          healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
 
        }
         
@@ -402,17 +400,19 @@ void keyPressed(){
     player.isOnTop = false;
   }
   else if(key == 'a' && !pause){
-    if(lvlCounter == 0){
-      lvlBar[lvlCounter] = lvlPointLeft;
-      lvlCounter += 1;
+    if(expCounter == 0){
+      lvlBar[expCounter] = lvlPointLeft;
+      expCounter += 1;
     }
-    else if(lvlCounter > 0 && lvlCounter <= healthPoints - 2){
-      lvlBar[lvlCounter] = lvlPointMid;
-      lvlCounter += 1;
+    else if(expCounter > 0 && expCounter <= healthPoints - 2){
+      lvlBar[expCounter] = lvlPointMid;
+      expCounter += 1;
     }
     else{
-      lvlCounter = 0;
+      expCounter = 0;
+      lvlCounter += 1;
       lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+      print(" \n lvl: ", lvlCounter, " >>>");
     }
   }
   else if(key == 'q'){
@@ -461,9 +461,9 @@ void keyReleased(){
     player.change_y = 0;
     player.isOnTop = false;
   }
-  else if(key == 'a' && lvlCounter == healthPoints - 1){
-    lvlBar[lvlCounter] = lvlPointRight;
-    lvlCounter += 1;
+  else if(key == 'a' && expCounter == healthPoints - 1){
+    lvlBar[expCounter] = lvlPointRight;
+    expCounter += 1;
   }
 }
 
@@ -472,6 +472,34 @@ void mouseClicked(){
      mouseY >= MENU_MARGIN && mouseY <= MENU_MARGIN + 2*closeButton.get().height){
        pause = false;
      }
+}
+
+public void drawMenu(){
+    background(#3890BF);
+    imageMode(CORNER);
+    image(menuBoxBrown, displayWidth/2 + MENU_MARGIN/2, MENU_MARGIN, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight - 2*MENU_MARGIN); //draws the right side box
+    for(int i = 0; i < healthBar.length; i++){ //draws the health and lvl bars
+      image(healthBar[i], (displayWidth/2 + 3*MENU_MARGIN) + i*healthBar[i].width, 2.5*MENU_MARGIN);
+      image(lvlBar[i], (displayWidth/2 + 3*MENU_MARGIN) + i*healthBar[i].width, 3.5*MENU_MARGIN);
+    }
+    image(menuBoxBrown, MENU_MARGIN, MENU_MARGIN, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight/2 - 1.5*MENU_MARGIN); //draws the upper left box
+    image(menuBoxBlue, MENU_MARGIN, displayHeight/2 + MENU_MARGIN/2, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight/2 - 1.5*MENU_MARGIN); //draws the lower left box
+    image(itemBox, 1.5*MENU_MARGIN, displayHeight/2 + MENU_MARGIN, 2*MENU_MARGIN, 3*MENU_MARGIN);
+    image(itemBox, 4*MENU_MARGIN, displayHeight/2 + MENU_MARGIN, 2*MENU_MARGIN, 3*MENU_MARGIN);
+    image(itemBox, 6.5*MENU_MARGIN, displayHeight/2 + MENU_MARGIN, 2*MENU_MARGIN, 3*MENU_MARGIN);
+    image(menuPanel, 1.5*MENU_MARGIN, 1.5*MENU_MARGIN, displayWidth/2 - 2.5*MENU_MARGIN, displayHeight/2 - 2.5*MENU_MARGIN); //draws the upper left panel that is in the box
+    textSize(128);
+    fill(#296986); 
+    text("The Game", 2.5*MENU_MARGIN, 2*MENU_MARGIN);  
+    image(menuPanel, displayWidth/2 + MENU_MARGIN, displayHeight/2 + MENU_MARGIN, displayWidth/2 - 2.5*MENU_MARGIN, displayHeight/2 - 2.5*MENU_MARGIN); //draws the bottom right side panel that is in the box
+    fill(#F0C879);
+    textAlign(LEFT, TOP);
+    textSize(36);
+    text("Lvl: "+str(lvlCounter), displayWidth/2 + MENU_MARGIN, 3.5*MENU_MARGIN);
+    text("Health: "+str(int(100*hpCounter/healthPoints))+"%", displayWidth/2 + MENU_MARGIN, 2.5*MENU_MARGIN);
+    imageMode(CENTER);
+    image(closeButton, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height , MENU_MARGIN, MENU_MARGIN); //draws the closeButton of the top right corner
+    image(cross, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height, 3*cross.get().width, 3*cross.get().height); //draws the cross of the closeButton
 }
 
 PImage[] createBar(PImage left, PImage mid, PImage right, int hp){
