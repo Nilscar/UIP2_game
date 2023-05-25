@@ -2,7 +2,12 @@
 final static float WALK_SPEED = 6;
 final static float JUMP_SPEED = 14.4;
 final static float GRAVITY = 0.5;
-PImage menu;
+PImage menuBoxBrown;
+PImage menuBoxBlue;
+PImage menuPanel;
+PImage closeButton;
+PImage cross;
+PImage playButton;
 boolean pause;
 
 
@@ -39,7 +44,11 @@ void setup(){
   imageMode(CORNER);
   
   pause = true;
-  menu = loadImage("data/blocks/panel_blue.png");
+  menuBoxBrown = loadImage("data/menu/panel_brown.png");
+  menuBoxBlue = loadImage("data/menu/panel_blue.png");
+  menuPanel = loadImage("data/menu/panelInset_beige.png");
+  closeButton = loadImage("data/menu/buttonRound_blue.png");
+  cross = loadImage("data/menu/iconCross_grey.png");
   //menu.resize(displayWidth, displayHeight);
   bakgroundimg = loadImage("data/blocks/background.png");
   bakgroundimg.resize(displayWidth+400,displayHeight);
@@ -69,7 +78,15 @@ void setup(){
 void draw(){
   if(pause){
     background(#3890BF);
-    image(menu, displayWidth/2 + MENU_MARGIN, MENU_MARGIN, displayWidth/2 - 2*MENU_MARGIN, displayHeight - 2*MENU_MARGIN);
+    imageMode(CORNER);
+    image(menuBoxBrown, displayWidth/2 + MENU_MARGIN/2, MENU_MARGIN, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight - 2*MENU_MARGIN);
+    image(menuBoxBrown, MENU_MARGIN, MENU_MARGIN, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight/2 - 1.5*MENU_MARGIN);
+    image(menuBoxBlue, MENU_MARGIN, displayHeight/2 + MENU_MARGIN/2, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight/2 - 1.5*MENU_MARGIN);
+    image(menuPanel, 1.5*MENU_MARGIN, 1.5*MENU_MARGIN, displayWidth/2 - 2.5*MENU_MARGIN, displayHeight/2 - 2.5*MENU_MARGIN);
+    image(menuPanel, displayWidth/2 + MENU_MARGIN, displayHeight/2 + 0.5*MENU_MARGIN, displayWidth/2 - 2.5*MENU_MARGIN, displayHeight/2 - 2*MENU_MARGIN);
+    imageMode(CENTER);
+    image(closeButton, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height , MENU_MARGIN, MENU_MARGIN);
+    image(cross, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height, 3*cross.get().width, 3*cross.get().height);
   }
   else{
     imageMode(CENTER);
@@ -77,21 +94,13 @@ void draw(){
     int playercol = int(player.center_x/Cell.BLOCK_SIZE);
     int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
        scroll();
-    //if(playercol > 0 && playercol < 13){
      xZone[0] = playercol-10;
      xZone[1] = playercol+10;
-   // }
-   // if(playerrow > 0 && playerrow < 11){
      yZone[0] = playerrow-6;
      yZone[1] = playerrow+6;
-   // }
     for (int i = xZone[0]; i<xZone[1]; i++){
       for (int j = yZone[0]; j<yZone[1]; j++){
-        //print(mapHeight-1, " AND " , mapWidth-1);
-        //cells.get(i).display();
         if(i >= 0 && i < mapWidth){
-                // print("   i :      "  , i,"    j    :    " ,j);
-
           if(j >= 0 && j < mapHeight){
             Mapcells[i][j].display();
           }
@@ -101,6 +110,24 @@ void draw(){
     player.display();
     player.update();
     collisions(player, Mapcells);
+    if(keyPressed && (keyCode == UP && player.isOnLadder && ladder != null)){
+      if(player.getBottom() >= ladder.getTop()){
+        player.change_y = -WALK_SPEED/2;
+        player.isOnBlock = false;
+        player.isOnTop = false;
+        
+      }
+      else if(player.getBottom() <= ladder.getTop()){
+        player.isOnTop = true;
+        player.change_y = -JUMP_SPEED;
+        player.isOnBlock = false;
+        player.isOnLadder = false;
+        player.isOnTop = false;
+      }
+    }
+    /*else if(!keyPressed && player.isOnLadder && (keyCode == UP || keyCode == DOWN || keyCode == LEFT || keyCode == RIGHT)){
+      player.change_y = 0;
+    }*/
   }
 }
 void draw_background(){
@@ -334,12 +361,12 @@ void keyPressed(){
   else if(keyCode == LEFT&& !player.dead){
     player.change_x = -WALK_SPEED;
   }
-  else if(keyCode == UP && player.isOnLadder && ladder != null){
+  /*else if(keyCode == UP && player.isOnLadder && ladder != null){
     if(player.getBottom() >= ladder.getTop()){
       player.change_y = -WALK_SPEED/2;
-      //player.center_y = constrain(player.center_y, ladder.getBottom() - player.h/2, ladder.getTop());
       player.isOnBlock = false;
       player.isOnTop = false;
+      
     }
     else if(player.getBottom() <= ladder.getTop()){
       player.isOnTop = true;
@@ -348,7 +375,7 @@ void keyPressed(){
       player.isOnLadder = false;
       player.isOnTop = false;
     }
-  }
+  }*/
   else if(keyCode == UP && (player.isOnBlock || player.isOnTop) && !player.dead){
     player.change_y = -JUMP_SPEED;
     player.isOnBlock = false;
@@ -380,16 +407,24 @@ void keyReleased(){
     if(land_block == 3){
       player.change_x = 2;
     }
+    else if(player.isOnLadder){
+      player.change_y = 0;
+      player.change_x = 0;
+    }
     else{
-    player.change_x = 0;
+      player.change_x = 0;
     }
   }
   else if(keyCode == LEFT && !player.dead){
      if(land_block == 3){
       player.change_x = -2;
     }
+    else if(player.isOnLadder){
+      player.change_y = 0;
+      player.change_x = 0;
+    }
     else{
-    player.change_x = 0;
+      player.change_x = 0;
     }
   }
   else if(keyCode == UP && player.isOnLadder && ladder != null){
@@ -399,6 +434,13 @@ void keyReleased(){
     player.change_y = 0;
     player.isOnTop = false;
   }
+}
+
+void mouseClicked(){
+  if(pause && mouseButton == LEFT && mouseX >= displayWidth - MENU_MARGIN - 2*closeButton.get().width && mouseX <= displayWidth - MENU_MARGIN &&
+     mouseY >= MENU_MARGIN && mouseY <= MENU_MARGIN + 2*closeButton.get().height){
+       pause = false;
+     }
 }
 
 //Creating the game map from csv file
