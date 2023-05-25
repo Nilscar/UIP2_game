@@ -1,6 +1,6 @@
 // Global variables
-static float WALK_SPEED = 6;
-static float JUMP_SPEED = 14.4;
+float WALK_SPEED = 6;
+float JUMP_SPEED = 14.4;
 final static float GRAVITY = 0.5;
 PImage menuBoxBrown;
 PImage menuBoxBlue;
@@ -21,7 +21,7 @@ PImage lvlPointMid;
 int healthPoints = 25;
 int hpCounter = healthPoints;
 int expCounter = 0;
-int lvlCounter = 0;
+int lvlCounter = 1;
 PImage[] healthBar = new PImage[healthPoints];
 PImage[] lvlBar = new PImage[healthPoints];
 boolean pause;
@@ -424,6 +424,8 @@ void keyPressed(){
     }
     else{
       expCounter = 0;
+      WALK_SPEED += lvlCounter;
+      JUMP_SPEED += lvlCounter;
       lvlCounter += 1;
       lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
       print(" \n lvl: ", lvlCounter, " >>>");
@@ -511,6 +513,8 @@ public void drawMenu(){
     textSize(36);
     text("Lvl: "+str(lvlCounter), displayWidth/2 + MENU_MARGIN, 3.5*MENU_MARGIN);
     text("Health: "+str(int(100*hpCounter/healthPoints))+"%", displayWidth/2 + MENU_MARGIN, 2.5*MENU_MARGIN);
+    fill(#936F27);
+    text("Health: ", displayWidth/2 + 1.5*MENU_MARGIN, displayHeight/2 + 1.5*MENU_MARGIN);
     imageMode(CENTER);
     image(closeButton, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height , MENU_MARGIN, MENU_MARGIN); //draws the closeButton of the top right corner
     image(cross, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height, 3*cross.get().width, 3*cross.get().height); //draws the cross of the closeButton
