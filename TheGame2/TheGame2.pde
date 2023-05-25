@@ -18,6 +18,7 @@ PImage lvlMid;
 PImage lvlPointLeft;
 PImage lvlPointRight;
 PImage lvlPointMid;
+PImage skillBox;
 int healthPoints = 25;
 int hpCounter = healthPoints;
 int expCounter = 0;
@@ -87,6 +88,8 @@ void setup(){
   lvlPointLeft.resize(lvlPointLeft.get().width*2, lvlPointLeft.get().height*2);
   lvlPointRight.resize(lvlPointRight.get().width*2, lvlPointRight.get().height*2);
   lvlPointMid.resize(lvlPointMid.get().width, lvlPointMid.get().height*2);
+  
+  skillBox = loadImage("data/menu/square_shadow.png");
   
   pause = true;
 
@@ -450,7 +453,7 @@ void keyReleased(){
     if(land_block == 3){
       player.change_x = 2;
     }
-    else if(player.isOnLadder){
+    else if(player.isOnLadder && keyCode != UP){
       player.change_y = 0;
       player.change_x = 0;
     }
@@ -462,7 +465,7 @@ void keyReleased(){
      if(land_block == 3){
       player.change_x = -2;
     }
-    else if(player.isOnLadder){
+    else if(player.isOnLadder && keyCode != UP){
       player.change_y = 0;
       player.change_x = 0;
     }
