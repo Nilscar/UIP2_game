@@ -342,7 +342,7 @@ void Punch(){
     Pun.rewind();
     Pun.play();
     pig.life--;
-    pig.change_x = pig.change_x*3.2;
+    pig.change_x = pig.change_x*3;
     }
   }
   else{
@@ -354,8 +354,9 @@ void Punch(){
     Pun.rewind();
     Pun.play();
     pig.life--;
-    pig.change_x = pig.change_x*3.2;
+    pig.change_x = pig.change_x*3;
     }
+    
   }
   
   
