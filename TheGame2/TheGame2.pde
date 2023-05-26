@@ -28,6 +28,7 @@ int healthPoints = 25;
 int hpCounter = healthPoints;
 int expCounter = 0;
 int lvlCounter = 1;
+boolean attacked = false;
 PImage[] healthBar = new PImage[healthPoints];
 PImage[] lvlBar = new PImage[healthPoints];
 boolean pause;
@@ -52,6 +53,7 @@ PImage mapimg;
 PImage bakgroundimg;
 Player player;
 Mob pig;
+Mob chick;
 Sprite reward;
 PImage[] blocks = new PImage[13];
 
@@ -65,7 +67,7 @@ void setup(){
   imageMode(CENTER);
   minim = new Minim(this);
   Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
-  Audioplayer.play();
+  //Audioplayer.play();
   Pun = minim.loadFile("data/music/roblox.mp3", 2048);
   imageMode(CORNER);
   
@@ -122,7 +124,8 @@ void setup(){
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
   player = new Player(600, 600);
-  pig = new Mob(200,600);
+  pig = new Mob(200,600,1);
+  chick = new Mob(400,600,2);
   mapHeight = CSVrows.length;
   mapWidth = split(CSVrows[0], ";").length;
   //print("dispWidth: ", displayWidth, " <<< dispHeight: ", displayHeight);
@@ -153,15 +156,25 @@ void draw(){
       }
     }
     for(int i = 0; i < healthBar.length; i++){
-      image(healthBar[i], player.center_x + 820 + i*healthBar[i].width, player.center_y - 510);
-      image(lvlBar[i], player.center_x + 820 + i*lvlBar[i].width, player.center_y - 510 + MENU_MARGIN/2);
+     // image(healthBar[i], 820 + i*healthBar[i].width, player.center_y - 510);
+      copy(healthBar[i], 820 + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height,  820 + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height);    
+      //image(healthBar[i], player.center_x + 820 + i*healthBar[i].width, player.center_y - 510);
+      copy(lvlBar[i], 820 + i*lvlBar[i].width, 80, healthBar[i].width, lvlBar[i].height,  820 + i*lvlBar[i].width, 80, lvlBar[i].width, lvlBar[i].height);
     }
     player.display();
     player.update();
     pig.display();
     pig.update();
+    chick.display();
+    chick.update();
+    MobAttack();
     collisions(player, Mapcells);
+    if(pig.life >0){
     collisions(pig, Mapcells);
+    }
+    if(chick.life >0){
+    collisions(chick, Mapcells);
+    }
     if(keyPressed && (keyCode == UP && player.isOnLadder && ladder != null)){
       if(player.getBottom() >= ladder.getTop()){
         player.change_y = -WALK_SPEED/2;
@@ -186,6 +199,23 @@ void draw_background(){
   }
 }
 
+void MobAttack(){
+  if(Math.pow(pig.center_x - player.center_x,2) + Math.pow(pig.center_y-player.center_y,2) <800 && !attacked){
+    print("OUUF");
+    hpCounter--;
+    attacked=true;
+     if(abs(hpCounter - healthPoints) == 1){
+           healthBar[hpCounter] = lvlRight;
+           healthBar[hpCounter-1] = hpRight;
+         }
+         else if(hpCounter > 1 && abs(hpCounter - healthPoints) > 1){
+           healthBar[hpCounter] = lvlMid;
+           healthBar[hpCounter-1] = hpRight;
+         }
+  }
+  else if(Math.pow(pig.center_x - player.center_x,2) + Math.pow(pig.center_y-player.center_y,2) > 800){
+    attacked = false;
+}}
 
 void scroll(){
  float rightBoundary = viewX + displayWidth - RIGHT_MARGIN;
@@ -251,7 +281,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         else if (  player.land_block == 4 && !updated && player.isPlayer){// Add damage
          collisionList.get(5).block.stone_update(updated);
          collisionList.get(5).counter++;
-         hpCounter--;
+         
          if (collisionList.get(5).counter > 4){
            collisionList.get(5).visable = false;
          }
@@ -283,14 +313,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
            collisionList.get(5).visable = false;
          }
          updated = true;
-         if(abs(hpCounter - healthPoints) == 1){
-           healthBar[hpCounter] = lvlRight;
-           healthBar[hpCounter-1] = hpRight;
-         }
-         else if(hpCounter > 1 && abs(hpCounter - healthPoints) > 1){
-           healthBar[hpCounter] = lvlMid;
-           healthBar[hpCounter-1] = hpRight;
-         }
+        
        }
        if(player.land_block == 10 && !player.dead && player.isPlayer){ 
          println("coll water 2");
@@ -431,6 +454,17 @@ void Punch(){
     pig.life--;
     pig.change_x = pig.change_x*3.2;
     }
+    else if(chick.center_x > player.center_x && chick.center_x < PunchRadie && (int(chick.center_y/100) == int(player.center_y/100))){
+    print("BAAAM");
+        print("pig.center_x  : ", chick.center_x, "player.center_x : ",player.center_x);
+    print("pig.center_y  : ", int(chick.center_y/100), "player.center_y : ",int(player.center_y/100));
+    println("-------------------");
+    Pun.rewind();
+    Pun.play();
+    chick.life--;
+    chick.change_x = chick.change_x*3.2;
+    
+  }
   }
   else{
   float PunchRadie = player.center_x -90;
@@ -443,9 +477,16 @@ void Punch(){
     pig.life--;
     pig.change_x = pig.change_x*3.2;
     }
+     else if(chick.center_x < player.center_x && chick.center_x > PunchRadie && (int(chick.center_y/100) == int(player.center_y/100))){
+    print("pig.center_x  : ", chick.center_x, "player.center_x : ",player.center_x);
+    print("pig.center_y  : ", int(chick.center_y/100), "player.center_y : ",int(player.center_y/100));
+    println("-------------------");
+    Pun.rewind();
+    Pun.play();
+    chick.life--;
+    chick.change_x = pig.change_x*3.2;
+    }
   }
-  
-  
 }
 
 void keyPressed(){
