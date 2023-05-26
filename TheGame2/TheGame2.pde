@@ -31,6 +31,7 @@ int lvlCounter = 1;
 PImage[] healthBar = new PImage[healthPoints];
 PImage[] lvlBar = new PImage[healthPoints];
 boolean pause;
+Menu pauseScreen;
 
 
 final static float MENU_MARGIN = 100;
@@ -68,6 +69,7 @@ void setup(){
   Audioplayer.play();
   Pun = minim.loadFile("data/music/roblox.mp3", 2048);
   imageMode(CORNER);
+  pauseScreen = new Menu();
   
   menuBoxBrown = loadImage("data/menu/panel_brown.png");
   menuBoxBlue = loadImage("data/menu/panel_blue.png");

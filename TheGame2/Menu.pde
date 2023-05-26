@@ -1,8 +1,9 @@
 public class Menu{
   float MENU_MARGIN;
-  float SCALE_RIGHT_W;
+  float SCALE_W;
   float SCALE_RIGHT_H;
-  float SCALE_LEFT_W;
+  float SCALE_PANEL_W;
+  float SCALE_PANEL_H;
   float SCALE_LEFT_H;
   
   PImage menu;
@@ -31,7 +32,13 @@ public class Menu{
   PImage[] lvlBar = new PImage[healthPoints];
   
   public Menu(){
-  
+    MENU_MARGIN = displayWidth/20;
+    SCALE_W = displayWidth/2 - MENU_MARGIN;
+    SCALE_RIGHT_H = displayHeight - MENU_MARGIN;
+    SCALE_PANEL_W = displayWidth/2 - 2*MENU_MARGIN;
+    SCALE_PANEL_H = displayHeight/2 - 2*MENU_MARGIN;
+    SCALE_LEFT_H = displayHeight/2 - MENU_MARGIN;
+    
     menuBoxBrown = loadImage("data/menu/panel_brown.png");
     menuBoxBlue = loadImage("data/menu/panel_blue.png");
     itemBox = loadImage("data/menu/buttonSquare_beige.png");
@@ -62,6 +69,10 @@ public class Menu{
     lvlPointMid.resize(lvlPointMid.get().width, lvlPointMid.get().height*2);
     
     skillBox = loadImage("data/menu/square_shadow.png");
+    
+  }
+  
+  void createMenuBlocks(){
     
   }
   

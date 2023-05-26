@@ -13,7 +13,8 @@ public class Sprite{
   boolean isOnLadder;
   boolean isOnTop = false;
   boolean treasure;
-  boolean dead = false; 
+  boolean dead = false;
+  boolean button;
   float deadspot;
   int land_block; 
   int head_block;
@@ -81,16 +82,34 @@ public class Sprite{
     }
   }
   
+  //Constructor for menu blocks
+  public Sprite(PImage image, float xPos, float yPos, float scaleW, float scaleH, boolean button){
+   img = image;
+   
+   w = img.width * scaleW;
+   h = img.height * scaleH;
+   
+   center_x = xPos;
+   center_y = yPos;
+   change_x = 0;
+   change_y = 0;
+   
+   this.button = button;
+  }
+  
   public void display(){
    // image(img,center_x, center_y, w, h);
     //image(imgs[0],center_x, center_y, w, h);
     if (n_frames < 2){
     image(imgs[0], center_x, center_y, fr_w, h);
     }
-    else{
+    else if(n_frames > 1){
     //image(imgs[(int(currentFrame))% n_frames], center_x, center_y, fr_w, h);
     image(imgs[(int(currentFrame%n_frames))], center_x, center_y, fr_w, h);
     //image(imgs[4], center_x, center_y, fr_w, h);
+    }
+    else{
+      image(img, center_x, center_y, w, h);
     }
   }
   
