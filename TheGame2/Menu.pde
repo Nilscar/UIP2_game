@@ -24,7 +24,7 @@ public class Menu{
   PImage lvlPointRight;
   PImage lvlPointMid;
   PImage skillBox;
-  Sprite rightBox, leftBoxUp, leftBoxDown, panelLeft, panelRight;
+  Sprite rightBox, leftBoxUp, leftBoxDown, panelLeft, panelRight, crossButton;
   Sprite[] itemBoxes;
   int nrItemBoxes = 3;
   int healthPoints = 25;
@@ -82,7 +82,7 @@ public class Menu{
     for(int i = 0; i < 3; i++){
       itemBoxes[i] = new Sprite(itemBox, MENU_MARGIN + SCALE_W/3 + (SCALE_W*i)/3, leftBoxDown.center_y, (SCALE_W-MENU_MARGIN)/3, SCALE_LEFT_H - MENU_MARGIN/2, false);
     }
-    
+    crossButton = new Sprite(closeButton, rightBox.getTop(), rightBox.getRight(), MENU_MARGIN, MENU_MARGIN, true);
     
   }
   
