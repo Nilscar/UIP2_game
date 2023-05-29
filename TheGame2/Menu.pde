@@ -76,6 +76,39 @@ public class Menu{
     
   }
   
+  public void updateBars(int num, String bar){
+    if(num == 0 && bar == "lvl"){
+      lvlBar[num] = lvlPointLeft;
+    }
+    else if(num > 0 && num <= healthPoints - 2 && bar == "lvl"){
+      pauseScreen.lvlBar[num] = lvlPointMid;
+    }
+    else if(num > 0 && num == healthPoints - 1 && bar == "lvl"){
+      lvlBar[num] = lvlPointRight;
+    }
+    else if(num > 0 && num == healthPoints && bar == "lvl"){
+      lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+    }
+    else if(num == 0 && bar == "hp"){
+      healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+    }
+    else if(num == healthPoints - 1 && bar == "hp"){
+      healthBar[healthPoints-1] = lvlRight;
+      healthBar[healthPoints-2] = hpRight;
+    }
+    else if(num < healthPoints - 1 && bar == "hp"){
+      healthBar[num] = lvlMid;
+      healthBar[num-1] = hpRight;
+    }
+  }
+  
+  public void drawBars(Player player){
+     for(int i = 0; i < healthBar.length; i++){
+        image(healthBar[i], player.center_x + 820 + i*healthBar[i].width, player.center_y - 510);
+        image(lvlBar[i], player.center_x + 820 + i*lvlBar[i].width, player.center_y - 510 + MENU_MARGIN/2);
+    }
+  }
+  
   public void drawMenu(){
     background(#3890BF);
     imageMode(CORNER);
