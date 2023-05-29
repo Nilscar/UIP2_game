@@ -24,6 +24,9 @@ public class Menu{
   PImage lvlPointRight;
   PImage lvlPointMid;
   PImage skillBox;
+  Sprite rightBox, leftBoxUp, leftBoxDown, panel;
+  Sprite[] itemBoxes;
+  int nrItemBoxes = 3;
   int healthPoints = 25;
   int hpCounter = healthPoints;
   int expCounter = 0;
@@ -38,6 +41,7 @@ public class Menu{
     SCALE_PANEL_W = displayWidth/2 - 2*MENU_MARGIN;
     SCALE_PANEL_H = displayHeight/2 - 2*MENU_MARGIN;
     SCALE_LEFT_H = displayHeight/2 - MENU_MARGIN;
+    itemBoxes = new Sprite[nrItemBoxes];
     
     menuBoxBrown = loadImage("data/menu/panel_brown.png");
     menuBoxBlue = loadImage("data/menu/panel_blue.png");
@@ -69,6 +73,14 @@ public class Menu{
     lvlPointMid.resize(lvlPointMid.get().width, lvlPointMid.get().height*2);
     
     skillBox = loadImage("data/menu/square_shadow.png");
+    
+    rightBox = new Sprite(menuBoxBrown, 0.75*displayWidth, displayHeight/2, SCALE_W, SCALE_RIGHT_H, false);
+    leftBoxUp = new Sprite(menuBoxBrown, 0.25*displayWidth, 0.25*displayHeight, SCALE_W, SCALE_LEFT_H, false);
+    leftBoxDown = new Sprite(menuBoxBlue, 0.25*displayWidth, 0.75*displayHeight, SCALE_W, SCALE_LEFT_H, false);
+    for(int i = 0; i < 3; i++){
+      itemBoxes[i] = new Sprite(itemBox, MENU_MARGIN + SCALE_W/3 + (SCALE_W*i)/3, leftBoxDown.center_y, (SCALE_W-MENU_MARGIN)/3, SCALE_LEFT_H - MENU_MARGIN/2, false);
+    }
+    
     
   }
   
