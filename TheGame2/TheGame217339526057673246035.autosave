@@ -134,6 +134,7 @@ void setup(){
 void draw(){
   if(pause){
     drawMenu();
+    
   }
   else{
     imageMode(CENTER);
@@ -167,9 +168,7 @@ void draw(){
     chick.display();
     chick.update();
     MobAttack();
-    
     collisions(player, Mapcells);
-    
     if(pig.life >0){
     collisions(pig, Mapcells);
     }
@@ -205,7 +204,7 @@ void MobAttack(){
     print("OUUF");
     hpCounter -= 4;
     attacked=true;
-    if(hpCounter <= 0){
+    if(hpCounter == 0){
        player.dead = true;
      }
      else if(abs(hpCounter - healthPoints) == 1){
@@ -221,7 +220,7 @@ void MobAttack(){
     print("OUUF");
     hpCounter -= 3;
     attacked=true;
-     if(hpCounter <= 0){
+     if(hpCounter == 0){
        player.dead = true;
      }
      else if(abs(hpCounter - healthPoints) == 1){
@@ -268,7 +267,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
     player.change_y += GRAVITY;
   }
     player.center_y += player.change_y;
-    
     if(player.center_y/Cell.BLOCK_SIZE < 19 && player.dead){
        player.change_y = 1;
        hpCounter = 0;
