@@ -132,7 +132,7 @@ void setup(){
  
 void draw(){
   if(pause){
-    drawMenu();
+    pauseScreen.drawMenu();
     
   }
   else{
