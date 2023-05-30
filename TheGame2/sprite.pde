@@ -85,9 +85,10 @@ public class Sprite{
   //Constructor for menu blocks
   public Sprite(PImage image, float xPos, float yPos, float scaleW, float scaleH, boolean button){
    img = image;
+   n_frames = 0;
    
-   w = img.width * scaleW;
-   h = img.height * scaleH;
+   w = scaleW;
+   h = scaleH;
    
    center_x = xPos;
    center_y = yPos;
@@ -98,18 +99,14 @@ public class Sprite{
   }
   
   public void display(){
-   // image(img,center_x, center_y, w, h);
-    //image(imgs[0],center_x, center_y, w, h);
-    if (n_frames < 2){
+    if(n_frames == 0){
+      image(img, center_x, center_y, w, h);
+    }
+    else if (n_frames == 1){
     image(imgs[0], center_x, center_y, fr_w, h);
     }
     else if(n_frames > 1){
-    //image(imgs[(int(currentFrame))% n_frames], center_x, center_y, fr_w, h);
     image(imgs[(int(currentFrame%n_frames))], center_x, center_y, fr_w, h);
-    //image(imgs[4], center_x, center_y, fr_w, h);
-    }
-    else{
-      image(img, center_x, center_y, w, h);
     }
   }
   

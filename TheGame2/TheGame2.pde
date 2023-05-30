@@ -81,7 +81,7 @@ void setup(){
  
 void draw(){
   if(pause){
-    pauseScreen.drawMenu();
+    pauseScreen.viewMenu();
     
   }
   else{
@@ -440,8 +440,9 @@ void keyPressed(){
       pause = true;
     }
   }
-  else if(key == 'w' && !pause){
-    print("something");
+  else if(key == 'w'){
+    print("pause meassures: ", pauseScreen.rightBox.w);
+    
     }
 }
 

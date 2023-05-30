@@ -86,8 +86,15 @@ public class Menu{
     
   }
   
-  void createMenuBlocks(){
-    
+  void viewMenu(){
+    rightBox.display();
+    leftBoxUp.display();
+    leftBoxDown.display();
+    for(int i = 0; i < 3; i++){
+      itemBoxes[i].display();
+    }
+    crossButton.display();
+    image(cross, crossButton.center_x, crossButton.center_y);
   }
   
   public void updateBars(int num, String bar){
