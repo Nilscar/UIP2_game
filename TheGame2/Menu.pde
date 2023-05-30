@@ -77,12 +77,12 @@ public class Menu{
     rightBox = new Sprite(menuBoxBrown, 0.75*displayWidth, displayHeight/2, SCALE_W, SCALE_RIGHT_H, false);
     leftBoxUp = new Sprite(menuBoxBrown, 0.25*displayWidth, 0.25*displayHeight, SCALE_W, SCALE_LEFT_H, false);
     leftBoxDown = new Sprite(menuBoxBlue, 0.25*displayWidth, 0.75*displayHeight, SCALE_W, SCALE_LEFT_H, false);
-    panelLeft = new Sprite(menuPanel, leftBoxUp.center_x, leftBoxUp.center_y, SCALE_W, SCALE_LEFT_H, false);
+    panelLeft = new Sprite(menuPanel, leftBoxUp.center_x, leftBoxUp.center_y, SCALE_PANEL_W, SCALE_PANEL_H, false);
     panelRight = new Sprite(menuPanel, rightBox.center_x, leftBoxDown.center_y, SCALE_PANEL_W, SCALE_PANEL_H, false);
     for(int i = 0; i < 3; i++){
-      itemBoxes[i] = new Sprite(itemBox, MENU_MARGIN + SCALE_W/3 + (SCALE_W*i)/3, leftBoxDown.center_y, (SCALE_W-MENU_MARGIN)/3, SCALE_LEFT_H - MENU_MARGIN/2, false);
+      itemBoxes[i] = new Sprite(itemBox, leftBoxDown.getLeft() + (SCALE_W + SCALE_W*i)/4, leftBoxDown.center_y, (SCALE_W-MENU_MARGIN)/4, SCALE_LEFT_H - 1.5*MENU_MARGIN, false);
     }
-    crossButton = new Sprite(closeButton, rightBox.getTop(), rightBox.getRight(), MENU_MARGIN, MENU_MARGIN, true);
+    crossButton = new Sprite(closeButton, rightBox.getRight() - MENU_MARGIN/4, rightBox.getTop() + MENU_MARGIN/4, MENU_MARGIN, MENU_MARGIN, true);
     
   }
   
@@ -90,11 +90,13 @@ public class Menu{
     rightBox.display();
     leftBoxUp.display();
     leftBoxDown.display();
+    panelLeft.display();
+    panelRight.display();
     for(int i = 0; i < 3; i++){
       itemBoxes[i].display();
     }
     crossButton.display();
-    image(cross, crossButton.center_x, crossButton.center_y);
+    image(cross, crossButton.center_x, crossButton.center_y, crossButton.w/2, crossButton.h/2);
   }
   
   public void updateBars(int num, String bar){

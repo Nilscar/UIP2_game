@@ -89,6 +89,7 @@ public class Sprite{
    
    w = scaleW;
    h = scaleH;
+   fr_w = w;
    
    center_x = xPos;
    center_y = yPos;

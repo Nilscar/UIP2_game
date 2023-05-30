@@ -48,7 +48,6 @@ void setup(){
   Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
   Audioplayer.play();
   Pun = minim.loadFile("data/music/roblox.mp3", 2048);
-  imageMode(CORNER);
   pauseScreen = new Menu();
   
   pause = true;
@@ -441,8 +440,8 @@ void keyPressed(){
     }
   }
   else if(key == 'w'){
-    print("pause meassures: ", pauseScreen.rightBox.w);
-    
+    println("pause meassures center_x: ", pauseScreen.leftBoxDown.center_x);
+    println("pause meassures: ", pauseScreen.leftBoxDown.getLeft());
     }
 }
 
@@ -485,7 +484,12 @@ void keyReleased(){
 }
 
 void mouseClicked(){
-  // add mouse on pause menu
+  //println("mouseClicked, pmouseX: ", pmouseX, "\n pmouseY: ", pmouseY, "\n");
+  //println("button x: ", pauseScreen.crossButton.getLeft(), "-", pauseScreen.crossButton.getRight(), "\nbutton y: ", pauseScreen.crossButton.getTop(), "-", pauseScreen.crossButton.getBottom());
+  if(pmouseX >= pauseScreen.crossButton.getLeft() && pmouseX <= pauseScreen.crossButton.getRight() && 
+     pmouseY <= pauseScreen.crossButton.getBottom() && pmouseY >= pauseScreen.crossButton.getTop() && pause && mouseButton == LEFT){
+       pause = !pause;
+  }
 }
 
 //Creating the game map from csv file
