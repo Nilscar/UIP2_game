@@ -86,12 +86,22 @@ public class Menu{
     
   }
   
-  void viewMenu(){
+  void viewMenu(String hp, String lvl){
     rightBox.display();
     leftBoxUp.display();
     leftBoxDown.display();
     panelLeft.display();
     panelRight.display();
+    for(int i = 0; i < healthBar.length; i++){
+        image(healthBar[i], panelLeft.w/2 + i*healthBar[i].width, panelLeft.getTop() + MENU_MARGIN);
+        image(lvlBar[i], panelLeft.w/2 + i*lvlBar[i].width, panelLeft.getTop() + 1.5*MENU_MARGIN);
+    }
+    fill(#F0C879);
+    textAlign(LEFT, CENTER);
+    textSize(36);
+    text("HP: "+hp+"%", panelLeft.getLeft() + 2*MENU_MARGIN, panelLeft.getTop() + MENU_MARGIN);
+    text("Lvl: "+lvl, panelLeft.getLeft() + 2*MENU_MARGIN, panelLeft.getTop() + 1.5*MENU_MARGIN);
+    
     for(int i = 0; i < 3; i++){
       itemBoxes[i].display();
     }

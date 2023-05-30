@@ -87,11 +87,11 @@ void draw(){
   if(pause){
 
     background(#3890BF);
-    pauseScreen.viewMenu();
-    player.center_x = pauseScreen.panelLeft.getLeft() + player.w;
-    player.center_y = pauseScreen.panelLeft.center_y;
+    pauseScreen.viewMenu(str(int(100*hpCounter/healthPoints)), str(lvlCounter));
+    player.center_x = pauseScreen.panelLeft.getLeft() + pauseScreen.MENU_MARGIN;
+    player.center_y = pauseScreen.panelLeft.getTop() + pauseScreen.MENU_MARGIN;
     player.display();
-    
+    player.update();
   }
   else{
     imageMode(CENTER);
