@@ -15,6 +15,9 @@ int lvlCounter = 1;
 boolean pause;
 Menu pauseScreen;
 
+float currentX;
+float currentY;
+
 final static float RIGHT_MARGIN = 500;
 final static float LEFT_MARGIN = 500;
 final static float VERTICAL_MARGIN = 500;
@@ -72,6 +75,8 @@ void setup(){
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
   player = new Player(600, 600);
+  currentX = player.center_x;
+  currentY = player.center_y;
   pig = new Mob(200,600);
   mapHeight = CSVrows.length;
   mapWidth = split(CSVrows[0], ";").length;
@@ -80,8 +85,12 @@ void setup(){
  
 void draw(){
   if(pause){
+
     background(#3890BF);
     pauseScreen.viewMenu();
+    player.center_x = pauseScreen.panelLeft.getLeft() + player.w;
+    player.center_y = pauseScreen.panelLeft.center_y;
+    player.display();
     
   }
   else{
@@ -434,9 +443,13 @@ void keyPressed(){
   }
   else if(key == 'q'){
     if(pause){
+      player.center_x = currentX;
+      player.center_y = currentY;
       pause = false;
     }
     else{
+      currentX = player.center_x;
+      currentY = player.center_y;
       pause = true;
     }
   }
@@ -489,6 +502,8 @@ void mouseClicked(){
   //println("button x: ", pauseScreen.crossButton.getLeft(), "-", pauseScreen.crossButton.getRight(), "\nbutton y: ", pauseScreen.crossButton.getTop(), "-", pauseScreen.crossButton.getBottom());
   if(pmouseX >= pauseScreen.crossButton.getLeft() && pmouseX <= pauseScreen.crossButton.getRight() && 
      pmouseY <= pauseScreen.crossButton.getBottom() && pmouseY >= pauseScreen.crossButton.getTop() && pause && mouseButton == LEFT){
+       player.center_x = currentX;
+       player.center_y = currentY;
        pause = !pause;
   }
 }
