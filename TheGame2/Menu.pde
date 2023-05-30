@@ -6,6 +6,7 @@ public class Menu{
   float SCALE_PANEL_H;
   float SCALE_LEFT_H;
   
+  String gameTitle = "GAME TITLE";
   PImage menu;
   PImage menuBoxBrown;
   PImage menuBoxBlue;
@@ -88,6 +89,10 @@ public class Menu{
   
   void viewMenu(String hp, String lvl){
     rightBox.display();
+    textAlign(CENTER, TOP);
+    textSize(128);
+    fill(#296986); 
+    text(gameTitle, rightBox.center_x, rightBox.getTop() + MENU_MARGIN/2);  
     leftBoxUp.display();
     leftBoxDown.display();
     panelLeft.display();
@@ -96,11 +101,11 @@ public class Menu{
         image(healthBar[i], panelLeft.w/2 + i*healthBar[i].width, panelLeft.getTop() + MENU_MARGIN);
         image(lvlBar[i], panelLeft.w/2 + i*lvlBar[i].width, panelLeft.getTop() + 1.5*MENU_MARGIN);
     }
-    fill(#F0C879);
+    fill(#B24A16);
     textAlign(LEFT, CENTER);
-    textSize(36);
-    text("HP: "+hp+"%", panelLeft.getLeft() + 2*MENU_MARGIN, panelLeft.getTop() + MENU_MARGIN);
-    text("Lvl: "+lvl, panelLeft.getLeft() + 2*MENU_MARGIN, panelLeft.getTop() + 1.5*MENU_MARGIN);
+    textSize(healthBar[0].height);
+    text("HP: "+hp+"%", panelLeft.getLeft() + MENU_MARGIN, panelLeft.getTop() + MENU_MARGIN - healthBar[0].height/4);
+    text("Lvl: "+lvl, panelLeft.getLeft() + MENU_MARGIN, panelLeft.getTop() + 1.5*MENU_MARGIN - healthBar[0].height/4);
     
     for(int i = 0; i < 3; i++){
       itemBoxes[i].display();
