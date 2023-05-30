@@ -80,6 +80,7 @@ void setup(){
  
 void draw(){
   if(pause){
+    background(#3890BF);
     pauseScreen.viewMenu();
     
   }
