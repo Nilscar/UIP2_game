@@ -24,14 +24,20 @@ PImage lvlPointLeft;
 PImage lvlPointRight;
 PImage lvlPointMid;
 PImage skillBox;
-int healthPoints = 15;
-int hpCounter = healthPoints;
+PImage fartRight;
+PImage[] FartRight = new PImage[4];
+PImage fartLeft;
+PImage[] FartLeft = new PImage[4];
+int healthPoints = 11;
+int hpCounter = healthPoints-1;
 int expCounter = 0;
 int lvlCounter = 1;
 boolean attacked = false;
 PImage[] healthBar = new PImage[healthPoints];
 PImage[] lvlBar = new PImage[healthPoints];
 boolean pause;
+int timeNowR;
+int timeNowL;
 
 
 final static float MENU_MARGIN = 100;
@@ -70,7 +76,15 @@ void setup(){
   //Audioplayer.play();
   Pun = minim.loadFile("data/music/roblox.mp3", 2048);
   imageMode(CORNER);
-  
+  fartRight = loadImage("data/fartRight.png");
+  fartLeft = loadImage("data/fartLeft.png"); 
+  for (int fartimg = 0; fartimg < 4 ; fartimg++){
+    
+    FartRight[fartimg] = fartRight.get(int(120*(fartimg%4)), 0, 120, 90);
+    FartRight[fartimg].resize(80, 50);
+    FartLeft[fartimg] = fartLeft.get(int(120*(fartimg%4)), 0, 120, 90);
+    FartLeft[fartimg].resize(80, 50);
+  }
   menuBoxBrown = loadImage("data/menu/panel_brown.png");
   menuBoxBlue = loadImage("data/menu/panel_blue.png");
   itemBox = loadImage("data/menu/buttonSquare_beige.png");
@@ -83,7 +97,7 @@ void setup(){
   hpLeft.resize(hpLeft.get().width*4, hpLeft.get().height*2);
   hpRight.resize(hpRight.get().width*4, hpRight.get().height*2);
   hpMid.resize(hpMid.get().width*2, hpMid.get().height*2);
-  healthBar = createBar(hpLeft, hpMid, hpRight, healthPoints);
+  healthBar = createBar(hpMid,healthPoints);
   
   lvlLeft = loadImage("data/menu/barBack_horizontalLeft.png");
   lvlRight = loadImage("data/menu/barBack_horizontalRight.png");
@@ -91,7 +105,7 @@ void setup(){
   lvlLeft.resize(lvlLeft.get().width*4, lvlLeft.get().height*2);
   lvlRight.resize(lvlRight.get().width*4, lvlRight.get().height*2);
   lvlMid.resize(lvlMid.get().width*2, lvlMid.get().height*2);
-  lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+  lvlBar = createBar(lvlMid,healthPoints);
   
   lvlPointLeft = loadImage("data/menu/barBlue_horizontalLeft.png");
   lvlPointRight = loadImage("data/menu/barBlue_horizontalRight.png");
@@ -154,11 +168,19 @@ void draw(){
         }
       }
     }
-    for(int i = 0; i < healthBar.length; i++){
-     // image(healthBar[i], 820 + i*healthBar[i].width, player.center_y - 510);
+    for(int i = 0; i < healthBar.length-1; i++){
+      //image(healthBar[i], 820 + i*healthBar[i].width,  510);
       copy(healthBar[i], 820 + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height,  820 + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height);    
       //image(healthBar[i], player.center_x + 820 + i*healthBar[i].width, player.center_y - 510);
       copy(lvlBar[i], 820 + i*lvlBar[i].width, 80, healthBar[i].width, lvlBar[i].height,  820 + i*lvlBar[i].width, 80, lvlBar[i].width, lvlBar[i].height);
+    }
+    if( millis()<timeNowR+500){
+      println(int(millis()-timeNowR)/126);
+      image(FartRight[int(millis()-timeNowR)/126],player.center_x+60 ,player.center_y - 20);
+    }
+    else if( millis()<timeNowL+500){
+      println(int(millis()-timeNowL)/126);
+      image(FartLeft[int(millis()-timeNowL)/126],player.center_x-140 ,player.center_y - 20);
     }
     player.display();
     player.update();
@@ -204,34 +226,33 @@ void MobAttack(){
   if(Math.pow(pig.center_x - player.center_x,2) + Math.pow(pig.center_y-player.center_y,2) <800 && !attacked){
     print("OUUF");
     hpCounter -= 4;
+    println("hp is at ", hpCounter);
     attacked=true;
     if(hpCounter <= 0){
+       player.change_x = 0;
        player.dead = true;
      }
-     else if(abs(hpCounter - healthPoints) == 1){
-           healthBar[hpCounter] = lvlRight;
-           healthBar[hpCounter-1] = hpRight;
-         }
-         else if(hpCounter > 1 && abs(hpCounter - healthPoints) > 1){
-           healthBar[hpCounter] = lvlMid;
-           healthBar[hpCounter-1] = hpRight;
-         }
+     else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
+         healthBar[hpCounter] = lvlMid;
+         healthBar[hpCounter+1] = lvlMid;
+         healthBar[hpCounter+2] = lvlMid;
+         healthBar[hpCounter+3] = lvlMid;
+         //healthBar[hpCounter-1] = lvlMid;
+       }
   }
    else if(Math.pow(chick.center_x - player.center_x,2) + Math.pow(chick.center_y-player.center_y,2) <800 && !attacked){
     print("OUUF");
-    hpCounter -= 3;
+    hpCounter-=3;
     attacked=true;
      if(hpCounter <= 0){
        player.dead = true;
      }
-     else if(abs(hpCounter - healthPoints) == 1){
-           healthBar[hpCounter] = lvlRight;
-           healthBar[hpCounter-1] = hpRight;
-         }
-         else if(hpCounter > 1 && abs(hpCounter - healthPoints) > 1){
-           healthBar[hpCounter] = lvlMid;
-           healthBar[hpCounter-1] = hpRight;
-         }
+     else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
+         healthBar[hpCounter] = lvlMid;
+         healthBar[hpCounter+1] = lvlMid;
+         healthBar[hpCounter+2] = lvlMid;
+       }
+    
   }
   else if(Math.pow(pig.center_x - player.center_x,2) + Math.pow(pig.center_y-player.center_y,2) > 800 && Math.pow(chick.center_x - player.center_x,2) + Math.pow(chick.center_y-player.center_y,2) > 800){
     attacked = false;
@@ -272,12 +293,12 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
     if(player.center_y/Cell.BLOCK_SIZE < 19 && player.dead){
        player.change_y = 1;
        hpCounter = 0;
-       healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+       healthBar = createBar(lvlMid,healthPoints);
        }
     else if (player.center_y/Cell.BLOCK_SIZE > player.deadspot && player.dead){
        player.change_y = -GRAVITY;
        hpCounter = 0;
-       healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+       healthBar = createBar(lvlMid,healthPoints);
        }
           
     if(player.change_y > 0){
@@ -286,6 +307,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.isOnBlock = true;
         player.change_y = 0;
         player.land_block = collisionList.get(5).block_num;
+        
         
         if(player.land_block != 3 && (player.change_x == 2||player.change_x == -2)&& player.isPlayer){ 
           player.change_x = 0;
@@ -297,7 +319,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.change_x = 0;
           player.isOnBlock = false;
           hpCounter = 0;
-          healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+          healthBar = createBar(lvlMid, healthPoints);
        }
         else if (  player.land_block == 4 && !updated && player.isPlayer){// Add damage
          collisionList.get(5).block.stone_update(updated);
@@ -307,14 +329,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
            collisionList.get(5).visable = false;
          }
          updated = true; 
-         if(abs(hpCounter - healthPoints) == 1){
-           healthBar[hpCounter] = lvlRight;
-           healthBar[hpCounter-1] = hpRight;
-         }
-         else if(hpCounter > 1 && abs(hpCounter - healthPoints) > 1){
-           healthBar[hpCounter] = lvlMid;
-           healthBar[hpCounter-1] = hpRight;
-         }
        }
       }
       else if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop() && !player.dead){
@@ -329,7 +343,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        if ( player.land_block == 4 && !updated && player.isPlayer){ //Add damage
          collisionList.get(5).block.stone_update(updated);
          collisionList.get(5).counter++;
-         hpCounter--;
          if (collisionList.get(5).counter > 4){
            collisionList.get(5).visable = false;
          }
@@ -343,7 +356,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.change_x = 0;
           player.isOnBlock = false;
           hpCounter = 0;
-          healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+          healthBar = createBar(lvlMid, healthPoints);
        }
       }
       else if(collisionList.get(8).visable && player.getRight() > collisionList.get(8).block.getLeft() && player.getBottom() >= collisionList.get(8).block.getTop()){
@@ -359,7 +372,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.change_x = 0;
           player.isOnBlock = false;
           hpCounter = 0;
-          healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+          healthBar = createBar(lvlMid,healthPoints);
        }
       }
       else if(collisionList.get(2).visable && player.getLeft() < collisionList.get(2).block.getRight() && player.getBottom() >= collisionList.get(2).block.getTop()){
@@ -374,7 +387,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.change_x = 0;
           player.isOnBlock = false;
           hpCounter = 0;
-          healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+          healthBar = createBar(lvlMid,healthPoints);
 
        }
         
@@ -451,6 +464,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
      player.isOnLadder = false;
      player.isOnTop = false;
    }
+   
 }
 
 public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates a 3x3 matrix containing the surrounding blocks of the player
@@ -466,29 +480,23 @@ void Punch(){
   if (player.change_x >= 0){
   float PunchRadie = player.center_x +90;
   if(pig.center_x > player.center_x && pig.center_x < PunchRadie && (int(pig.center_y/100) == int(player.center_y/100))){
-    print("BAAAM");
-        print("pig.center_x  : ", pig.center_x, "player.center_x : ",player.center_x);
-    print("pig.center_y  : ", int(pig.center_y/100), "player.center_y : ",int(player.center_y/100));
-    println("-------------------");
+    timeNowR = millis(); 
     Pun.rewind();
     Pun.play();
     pig.life--;
     pig.change_x = pig.change_x*3.2;
     if(pig.life == 0){   
-      giveExp();
+      giveExp(4);
     }
     }
-    else if(chick.center_x > player.center_x && chick.center_x < PunchRadie && (int(chick.center_y/100) == int(player.center_y/100))){
-    print("BAAAM");
-        print("pig.center_x  : ", chick.center_x, "player.center_x : ",player.center_x);
-    print("pig.center_y  : ", int(chick.center_y/100), "player.center_y : ",int(player.center_y/100));
-    println("-------------------");
+    if(chick.center_x > player.center_x && chick.center_x < PunchRadie && (int(chick.center_y/100) == int(player.center_y/100))){
+    timeNowR = millis(); 
     Pun.rewind();
     Pun.play();
     chick.life--;
     chick.change_x = chick.change_x*3.2;
     if(chick.life == 0){   
-      giveExp();
+      giveExp(3);
     }
     
   }
@@ -496,53 +504,46 @@ void Punch(){
   else{
   float PunchRadie = player.center_x -90;
   if(pig.center_x < player.center_x && pig.center_x > PunchRadie && (int(pig.center_y/100) == int(player.center_y/100))){
-    print("pig.center_x  : ", pig.center_x, "player.center_x : ",player.center_x);
-    print("pig.center_y  : ", int(pig.center_y/100), "player.center_y : ",int(player.center_y/100));
-    println("-------------------");
+    timeNowL = millis();
     Pun.rewind();
     Pun.play();
     pig.life--;
     pig.change_x = pig.change_x*3.2;
     if(pig.life == 0){   
-      giveExp();
+      giveExp(4);
     }
     }
-     else if(chick.center_x < player.center_x && chick.center_x > PunchRadie && (int(chick.center_y/100) == int(player.center_y/100))){
-    print("pig.center_x  : ", chick.center_x, "player.center_x : ",player.center_x);
-    print("pig.center_y  : ", int(chick.center_y/100), "player.center_y : ",int(player.center_y/100));
-    println("-------------------");
+    if(chick.center_x < player.center_x && chick.center_x > PunchRadie && (int(chick.center_y/100) == int(player.center_y/100))){
+    timeNowL = millis();
     Pun.rewind();
     Pun.play();
     chick.life--;
     chick.change_x = pig.change_x*3.2;
     if(chick.life == 0){   
-      giveExp();
+      giveExp(3);
     
     }
     }
   }
 }
 
-void giveExp(){
-      if(expCounter == 0){
-      lvlBar[expCounter] = lvlPointLeft;
-      expCounter += 1;
+void giveExp(int expGain){
+    if(expCounter >= 0 && expCounter <= healthPoints - 2){
+      expCounter += expGain;
+      if( expCounter >= healthPoints-1){
+        expCounter = 0;
+        WALK_SPEED += lvlCounter;
+        JUMP_SPEED += lvlCounter;
+        lvlCounter += 1;
+        lvlBar = createBar( lvlMid, healthPoints);
+        print(" \n lvl: ", lvlCounter, " >>>");
+      }
+      else{
+        for(int i = 0; i < expCounter;i++){
+          lvlBar[i] = lvlPointMid;
+      }
     }
-    else if(expCounter > 0 && expCounter <= healthPoints - 2){
-      lvlBar[expCounter] = lvlPointMid;
-      expCounter += 1;
-    }
-    else{
-      expCounter = 0;
-      WALK_SPEED += lvlCounter;
-      JUMP_SPEED += lvlCounter;
-      lvlCounter += 1;
-      lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
-      print(" \n lvl: ", lvlCounter, " >>>");
-    }
-    
-    
-  
+  }
 }
 
 void keyPressed(){
@@ -568,7 +569,7 @@ void keyPressed(){
     player.isOnTop = false;
   }
   else if(key == 'a' && !pause){
-      giveExp();
+      giveExp(1);
   }
   else if(key == 'q'){
     if(pause){
@@ -633,7 +634,7 @@ public void drawMenu(){
     background(#3890BF);
     imageMode(CORNER);
     image(menuBoxBrown, displayWidth/2 + MENU_MARGIN/2, MENU_MARGIN, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight - 2*MENU_MARGIN); //draws the right side box
-    for(int i = 0; i < healthBar.length; i++){ //draws the health and lvl bars
+    for(int i = 0; i < healthBar.length-1; i++){ //draws the health and lvl bars
       image(healthBar[i], (displayWidth/2 + 3*MENU_MARGIN) + i*healthBar[i].width, 2.5*MENU_MARGIN);
       image(lvlBar[i], (displayWidth/2 + 3*MENU_MARGIN) + i*healthBar[i].width, 3.5*MENU_MARGIN);
     }
@@ -651,7 +652,7 @@ public void drawMenu(){
     textAlign(LEFT, TOP);
     textSize(36);
     text("Lvl: "+str(lvlCounter), displayWidth/2 + MENU_MARGIN, 3.5*MENU_MARGIN);
-    text("Health: "+str(int(100*hpCounter/healthPoints))+"%", displayWidth/2 + MENU_MARGIN, 2.5*MENU_MARGIN);
+    text("Health: "+str(int(110*(hpCounter)/healthPoints))+"%", displayWidth/2 + MENU_MARGIN, 2.5*MENU_MARGIN);
     fill(#936F27);
     text("Speed: ", displayWidth/2 + 1.5*MENU_MARGIN, displayHeight/2 + 1.5*MENU_MARGIN);
     imageMode(CENTER);
@@ -659,13 +660,11 @@ public void drawMenu(){
     image(cross, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height, 3*cross.get().width, 3*cross.get().height); //draws the cross of the closeButton
 }
 
-PImage[] createBar(PImage left, PImage mid, PImage right, int hp){
+PImage[] createBar( PImage mid, int hp){
   PImage[] bar = new PImage[hp];
-  bar[0] = left;
-  for(int i = 1; i < bar.length - 1; i++){
+  for(int i = 0; i < bar.length - 1; i++){
     bar[i] = mid;
   }
-  bar[bar.length-1] = right;
   return bar;
 }
 
