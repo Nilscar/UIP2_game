@@ -89,7 +89,7 @@ void draw(){
     background(#3890BF);
     pauseScreen.viewMenu(str(int(100*hpCounter/healthPoints)), str(lvlCounter));
     player.center_x = pauseScreen.panelLeft.getLeft() + pauseScreen.MENU_MARGIN/2;
-    player.center_y = pauseScreen.panelLeft.getTop() + pauseScreen.MENU_MARGIN;
+    player.center_y = pauseScreen.panelLeft.getTop() + pauseScreen.MENU_MARGIN + pauseScreen.healthBar[0].height/2;
     player.display();
     player.update();
   }
