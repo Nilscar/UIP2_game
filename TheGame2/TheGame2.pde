@@ -360,6 +360,10 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
      player.isOnLadder = false;
      player.isOnTop = false;
    }
+   /*if(dist(player.center_x, player.center_y, pig.center_x, pig.center_y) < pig.fr_w/2 + player.fr_w/2){
+     hpCounter--;
+     pauseScreen.updateBars(hpCounter, "hp");
+   }*/
 }
 
 public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates a 3x3 matrix containing the surrounding blocks of the player
@@ -454,8 +458,10 @@ void keyPressed(){
     }
   }
   else if(key == 'w'){
-    println("pause meassures center_x: ", pauseScreen.leftBoxDown.center_x);
-    println("pause meassures: ", pauseScreen.leftBoxDown.getLeft());
+    //println("pause meassures center_x: ", pauseScreen.leftBoxDown.center_x);
+    //println("mob meassures w: ", pig.w);
+    //println("mob meassures h: ", pig.h);
+    println("mob dist player: ", dist(player.center_x, player.center_y, pig.center_x, pig.center_y), " minDist: ", pig.fr_w/2 + player.fr_w/2);
     }
 }
 
