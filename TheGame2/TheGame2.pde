@@ -12,6 +12,10 @@ PImage fartRight;
 PImage[] FartRight = new PImage[4];
 PImage fartLeft;
 PImage[] FartLeft = new PImage[4];
+PImage portalRed;
+PImage[] PortalRed = new PImage[2];
+PImage portalGreen;
+PImage[] PortalGreen = new PImage[2];
 int healthPoints = 11;
 int hpCounter = healthPoints-1;
 int expCounter = 0;
@@ -37,6 +41,8 @@ float mapWidth;
 int[] xZone = new int[2];
 int[] yZone = new int[2];
 int z = 0;
+int[] portal1_in = new int[2];
+int[] portal1_out = new int[2];
 
 public PGraphics blockGraphics;
 PImage mapimg;
@@ -63,6 +69,9 @@ void setup(){
   pauseScreen = new Menu();
   fartRight = loadImage("data/fartRight.png");
   fartLeft = loadImage("data/fartLeft.png"); 
+  portalRed = loadImage("data/fartLeft.png");
+  portal1_in[0] = 800;
+  portal1_in[1] = 7200;
   for (int fartimg = 0; fartimg < 4 ; fartimg++){
     
     FartRight[fartimg] = fartRight.get(int(120*(fartimg%4)), 0, 120, 90);
@@ -144,7 +153,7 @@ void draw(){
     }
     else if( millis()<timeNowL+500){
       println(int(millis()-timeNowL)/126);
-      image(FartLeft[int(millis()-timeNowL)/126],player.center_x-140 ,player.center_y - 20);
+      image(FartLeft[int(millis()-timeNowL)/126],player.center_x-60 ,player.center_y - 20);
     }
     player.display();
     player.update();
@@ -454,7 +463,7 @@ public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates 
 }
 void Punch(){
   if (player.change_x >= 0){
-  float PunchRadie = player.center_x +90;
+  float PunchRadie = player.center_x +140;
   if(pig.center_x > player.center_x && pig.center_x < PunchRadie && (int(pig.center_y/100) == int(player.center_y/100))){
     timeNowR = millis(); 
     Pun.rewind();
@@ -480,12 +489,11 @@ void Punch(){
     timeNowR = millis(); 
     Pun.rewind();
     Pun.play();
-    chick.life == 0  
     giveExp(1);
     }
   }
   else{
-  float PunchRadie = player.center_x -90;
+  float PunchRadie = player.center_x -140;
   if(pig.center_x < player.center_x && pig.center_x > PunchRadie && (int(pig.center_y/100) == int(player.center_y/100))){
     timeNowL = millis();
     Pun.rewind();
@@ -510,8 +518,7 @@ void Punch(){
     if(doll.center_x < player.center_x && doll.center_x > PunchRadie && (int(doll.center_y/100) == int(player.center_y/100))){
     timeNowL = millis(); 
     Pun.rewind();
-    Pun.play();
-    chick.life == 0  
+    Pun.play(); 
     giveExp(1);
     }
   }
