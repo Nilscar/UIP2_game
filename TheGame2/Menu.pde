@@ -150,8 +150,8 @@ public class Menu{
   
   public void drawBars(){
      for(int i = 0; i < healthBar.length; i++){
-         copy(healthBar[i], int(panelLeft.w/2 + i*healthBar[i].width), int(panelLeft.getTop() + MENU_MARGIN), healthBar[i].width, healthBar[i].height, displayWidth - int(RIGHT_MARGIN) + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height);
-         copy(lvlBar[i], int(panelLeft.w/2 + i*lvlBar[i].width), int(panelLeft.getTop() + MENU_MARGIN), lvlBar[i].width, lvlBar[i].height, displayWidth - int(RIGHT_MARGIN) + i*lvlBar[i].width, 80, lvlBar[i].width, lvlBar[i].height);
+         copy(healthBar[i], int(panelLeft.w/2 - healthBar[i].width/2 + i*healthBar[i].width), int(panelLeft.getTop() + MENU_MARGIN - healthBar[i].height/2), healthBar[i].width, healthBar[i].height, displayWidth - int(RIGHT_MARGIN) + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height);
+         copy(lvlBar[i], int(panelLeft.w/2 + i*lvlBar[i].width), int(panelLeft.getTop() + 1.5*MENU_MARGIN), lvlBar[i].width, lvlBar[i].height, displayWidth - int(RIGHT_MARGIN) + i*lvlBar[i].width, 80, lvlBar[i].width, lvlBar[i].height);
 
         //image(healthBar[i], displayWidth - int(RIGHT_MARGIN) + i*healthBar[i].width, 30);
         //image(lvlBar[i], displayWidth - int(RIGHT_MARGIN) + i*lvlBar[i].width, 80);
