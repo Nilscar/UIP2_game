@@ -16,6 +16,8 @@ PImage portalRed;
 PImage[] PortalRed = new PImage[2];
 PImage portalGreen;
 PImage[] PortalGreen = new PImage[2];
+PImage button;
+PImage[] Button = new PImage[2];
 int healthPoints = 11;
 int hpCounter = healthPoints-1;
 int expCounter = 0;
@@ -46,6 +48,8 @@ int[] portal1_in = new int[2];
 int[] portal1_out = new int[2];
 int[] portal2_in = new int[2];
 int[] portal2_out = new int[2];
+int[] portal3_in = new int[2];
+int[] portal3_out = new int[2];
 
 public PGraphics blockGraphics;
 PImage mapimg;
@@ -72,12 +76,16 @@ void setup(){
   Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
   //Audioplayer.play();
   
-  Pun = minim.loadFile("data/music/roblox.mp3", 2048);
+  Pun = minim.loadFile("data/music/burp.mp3", 2048);
   pauseScreen = new Menu();
   fartRight = loadImage("data/fartRight.png");
   fartLeft = loadImage("data/fartLeft.png"); 
   portalRed = loadImage("data/portalRed.png");
   portalGreen = loadImage("data/portalGreen.png");
+  button = loadImage("data/Button.png"); 
+  Button[0] = button.get(0,0,128,64);
+  Button[1] = button.get(128,0,128,64);
+  button =Button[0];
   PortalRed[0] = portalRed.get(0,0,128,128);
   PortalRed[1] = portalRed.get(128,0,128,128);
   PortalGreen[0] = portalGreen.get(0,0,128,128);
@@ -90,6 +98,10 @@ void setup(){
   portal2_in[1] = 2500;
   portal2_out[0] = 300;
   portal2_out[1] = 300;
+  portal3_in[0] = 2350;
+  portal3_in[1] = 500;
+  portal3_out[0] = 1780;
+  portal3_out[1] = 7100;
   for(int bals = 0; bals <20;bals++){
     ball[bals] = new HalmBall(true);
   }
@@ -123,7 +135,8 @@ void setup(){
   blocks[11] = loadImage("data/blocks/Waterdeep.png");
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
-  player = new Player(4000, 6200);
+  //player = new Player(400, 7000);
+  player = new Player(3780,5370);
   pig[0] = new Mob(200,600,1);
   pig[1] = new Mob(2400,1700,1);
   pig[2] = new Mob(300,1200,1);
@@ -191,23 +204,24 @@ void draw(){
     collisions(player, Mapcells);
     portalsDisp();
     doll.display();
-    farmer.display();
     farmer.update();
+    farmer.display();
     for(int j = 0; j<20;j++){
     ball[j].update();
     ball[j].display();
     collisions(ball[j], Mapcells);
+    MobAttack(j, false);
     }
-    if(ballspawned != int((time/1000)%20)){
+    if(ballspawned != int((time/1000)%20) && farmer.life>0){
       ballspawned = int((time/1000)%20);
       BallSpawner();
     }
     for(int i = 0; i<3;i++){
-    pig[i].display();
-    pig[i].update();
-    chick[i].display();
-    chick[i].update();
-    MobAttack(i);
+      pig[i].display();
+      pig[i].update();
+      chick[i].display();
+      chick[i].update();
+      MobAttack(i, true);
     
     
     
@@ -247,11 +261,22 @@ void portalsDisp(){
   image(PortalRed[int((time/500)%2)],portal1_out[0],portal1_out[1]); 
   image(PortalGreen[int((time/500)%2)],portal2_in[0],portal2_in[1]);
   image(PortalRed[int((time/500)%2)],portal2_out[0],portal2_out[1]); 
+  image(PortalGreen[int((time/500)%2)],portal3_in[0],portal3_in[1]);
+  image(PortalRed[int((time/500)%2)],portal3_out[0],portal3_out[1]); 
+  image(button,4000,5470);
   if(player.center_x < portal1_in[0] + 20 && player.center_x > portal1_in[0]-20 && player.center_y > portal1_in[1]+20 && player.center_y < portal1_in[1]+80){
     portals_transfer(1);
   }
   if(player.center_x < portal2_in[0] + 20 && player.center_x > portal2_in[0]-20 && player.center_y > portal2_in[1]+20 && player.center_y < portal2_in[1]+80){
     portals_transfer(2);
+  }
+  if(player.center_x < portal3_in[0] + 20 && player.center_x > portal3_in[0]-20 && player.center_y > portal3_in[1]+20 && player.center_y < portal3_in[1]+80){
+    portals_transfer(3);
+  }
+  if(player.center_x < 4050  && player.center_x > 3950 && player.center_y > 5450 && player.center_y < 5530){
+    button = Button[1];
+    farmer.life = -2;
+    
   }
 }
 void draw_background(){
@@ -265,47 +290,74 @@ void portals_transfer(int port_nmr){
     player.center_x = portal1_out[0];
     player.center_y = portal1_out[1];
   }
-  if (port_nmr == 2){
+  else if (port_nmr == 2){
     player.center_x = portal2_out[0];
     player.center_y = portal2_out[1];
   }
+  else if (port_nmr == 3){
+    player.center_x = portal3_out[0];
+    player.center_y = portal3_out[1];
+  }
   
 }
-void MobAttack(int i){
-  if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) <800 && !attacked){
-    print("OUUF");
-    hpCounter -= 4;
-    println("hp is at ", hpCounter);
-    attacked=true;
-    if(hpCounter <= 0){
-       player.change_x = 0;
-       player.dead = true;
-     }
-     else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
-         pauseScreen.healthBar[hpCounter] = pauseScreen.lvlMid;
-         pauseScreen.healthBar[hpCounter+1] = pauseScreen.lvlMid;
-         pauseScreen.healthBar[hpCounter+2] = pauseScreen.lvlMid;
-         pauseScreen.healthBar[hpCounter+3] = pauseScreen.lvlMid;
-         //healthBar[hpCounter-1] = lvlMid;
+void MobAttack(int i, boolean mob){
+  if(mob){
+    if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) <800 && !attacked){
+      print("OUUF");
+      hpCounter -= 4;
+      println("hp is at ", hpCounter);
+      attacked=true;
+      if(hpCounter <= 0){
+         player.change_x = 0;
+         player.dead = true;
        }
+       else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
+           pauseScreen.healthBar[hpCounter] = pauseScreen.lvlMid;
+           pauseScreen.healthBar[hpCounter+1] = pauseScreen.lvlMid;
+           pauseScreen.healthBar[hpCounter+2] = pauseScreen.lvlMid;
+           pauseScreen.healthBar[hpCounter+3] = pauseScreen.lvlMid;
+           //healthBar[hpCounter-1] = lvlMid;
+         }
+    }
+     else if(Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) <800 && !attacked){
+      print("OUUF");
+      hpCounter-=3;
+      attacked=true;
+       if(hpCounter <= 0){
+         player.dead = true;
+       }
+       else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
+           pauseScreen.healthBar[hpCounter] = pauseScreen.lvlMid;
+           pauseScreen.healthBar[hpCounter+1] = pauseScreen.lvlMid;
+           pauseScreen.healthBar[hpCounter+2] = pauseScreen.lvlMid;
+         }
+      
+    }
+    else if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) > 800 && Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) > 800){
+      attacked = false;
+    }
   }
-   else if(Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) <800 && !attacked){
-    print("OUUF");
-    hpCounter-=3;
-    attacked=true;
-     if(hpCounter <= 0){
-       player.dead = true;
-     }
-     else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
-         pauseScreen.healthBar[hpCounter] = pauseScreen.lvlMid;
-         pauseScreen.healthBar[hpCounter+1] = pauseScreen.lvlMid;
-         pauseScreen.healthBar[hpCounter+2] = pauseScreen.lvlMid;
+  else{
+    if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) <800 && !attacked){
+      //hpCounter--;
+      println("hp is at ", hpCounter);
+      attacked=true;
+      if(hpCounter <= 0){
+         player.change_x = 0;
+         player.dead = true;
        }
+       else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
+           pauseScreen.healthBar[hpCounter] = pauseScreen.lvlMid;
+           //healthBar[hpCounter-1] = lvlMid;
+         }
+    }
+    else if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) > 800){
+      attacked = false;
+    }
+    
     
   }
-  else if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) > 800 && Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) > 800){
-    attacked = false;
-}}
+}
 
 void scroll(){
  float rightBoundary = viewX + displayWidth - RIGHT_MARGIN;
