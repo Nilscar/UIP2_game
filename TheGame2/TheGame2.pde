@@ -92,7 +92,7 @@ void setup(){
   blocks[11] = loadImage("data/blocks/Waterdeep.png");
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
-  player = new Player(400, 7000);
+  player = new Player(400, 2300);
   pig = new Mob(200,600,1);
   doll = new Mob(300,7140,3);
   chick = new Mob(400,600,2);
@@ -132,12 +132,11 @@ void draw(){
         }
       }
     }
-    for(int i = 0; i < pauseScreen.healthBar.length-1; i++){
-      //image(healthBar[i], 820 + i*healthBar[i].width,  510);
-      copy(pauseScreen.healthBar[i], 820 + i*pauseScreen.healthBar[i].width, 30, pauseScreen.healthBar[i].width, pauseScreen.healthBar[i].height,  820 + i*pauseScreen.healthBar[i].width, 30, pauseScreen.healthBar[i].width, pauseScreen.healthBar[i].height);    
-      
-      copy(pauseScreen.lvlBar[i], 820 + i*pauseScreen.lvlBar[i].width, 80, pauseScreen.healthBar[i].width, pauseScreen.lvlBar[i].height,  820 + i*pauseScreen.lvlBar[i].width, 80, pauseScreen.lvlBar[i].width, pauseScreen.lvlBar[i].height);
-    }
+    pauseScreen.drawBars();
+    /*for(int i = 0; i < pauseScreen.healthBar.length-1; i++){
+        pauseScreen.healthBar[i].copy();
+        pauseScreen.lvlBar[i].copy();
+      }*/
     if( millis()<timeNowR+500){
       println(int(millis()-timeNowR)/126);
       image(FartRight[int(millis()-timeNowR)/126],player.center_x+60 ,player.center_y - 20);
@@ -377,13 +376,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.isOnBlock = false;
       }
       
-      /*
-      for(int i = 2; i < collisionList.size(); i += 3){
-        if(collisionList.get(i).visable && player.getRight() >= collisionList.get(i).block.getLeft() || collisionList.get(i).visable && player.getLeft() <= collisionList.get(i).block.getRight()){
-          //print("  >> getTop():  ", collisionList.get(i).block.getTop());
-          player.setBottom(collisionList.get(i).block.getTop());
-        }
-      }*/
     }
     if(player.change_y < 0){
        if(collisionList.get(3).visable && player.getTop() <= collisionList.get(3).block.getBottom()){
@@ -480,12 +472,13 @@ void Punch(){
     timeNowR = millis(); 
     Pun.rewind();
     Pun.play();
-    chick.life == 0  
+    chick.life = 0; 
     giveExp(1);
     }
   }
   else{
   float PunchRadie = player.center_x -90;
+
   if(pig.center_x < player.center_x && pig.center_x > PunchRadie && (int(pig.center_y/100) == int(player.center_y/100))){
     timeNowL = millis();
     Pun.rewind();
@@ -511,7 +504,7 @@ void Punch(){
     timeNowL = millis(); 
     Pun.rewind();
     Pun.play();
-    chick.life == 0  
+    chick.life = 0;
     giveExp(1);
     }
   }
@@ -519,19 +512,18 @@ void Punch(){
 
 void giveExp(int expGain){
     if(expCounter >= 0 && expCounter <= healthPoints - 2){
+      pauseScreen.updateBars(expCounter, "lvl");
       expCounter += expGain;
       if( expCounter >= healthPoints-1){
         expCounter = 0;
         WALK_SPEED += lvlCounter;
         JUMP_SPEED += lvlCounter;
         lvlCounter += 1;
-        //lvlBar = createBar( lvlMid, healthPoints);
+        pauseScreen.lvlBar = pauseScreen.createBar(pauseScreen.lvlLeft, pauseScreen.lvlMid, pauseScreen.lvlRight, healthPoints);
         print(" \n lvl: ", lvlCounter, " >>>");
       }
       else{
-        for(int i = 0; i < expCounter;i++){
-          pauseScreen.lvlBar[i] = pauseScreen.lvlPointMid;
-      }
+          pauseScreen.updateBars(expCounter, "lvl");
     }
   }
 }
@@ -577,7 +569,6 @@ void keyPressed(){
     //println("pause meassures center_x: ", pauseScreen.leftBoxDown.center_x);
     //println("mob meassures w: ", pig.w);
     //println("mob meassures h: ", pig.h);
-    println("mob dist player: ", dist(player.center_x, player.center_y, pig.center_x, pig.center_y), " minDist: ", pig.fr_w/2 + player.fr_w/2);
     }
 }
 
@@ -613,10 +604,10 @@ void keyReleased(){
     player.change_y = 0;
     player.isOnTop = false;
   }
-  else if(key == 'a' && expCounter == healthPoints - 1){
+  /*else if(key == 'a' && expCounter == healthPoints - 1){
     pauseScreen.updateBars(expCounter, "lvl");
     expCounter += 1;
-  }
+  }*/
 }
 
 void mouseClicked(){

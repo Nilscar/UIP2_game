@@ -54,25 +54,25 @@ public class Menu{
     hpLeft = loadImage("data/menu/barRed_horizontalLeft.png");
     hpRight = loadImage("data/menu/barRed_horizontalRight.png");
     hpMid = loadImage("data/menu/barRed_horizontalMid.png");
-    hpLeft.resize(hpLeft.get().width*2, hpLeft.get().height*2);
-    hpRight.resize(hpRight.get().width*2, hpRight.get().height*2);
+    hpLeft.resize(hpLeft.get().width*4, hpLeft.get().height*2);
+    hpRight.resize(hpRight.get().width*4, hpRight.get().height*2);
     hpMid.resize(hpMid.get().width*2, hpMid.get().height*2);
     healthBar = createBar(hpLeft, hpMid, hpRight, healthPoints);
     
     lvlLeft = loadImage("data/menu/barBack_horizontalLeft.png");
     lvlRight = loadImage("data/menu/barBack_horizontalRight.png");
     lvlMid = loadImage("data/menu/barBack_horizontalMid.png");
-    lvlLeft.resize(lvlLeft.get().width*2, lvlLeft.get().height*2);
-    lvlRight.resize(lvlRight.get().width*2, lvlRight.get().height*2);
-    lvlMid.resize(lvlMid.get().width, lvlMid.get().height*2);
+    lvlLeft.resize(lvlLeft.get().width*4, lvlLeft.get().height*2);
+    lvlRight.resize(lvlRight.get().width*4, lvlRight.get().height*2);
+    lvlMid.resize(lvlMid.get().width*2, lvlMid.get().height*2);
     lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
     
     lvlPointLeft = loadImage("data/menu/barBlue_horizontalLeft.png");
     lvlPointRight = loadImage("data/menu/barBlue_horizontalRight.png");
     lvlPointMid = loadImage("data/menu/barBlue_horizontalBlue.png");
-    lvlPointLeft.resize(lvlPointLeft.get().width*2, lvlPointLeft.get().height*2);
-    lvlPointRight.resize(lvlPointRight.get().width*2, lvlPointRight.get().height*2);
-    lvlPointMid.resize(lvlPointMid.get().width, lvlPointMid.get().height*2);
+    lvlPointLeft.resize(lvlPointLeft.get().width*4, lvlPointLeft.get().height*2);
+    lvlPointRight.resize(lvlPointRight.get().width*4, lvlPointRight.get().height*2);
+    lvlPointMid.resize(lvlPointMid.get().width*2, lvlPointMid.get().height*2);
     
     soundOn = loadImage("data/menu/shadedDark17.png");
     soundOff = loadImage("data/menu/shadedDark19.png");
@@ -148,10 +148,13 @@ public class Menu{
     }
   }
   
-  public void drawBars(Player player){
+  public void drawBars(){
      for(int i = 0; i < healthBar.length; i++){
-        image(healthBar[i], player.center_x + 820 + i*healthBar[i].width, player.center_y - 510);
-        image(lvlBar[i], player.center_x + 820 + i*lvlBar[i].width, player.center_y - 510 + MENU_MARGIN/2);
+         copy(healthBar[i], int(panelLeft.w/2 + i*healthBar[i].width), int(panelLeft.getTop() + MENU_MARGIN), healthBar[i].width, healthBar[i].height, displayWidth - int(RIGHT_MARGIN) + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height);
+         copy(lvlBar[i], int(panelLeft.w/2 + i*lvlBar[i].width), int(panelLeft.getTop() + MENU_MARGIN), lvlBar[i].width, lvlBar[i].height, displayWidth - int(RIGHT_MARGIN) + i*lvlBar[i].width, 80, lvlBar[i].width, lvlBar[i].height);
+
+        //image(healthBar[i], displayWidth - int(RIGHT_MARGIN) + i*healthBar[i].width, 30);
+        //image(lvlBar[i], displayWidth - int(RIGHT_MARGIN) + i*lvlBar[i].width, 80);
     }
   }
   
