@@ -25,7 +25,8 @@ boolean pause;
 Menu pauseScreen;
 int timeNowR;
 int timeNowL;
-
+int time;
+int ballspawned =19;
 float currentX;
 float currentY;
 
@@ -43,14 +44,19 @@ int[] yZone = new int[2];
 int z = 0;
 int[] portal1_in = new int[2];
 int[] portal1_out = new int[2];
+int[] portal2_in = new int[2];
+int[] portal2_out = new int[2];
 
 public PGraphics blockGraphics;
 PImage mapimg;
 PImage bakgroundimg;
 Player player;
-Mob pig;
-Mob chick;
+Mob[] pig = new Mob[3];
+Mob[] chick = new Mob[3];
 Mob doll;
+Mob farmer; 
+HalmBall[] ball = new HalmBall[20]; 
+//HalmBall ball;
 Sprite reward;
 PImage[] blocks = new PImage[13];
 
@@ -65,13 +71,29 @@ void setup(){
   minim = new Minim(this);
   Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
   //Audioplayer.play();
+  
   Pun = minim.loadFile("data/music/roblox.mp3", 2048);
   pauseScreen = new Menu();
   fartRight = loadImage("data/fartRight.png");
   fartLeft = loadImage("data/fartLeft.png"); 
-  portalRed = loadImage("data/fartLeft.png");
-  portal1_in[0] = 800;
-  portal1_in[1] = 7200;
+  portalRed = loadImage("data/portalRed.png");
+  portalGreen = loadImage("data/portalGreen.png");
+  PortalRed[0] = portalRed.get(0,0,128,128);
+  PortalRed[1] = portalRed.get(128,0,128,128);
+  PortalGreen[0] = portalGreen.get(0,0,128,128);
+  PortalGreen[1] = portalGreen.get(128,0,128,128);
+  portal1_in[0] = 1250;
+  portal1_in[1] = 7130;
+  portal1_out[0] = 300;
+  portal1_out[1] = 2200;
+  portal2_in[0] = 4350;
+  portal2_in[1] = 2500;
+  portal2_out[0] = 300;
+  portal2_out[1] = 300;
+  for(int bals = 0; bals <20;bals++){
+    ball[bals] = new HalmBall(true);
+  }
+  
   for (int fartimg = 0; fartimg < 4 ; fartimg++){
     
     FartRight[fartimg] = fartRight.get(int(120*(fartimg%4)), 0, 120, 90);
@@ -89,7 +111,7 @@ void setup(){
   Mapcells = new Cell[split(CSVrows[0], ";").length][CSVrows.length];
   blocks[0] = loadImage("data/blocks/dirt.png");
   blocks[1] = loadImage("data/blocks/dirt_grass.png");
-  blocks[2] = loadImage("data/blocks/dirt_sand.png");
+  blocks[2] = loadImage("data/blocks/brick_grey.png");
   blocks[3] = loadImage("data/blocks/dirt_snow.png");
   blocks[4] = loadImage("data/blocks/gravelseq2.png");
   blocks[5] = loadImage("data/blocks/wood_red.png");
@@ -101,10 +123,15 @@ void setup(){
   blocks[11] = loadImage("data/blocks/Waterdeep.png");
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
-  player = new Player(400, 7000);
-  pig = new Mob(200,600,1);
+  player = new Player(4000, 6200);
+  pig[0] = new Mob(200,600,1);
+  pig[1] = new Mob(2400,1700,1);
+  pig[2] = new Mob(300,1200,1);
   doll = new Mob(300,7140,3);
-  chick = new Mob(400,600,2);
+  chick[0] = new Mob(400,600,2);
+  chick[1] = new Mob(500,2600,2);
+  chick[2] = new Mob(800,2600,2);
+  farmer = new Mob(3780,5370,4);
   currentX = player.center_x;
   currentY = player.center_y;
   mapHeight = CSVrows.length;
@@ -127,6 +154,7 @@ void draw(){
     draw_background();
     int playercol = int(player.center_x/Cell.BLOCK_SIZE);
     int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
+    time = millis();
        scroll();
      xZone[0] = playercol-13;
      xZone[1] = playercol+13;
@@ -147,30 +175,50 @@ void draw(){
       
       copy(pauseScreen.lvlBar[i], 820 + i*pauseScreen.lvlBar[i].width, 80, pauseScreen.healthBar[i].width, pauseScreen.lvlBar[i].height,  820 + i*pauseScreen.lvlBar[i].width, 80, pauseScreen.lvlBar[i].width, pauseScreen.lvlBar[i].height);
     }
-    if( millis()<timeNowR+500){
-      println(int(millis()-timeNowR)/126);
-      image(FartRight[int(millis()-timeNowR)/126],player.center_x+60 ,player.center_y - 20);
+    if( time<timeNowR+500){
+      println(int(time-timeNowR)/126);
+      image(FartRight[int(time-timeNowR)/126],player.center_x+60 ,player.center_y - 20);
     }
-    else if( millis()<timeNowL+500){
-      println(int(millis()-timeNowL)/126);
-      image(FartLeft[int(millis()-timeNowL)/126],player.center_x-60 ,player.center_y - 20);
+    else if( time<timeNowL+500){
+      println(int(time-timeNowL)/126);
+      image(FartLeft[int(time-timeNowL)/126],player.center_x-60 ,player.center_y - 20);
     }
+    
+      
+    
     player.display();
     player.update();
-    pig.display();
-    pig.update();
-    chick.display();
-    chick.update();
-    doll.display();
-    MobAttack();
-    
     collisions(player, Mapcells);
-    
-    if(pig.life >0){
-    collisions(pig, Mapcells);
+    portalsDisp();
+    doll.display();
+    farmer.display();
+    farmer.update();
+    for(int j = 0; j<20;j++){
+    ball[j].update();
+    ball[j].display();
+    collisions(ball[j], Mapcells);
     }
-    if(chick.life >0){
-    collisions(chick, Mapcells);
+    if(ballspawned != int((time/1000)%20)){
+      ballspawned = int((time/1000)%20);
+      BallSpawner();
+    }
+    for(int i = 0; i<3;i++){
+    pig[i].display();
+    pig[i].update();
+    chick[i].display();
+    chick[i].update();
+    MobAttack(i);
+    
+    
+    
+    
+    if(pig[i].life >0){
+    collisions(pig[i], Mapcells);
+    }
+    if(chick[i].life >0){
+    collisions(chick[i], Mapcells);
+    }
+    
     }
     if(keyPressed && (keyCode == UP && player.isOnLadder && ladder != null)){
       if(player.getBottom() >= ladder.getTop()){
@@ -189,15 +237,42 @@ void draw(){
     }
   }
 }
+void BallSpawner(){
+      ball[ballspawned] = new HalmBall(false);
+    
+  
+}
+void portalsDisp(){
+  image(PortalGreen[int((time/500)%2)],portal1_in[0],portal1_in[1]);
+  image(PortalRed[int((time/500)%2)],portal1_out[0],portal1_out[1]); 
+  image(PortalGreen[int((time/500)%2)],portal2_in[0],portal2_in[1]);
+  image(PortalRed[int((time/500)%2)],portal2_out[0],portal2_out[1]); 
+  if(player.center_x < portal1_in[0] + 20 && player.center_x > portal1_in[0]-20 && player.center_y > portal1_in[1]+20 && player.center_y < portal1_in[1]+80){
+    portals_transfer(1);
+  }
+  if(player.center_x < portal2_in[0] + 20 && player.center_x > portal2_in[0]-20 && player.center_y > portal2_in[1]+20 && player.center_y < portal2_in[1]+80){
+    portals_transfer(2);
+  }
+}
 void draw_background(){
   int x = z % bakgroundimg.width;
   for (int i = -x ; i < width ; i += bakgroundimg.width) {
       copy(bakgroundimg, 0, 0, bakgroundimg.width, height, i, 0, bakgroundimg.width, height);    
   }
 }
-
-void MobAttack(){
-  if(Math.pow(pig.center_x - player.center_x,2) + Math.pow(pig.center_y-player.center_y,2) <800 && !attacked){
+void portals_transfer(int port_nmr){
+  if (port_nmr == 1){
+    player.center_x = portal1_out[0];
+    player.center_y = portal1_out[1];
+  }
+  if (port_nmr == 2){
+    player.center_x = portal2_out[0];
+    player.center_y = portal2_out[1];
+  }
+  
+}
+void MobAttack(int i){
+  if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) <800 && !attacked){
     print("OUUF");
     hpCounter -= 4;
     println("hp is at ", hpCounter);
@@ -214,7 +289,7 @@ void MobAttack(){
          //healthBar[hpCounter-1] = lvlMid;
        }
   }
-   else if(Math.pow(chick.center_x - player.center_x,2) + Math.pow(chick.center_y-player.center_y,2) <800 && !attacked){
+   else if(Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) <800 && !attacked){
     print("OUUF");
     hpCounter-=3;
     attacked=true;
@@ -228,7 +303,7 @@ void MobAttack(){
        }
     
   }
-  else if(Math.pow(pig.center_x - player.center_x,2) + Math.pow(pig.center_y-player.center_y,2) > 800 && Math.pow(chick.center_x - player.center_x,2) + Math.pow(chick.center_y-player.center_y,2) > 800){
+  else if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) > 800 && Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) > 800){
     attacked = false;
 }}
 
@@ -464,62 +539,66 @@ public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates 
 void Punch(){
   if (player.change_x >= 0){
   float PunchRadie = player.center_x +140;
-  if(pig.center_x > player.center_x && pig.center_x < PunchRadie && (int(pig.center_y/100) == int(player.center_y/100))){
-    timeNowR = millis(); 
-    Pun.rewind();
-    Pun.play();
-    pig.life--;
-    pig.change_x = pig.change_x*3.2;
-    if(pig.life == 0){   
-      giveExp(4);
+  for(int i = 0; i<3;i++){
+    if(pig[i].center_x > player.center_x && pig[i].center_x < PunchRadie && (int(pig[i].center_y/100) == int(player.center_y/100))){
+      timeNowR = millis(); 
+      Pun.rewind();
+      Pun.play();
+      pig[i].life--;
+      pig[i].change_x = pig[i].change_x*3.2;
+      if(pig[i].life == 0){   
+        giveExp(4);
+      }
+      }
+      if(chick[i].center_x > player.center_x && chick[i].center_x < PunchRadie && (int(chick[i].center_y/100) == int(player.center_y/100))){
+      timeNowR = millis(); 
+      Pun.rewind();
+      Pun.play();
+      chick[i].life--;
+      chick[i].change_x = chick[i].change_x*3.2;
+      if(chick[i].life == 0){   
+        giveExp(3);
+      }
+      
     }
-    }
-    if(chick.center_x > player.center_x && chick.center_x < PunchRadie && (int(chick.center_y/100) == int(player.center_y/100))){
-    timeNowR = millis(); 
-    Pun.rewind();
-    Pun.play();
-    chick.life--;
-    chick.change_x = chick.change_x*3.2;
-    if(chick.life == 0){   
-      giveExp(3);
-    }
-    
-  }
-  if(doll.center_x > player.center_x && doll.center_x < PunchRadie && (int(doll.center_y/100) == int(player.center_y/100))){
-    timeNowR = millis(); 
-    Pun.rewind();
-    Pun.play();
-    giveExp(1);
+    if(doll.center_x > player.center_x && doll.center_x < PunchRadie && (int(doll.center_y/100) == int(player.center_y/100))){
+      timeNowR = millis(); 
+      Pun.rewind();
+      Pun.play();
+      giveExp(1);
+      }
     }
   }
   else{
   float PunchRadie = player.center_x -140;
-  if(pig.center_x < player.center_x && pig.center_x > PunchRadie && (int(pig.center_y/100) == int(player.center_y/100))){
-    timeNowL = millis();
-    Pun.rewind();
-    Pun.play();
-    pig.life--;
-    pig.change_x = pig.change_x*3.2;
-    if(pig.life == 0){   
-      giveExp(4);
-    }
-    }
-    if(chick.center_x < player.center_x && chick.center_x > PunchRadie && (int(chick.center_y/100) == int(player.center_y/100))){
-    timeNowL = millis();
-    Pun.rewind();
-    Pun.play();
-    chick.life--;
-    chick.change_x = pig.change_x*3.2;
-    if(chick.life == 0){   
-      giveExp(3);
-    
-    }
-    }
-    if(doll.center_x < player.center_x && doll.center_x > PunchRadie && (int(doll.center_y/100) == int(player.center_y/100))){
-    timeNowL = millis(); 
-    Pun.rewind();
-    Pun.play(); 
-    giveExp(1);
+  for(int i = 0; i<3;i++){
+    if(pig[i].center_x < player.center_x && pig[i].center_x > PunchRadie && (int(pig[i].center_y/100) == int(player.center_y/100))){
+      timeNowL = millis();
+      Pun.rewind();
+      Pun.play();
+      pig[i].life--;
+      pig[i].change_x = pig[i].change_x*3.2;
+      if(pig[i].life == 0){   
+        giveExp(4);
+      }
+      }
+      if(chick[i].center_x < player.center_x && chick[i].center_x > PunchRadie && (int(chick[i].center_y/100) == int(player.center_y/100))){
+      timeNowL = millis();
+      Pun.rewind();
+      Pun.play();
+      chick[i].life--;
+      chick[i].change_x = pig[i].change_x*3.2;
+      if(chick[i].life == 0){   
+        giveExp(3);
+      
+      }
+      }
+      if(doll.center_x < player.center_x && doll.center_x > PunchRadie && (int(doll.center_y/100) == int(player.center_y/100))){
+      timeNowL = millis(); 
+      Pun.rewind();
+      Pun.play(); 
+      giveExp(1);
+      }
     }
   }
 }
@@ -584,7 +663,7 @@ void keyPressed(){
     //println("pause meassures center_x: ", pauseScreen.leftBoxDown.center_x);
     //println("mob meassures w: ", pig.w);
     //println("mob meassures h: ", pig.h);
-    println("mob dist player: ", dist(player.center_x, player.center_y, pig.center_x, pig.center_y), " minDist: ", pig.fr_w/2 + player.fr_w/2);
+    println("mob dist player: ", dist(player.center_x, player.center_y, pig[0].center_x, pig[0].center_y), " minDist: ", pig[0].fr_w/2 + player.fr_w/2);
     }
 }
 

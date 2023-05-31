@@ -7,6 +7,8 @@ public class Mob extends Sprite{
   PImage doll = loadImage("data/TrainingDoll.png");
   PImage[] Chicken_right = new PImage[2];
   PImage[] Chicken_left = new PImage[2];
+  PImage farmer = loadImage("data/Farmer.png");
+  PImage[] Farmer = new PImage[5];
   int life = 2; 
   int anim;
   
@@ -22,6 +24,10 @@ public class Mob extends Sprite{
        
        Chicken_left[0] = chicken_left.get(0, 0, 80, 100);
        Chicken_left[1] = chicken_left.get(80, 0, 80, 100);
+       
+       for(int fi = 0; fi<5; fi++){
+         Farmer[fi] = farmer.get(fi*200,0,200,200);
+       }
   }
   @Override
   public void display(){
@@ -43,6 +49,11 @@ public class Mob extends Sprite{
     }
     else if( anim == 3){
       image(doll, center_x, center_y, 90, 120);
+      change_x = 0;
+      change_y = 0; 
+    }
+    else if( anim == 4){
+      image(Farmer[(int(currentFrame))%5], center_x, center_y, fr_w, h);
       change_x = 0;
       change_y = 0; 
     }
