@@ -24,8 +24,9 @@ public class Menu{
   PImage lvlPointLeft;
   PImage lvlPointRight;
   PImage lvlPointMid;
+  PImage soundOn, soundOff, musicOn, musicOff;
   PImage skillBox;
-  Sprite rightBox, leftBoxUp, leftBoxDown, panelLeft, panelRight, crossButton;
+  Sprite rightBox, leftBoxUp, leftBoxDown, panelLeft, panelRight, crossButton, soundButton, musicButton;
   Sprite[] itemBoxes;
   int nrItemBoxes = 3;
   int healthPoints = 25;
@@ -73,6 +74,10 @@ public class Menu{
     lvlPointRight.resize(lvlPointRight.get().width*2, lvlPointRight.get().height*2);
     lvlPointMid.resize(lvlPointMid.get().width, lvlPointMid.get().height*2);
     
+    soundOn = loadImage("data/menu/shadedDark17.png");
+    soundOff = loadImage("data/menu/shadedDark19.png");
+    musicOn = loadImage("data/menu/shadedDark13.png");
+    musicOff = loadImage("data/menu/shadedDark15.png");
     skillBox = loadImage("data/menu/square_shadow.png");
     
     rightBox = new Sprite(menuBoxBrown, 0.75*displayWidth, displayHeight/2, SCALE_W, SCALE_RIGHT_H, false);
@@ -84,7 +89,8 @@ public class Menu{
       itemBoxes[i] = new Sprite(itemBox, leftBoxDown.getLeft() + (SCALE_W + SCALE_W*i)/4, leftBoxDown.center_y, (SCALE_W-MENU_MARGIN)/4, SCALE_LEFT_H - 1.5*MENU_MARGIN, false);
     }
     crossButton = new Sprite(closeButton, rightBox.getRight() - MENU_MARGIN/4, rightBox.getTop() + MENU_MARGIN/4, MENU_MARGIN, MENU_MARGIN, true);
-    
+    soundButton = new Sprite(soundOn, panelRight.getRight() - (MENU_MARGIN + soundOn.width/4), panelRight.getTop() + MENU_MARGIN/2, soundOn.width, soundOn.height, true);
+    musicButton = new Sprite(musicOn, panelRight.getRight() - MENU_MARGIN/2, panelRight.getTop() + MENU_MARGIN/2, musicOn.width, musicOn.height, true);
   }
   
   void viewMenu(String hp, String lvl){
@@ -92,7 +98,7 @@ public class Menu{
     textAlign(CENTER, TOP);
     textSize(128);
     fill(#296986); 
-    text(gameTitle, rightBox.center_x, rightBox.getTop() + MENU_MARGIN/2);  
+    text(gameTitle, rightBox.center_x, rightBox.getTop() + MENU_MARGIN/2);
     leftBoxUp.display();
     leftBoxDown.display();
     panelLeft.display();
@@ -112,6 +118,8 @@ public class Menu{
     }
     crossButton.display();
     image(cross, crossButton.center_x, crossButton.center_y, crossButton.w/2, crossButton.h/2);
+    soundButton.display();
+    musicButton.display();
   }
   
   public void updateBars(int num, String bar){

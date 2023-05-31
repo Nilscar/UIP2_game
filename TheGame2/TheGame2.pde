@@ -512,6 +512,26 @@ void mouseClicked(){
        player.center_y = currentY;
        pause = !pause;
   }
+  else if(pmouseX >= pauseScreen.soundButton.getLeft() && pmouseX <= pauseScreen.soundButton.getRight() && 
+          pmouseY <= pauseScreen.soundButton.getBottom() && pmouseY >= pauseScreen.soundButton.getTop() && pause && mouseButton == LEFT){
+       if(pauseScreen.soundButton.img == pauseScreen.soundOn){
+         pauseScreen.soundButton.img = pauseScreen.soundOff;
+       }
+       else{
+         pauseScreen.soundButton.img = pauseScreen.soundOn;
+       }
+  }
+  else if(pmouseX >= pauseScreen.musicButton.getLeft() && pmouseX <= pauseScreen.musicButton.getRight() && 
+          pmouseY <= pauseScreen.musicButton.getBottom() && pmouseY >= pauseScreen.musicButton.getTop() && pause && mouseButton == LEFT){
+       if(pauseScreen.musicButton.img == pauseScreen.musicOn){
+         pauseScreen.musicButton.img = pauseScreen.musicOff;
+         Audioplayer.pause();
+       }
+       else{
+         pauseScreen.musicButton.img = pauseScreen.musicOn;
+         Audioplayer.play();
+       }
+  }
 }
 
 //Creating the game map from csv file
