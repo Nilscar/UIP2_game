@@ -44,6 +44,7 @@ PImage bakgroundimg;
 Player player;
 Mob pig;
 Mob chick;
+Mob doll;
 Sprite reward;
 PImage[] blocks = new PImage[13];
 
@@ -91,8 +92,9 @@ void setup(){
   blocks[11] = loadImage("data/blocks/Waterdeep.png");
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
-  player = new Player(600, 600);
+  player = new Player(400, 7000);
   pig = new Mob(200,600,1);
+  doll = new Mob(300,7140,3);
   chick = new Mob(400,600,2);
   currentX = player.center_x;
   currentY = player.center_y;
@@ -105,7 +107,7 @@ void draw(){
   if(pause){
 
     background(#3890BF);
-    pauseScreen.viewMenu(str(int(100*hpCounter/healthPoints)), str(lvlCounter));
+    pauseScreen.viewMenu(str(int(110*hpCounter/healthPoints)), str(lvlCounter));
     player.center_x = pauseScreen.panelLeft.getLeft() + pauseScreen.MENU_MARGIN/2;
     player.center_y = pauseScreen.panelLeft.getTop() + pauseScreen.MENU_MARGIN + pauseScreen.healthBar[0].height/2;
     player.display();
@@ -130,11 +132,11 @@ void draw(){
         }
       }
     }
-    for(int i = 0; i < healthBar.length-1; i++){
+    for(int i = 0; i < pauseScreen.healthBar.length-1; i++){
       //image(healthBar[i], 820 + i*healthBar[i].width,  510);
-      copy(healthBar[i], 820 + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height,  820 + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height);    
+      copy(pauseScreen.healthBar[i], 820 + i*pauseScreen.healthBar[i].width, 30, pauseScreen.healthBar[i].width, pauseScreen.healthBar[i].height,  820 + i*pauseScreen.healthBar[i].width, 30, pauseScreen.healthBar[i].width, pauseScreen.healthBar[i].height);    
       
-      copy(lvlBar[i], 820 + i*lvlBar[i].width, 80, healthBar[i].width, lvlBar[i].height,  820 + i*lvlBar[i].width, 80, lvlBar[i].width, lvlBar[i].height);
+      copy(pauseScreen.lvlBar[i], 820 + i*pauseScreen.lvlBar[i].width, 80, pauseScreen.healthBar[i].width, pauseScreen.lvlBar[i].height,  820 + i*pauseScreen.lvlBar[i].width, 80, pauseScreen.lvlBar[i].width, pauseScreen.lvlBar[i].height);
     }
     if( millis()<timeNowR+500){
       println(int(millis()-timeNowR)/126);
@@ -150,6 +152,7 @@ void draw(){
     pig.update();
     chick.display();
     chick.update();
+    doll.display();
     MobAttack();
     
     collisions(player, Mapcells);
@@ -195,10 +198,10 @@ void MobAttack(){
        player.dead = true;
      }
      else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
-         healthBar[hpCounter] = lvlMid;
-         healthBar[hpCounter+1] = lvlMid;
-         healthBar[hpCounter+2] = lvlMid;
-         healthBar[hpCounter+3] = lvlMid;
+         pauseScreen.healthBar[hpCounter] = pauseScreen.lvlMid;
+         pauseScreen.healthBar[hpCounter+1] = pauseScreen.lvlMid;
+         pauseScreen.healthBar[hpCounter+2] = pauseScreen.lvlMid;
+         pauseScreen.healthBar[hpCounter+3] = pauseScreen.lvlMid;
          //healthBar[hpCounter-1] = lvlMid;
        }
   }
@@ -210,9 +213,9 @@ void MobAttack(){
        player.dead = true;
      }
      else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
-         healthBar[hpCounter] = lvlMid;
-         healthBar[hpCounter+1] = lvlMid;
-         healthBar[hpCounter+2] = lvlMid;
+         pauseScreen.healthBar[hpCounter] = pauseScreen.lvlMid;
+         pauseScreen.healthBar[hpCounter+1] = pauseScreen.lvlMid;
+         pauseScreen.healthBar[hpCounter+2] = pauseScreen.lvlMid;
        }
     
   }
@@ -370,7 +373,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.isOnTop = true;
       }
       
-      else if(!collisionList.get(5).visable && !collisionList.get(8).visable && !collisionList.get(2).visable){
+      else if(!collisionList.get(5).visable /*&& !collisionList.get(8).visable && !collisionList.get(2).visable*/){
         player.isOnBlock = false;
       }
       
@@ -473,6 +476,13 @@ void Punch(){
     }
     
   }
+  if(doll.center_x > player.center_x && doll.center_x < PunchRadie && (int(doll.center_y/100) == int(player.center_y/100))){
+    timeNowR = millis(); 
+    Pun.rewind();
+    Pun.play();
+    chick.life == 0  
+    giveExp(1);
+    }
   }
   else{
   float PunchRadie = player.center_x -90;
@@ -497,6 +507,13 @@ void Punch(){
     
     }
     }
+    if(doll.center_x < player.center_x && doll.center_x > PunchRadie && (int(doll.center_y/100) == int(player.center_y/100))){
+    timeNowL = millis(); 
+    Pun.rewind();
+    Pun.play();
+    chick.life == 0  
+    giveExp(1);
+    }
   }
 }
 
@@ -508,12 +525,12 @@ void giveExp(int expGain){
         WALK_SPEED += lvlCounter;
         JUMP_SPEED += lvlCounter;
         lvlCounter += 1;
-        lvlBar = createBar( lvlMid, healthPoints);
+        //lvlBar = createBar( lvlMid, healthPoints);
         print(" \n lvl: ", lvlCounter, " >>>");
       }
       else{
         for(int i = 0; i < expCounter;i++){
-          lvlBar[i] = lvlPointMid;
+          pauseScreen.lvlBar[i] = pauseScreen.lvlPointMid;
       }
     }
   }

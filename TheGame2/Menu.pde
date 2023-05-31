@@ -29,8 +29,8 @@ public class Menu{
   Sprite rightBox, leftBoxUp, leftBoxDown, panelLeft, panelRight, crossButton, soundButton, musicButton;
   Sprite[] itemBoxes;
   int nrItemBoxes = 3;
-  int healthPoints = 25;
-  int hpCounter = healthPoints;
+  int healthPoints = 11;
+  int hpCounter = healthPoints-1;
   int expCounter = 0;
   int lvlCounter = 1;
   PImage[] healthBar = new PImage[healthPoints];
@@ -56,7 +56,7 @@ public class Menu{
     hpMid = loadImage("data/menu/barRed_horizontalMid.png");
     hpLeft.resize(hpLeft.get().width*2, hpLeft.get().height*2);
     hpRight.resize(hpRight.get().width*2, hpRight.get().height*2);
-    hpMid.resize(hpMid.get().width, hpMid.get().height*2);
+    hpMid.resize(hpMid.get().width*2, hpMid.get().height*2);
     healthBar = createBar(hpLeft, hpMid, hpRight, healthPoints);
     
     lvlLeft = loadImage("data/menu/barBack_horizontalLeft.png");
