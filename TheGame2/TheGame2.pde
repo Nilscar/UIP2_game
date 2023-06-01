@@ -351,11 +351,7 @@ void MobAttack(int i, boolean mob){
          player.dead = true;
        }
        else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
-           pauseScreen.healthBar[hpCounter] = pauseScreen.lvlMid;
-           pauseScreen.healthBar[hpCounter+1] = pauseScreen.lvlMid;
-           pauseScreen.healthBar[hpCounter+2] = pauseScreen.lvlMid;
-           pauseScreen.healthBar[hpCounter+3] = pauseScreen.lvlMid;
-           //healthBar[hpCounter-1] = lvlMid;
+           pauseScreen.updateBars(hpCounter, "hp");
          }
     }
      else if(Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) <800 && !attacked){
@@ -367,9 +363,7 @@ void MobAttack(int i, boolean mob){
          player.dead = true;
        }
        else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
-           pauseScreen.healthBar[hpCounter] = pauseScreen.lvlMid;
-           pauseScreen.healthBar[hpCounter+1] = pauseScreen.lvlMid;
-           pauseScreen.healthBar[hpCounter+2] = pauseScreen.lvlMid;
+           pauseScreen.updateBars(hpCounter, "hp");
          }
       
     }
