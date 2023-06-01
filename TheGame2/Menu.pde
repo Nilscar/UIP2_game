@@ -113,12 +113,6 @@ public class Menu{
         image(lvlBar[i], panelLeft.w/2 + i*lvlBar[i].width, panelLeft.getTop() + 1.5*MENU_MARGIN);
         
     }
-    /*
-    stroke(255);
-    noFill();
-    rect(displayWidth - int(RIGHT_MARGIN), 30, healthBar[0].width * healthPoints, healthBar[0].height);
-    rect(panelLeft.w/2 - healthBar[0].width/2, panelLeft.getTop() + MENU_MARGIN, healthBar[0].width * healthPoints, healthBar[0].height/2);
-    */
     fill(#B24A16);
     textAlign(LEFT, CENTER);
     textSize(healthBar[0].height);
