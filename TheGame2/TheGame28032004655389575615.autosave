@@ -37,7 +37,7 @@ int timeNowR;
 int timeNowL;
 int time;
 int timeAttack;
-int ballspawned =14;
+int ballspawned =19;
 float currentX;
 float currentY;
 
@@ -68,7 +68,7 @@ Mob[] pig = new Mob[3];
 Mob[] chick = new Mob[3];
 Mob doll;
 Mob farmer; 
-HalmBall[] ball = new HalmBall[15]; 
+HalmBall[] ball = new HalmBall[20]; 
 //HalmBall ball;
 Sprite reward;
 PImage[] blocks = new PImage[13];
@@ -82,7 +82,7 @@ void setup(){
   fullScreen(P2D);
   imageMode(CENTER);
   minim = new Minim(this);
-  timeAttack = 0;
+  timeAttack = 0 ;
   Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
   //Audioplayer.play();
    f = createFont("Arial",70,true);
@@ -118,7 +118,7 @@ void setup(){
   portal3_in[1] = 500;
   portal3_out[0] = 1780;
   portal3_out[1] = 7100;
-  for(int bals = 0; bals <15;bals++){
+  for(int bals = 0; bals <20;bals++){
     ball[bals] = new HalmBall(true);
   }
   
@@ -151,8 +151,8 @@ void setup(){
   blocks[11] = loadImage("data/blocks/Waterdeep.png");
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
-  //player = new Player(400, 7000);
-  player = new Player(3780,5370);
+  player = new Player(400, 7000);
+  //player = new Player(3780,5370);
   pig[0] = new Mob(200,600,1);
   pig[1] = new Mob(2400,1700,1);
   pig[2] = new Mob(3400,1200,1);
@@ -219,14 +219,14 @@ void draw(){
     doll.display();
     farmer.update();
     farmer.display();
-    for(int j = 0; j<15;j++){
+    for(int j = 0; j<20;j++){
     ball[j].update();
     ball[j].display();
     collisions(ball[j], Mapcells);
     MobAttack(j, false);
     }
-    if(ballspawned != int((time/1000)%15) && farmer.life>0){
-      ballspawned = int((time/1000)%15);
+    if(ballspawned != int((time/1000)%20) && farmer.life>0){
+      ballspawned = int((time/1000)%20);
       BallSpawner();
     }
     for(int i = 0; i<3;i++){
@@ -351,7 +351,11 @@ void MobAttack(int i, boolean mob){
          player.dead = true;
        }
        else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
-           pauseScreen.updateBars(hpCounter, "hp");
+           pauseScreen.healthBar[hpCounter] = pauseScreen.lvlMid;
+           pauseScreen.healthBar[hpCounter+1] = pauseScreen.lvlMid;
+           pauseScreen.healthBar[hpCounter+2] = pauseScreen.lvlMid;
+           pauseScreen.healthBar[hpCounter+3] = pauseScreen.lvlMid;
+           //healthBar[hpCounter-1] = lvlMid;
          }
     }
      else if(Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) <800 && !attacked){
@@ -363,7 +367,9 @@ void MobAttack(int i, boolean mob){
          player.dead = true;
        }
        else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
-           pauseScreen.updateBars(hpCounter, "hp");
+           pauseScreen.healthBar[hpCounter] = pauseScreen.lvlMid;
+           pauseScreen.healthBar[hpCounter+1] = pauseScreen.lvlMid;
+           pauseScreen.healthBar[hpCounter+2] = pauseScreen.lvlMid;
          }
       
     }
@@ -373,7 +379,7 @@ void MobAttack(int i, boolean mob){
   }
   else{
     if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) <800 && !attacked){
-      hpCounter--;
+      //hpCounter--;
       println("hp is at ", hpCounter);
       attacked=true;
       timeAttack = time;
@@ -744,7 +750,7 @@ void keyReleased(){
     if(player.land_block == 3 && !player.isOnLadder){
       player.change_x = 2;
     }
-    else if(player.isOnLadder && (!keyPressed)){
+    else if(player.isOnLadder && keyCode != UP){
       player.change_y = 0;
       player.change_x = 0;
     }
@@ -756,7 +762,7 @@ void keyReleased(){
      if(player.land_block == 3 && !player.isOnLadder){
       player.change_x = -2;
     }
-    else if(player.isOnLadder && (!keyPressed)){
+    else if(player.isOnLadder && keyCode != UP){
       player.change_y = 0;
       player.change_x = 0;
     }
