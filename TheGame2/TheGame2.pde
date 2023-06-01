@@ -294,10 +294,10 @@ void draw(){
     
     }
     //keyPressed needs to be called in the draw func in order to properly update the postion when climbing ladders
-    if(keyPressed && (keyCode == UP && player.isOnLadder && ladder != null)){
+    if((keyPressed && (keyCode == UP && player.isOnLadder && ladder != null)) || (keyPressed && (keyCode == UP && keyCode == LEFT && player.isOnLadder && ladder != null))
+        || (keyPressed && (keyCode == UP && keyCode == LEFT && player.isOnLadder && ladder != null))){
       if(player.getBottom() >= ladder.getTop()){//if player not on top of ladder it should climb the ladder with half the walking speed
         player.change_y = -WALK_SPEED/2;
-        player.change_x = 0;
         player.isOnBlock = false;
         player.isOnTop = false;
         
@@ -313,7 +313,6 @@ void draw(){
     else if(keyPressed && (keyCode == DOWN && player.isOnLadder && ladder != null)){
       if(player.getBottom() >= ladder.getTop()){//if player not on top of ladder it should climb the ladder with half the walking speed
         player.change_y = WALK_SPEED/2;
-        player.change_x = 0;
         player.isOnBlock = false;
         player.isOnTop = false;
       }
@@ -323,8 +322,10 @@ void draw(){
         player.change_y += GRAVITY;
       }
     }
-  }
-}
+    
+  }//End of is not paused
+}//End of draw()
+
 void thinkText(Sprite champ, String txt_msg){
   image(bubble, champ.center_x + 200, champ.center_y -150);
   textAlign(CENTER, TOP);
@@ -496,7 +497,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.land_block = collisionList.get(5).block_num;
         
         
-        if(player.land_block != 3 && (player.change_x == 2||player.change_x == -2)&& player.isPlayer){ 
+        if(player.land_block != 3 && (player.change_x == 2 || player.change_x == -2)&& player.isPlayer){ 
           player.change_x = 0;
        }
        if(player.land_block == 10 && !player.dead && player.isPlayer){//if player lands on water ==> death
@@ -587,7 +588,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
       }
       else if(collisionList.get(5).ladder && player.getBottom() >= collisionList.get(5).block.getTop()){
         player.isOnLadder = true;
-        player.isOnTop = true;
       }
       
       else if(!collisionList.get(5).visable){ 
@@ -647,12 +647,12 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
       }
    //Checks if the player is not on a ladder
    if(ladder != null && player.getLeft() > ladder.getRight() ||
-   ladder != null && player.getRight() < ladder.getLeft()){
+   ladder != null && player.getRight() < ladder.getLeft() ||
+   ladder != null && player.getTop() > ladder.getBottom()){
      player.isOnLadder = false;
      player.isOnTop = false;
    }
-   
-}
+} //End of collisions
 
 public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates a "3x3 matrix"(actually a list) containing the surrounding map blocks of the player
    ArrayList<Cell> collisionList = new ArrayList<Cell>();
@@ -763,12 +763,16 @@ void keyPressed(){
     player.isOnLadder = false;
     player.isOnTop = false;
   }
-  else if(keyCode == ENTER ){
+  else if(keyCode == ENTER && !pause){
     if(textReader<8){
       textReader++;
     }
   }
-  
+  else if(keyCode == ENTER && pause){
+    player.center_x = currentX;
+    player.center_y = currentY;
+    pause = !pause;
+  }
   else if(keyCode == DOWN && (player.isOnTop || player.isOnLadder)){
     player.change_y = WALK_SPEED/2;
     player.isOnTop = false;
@@ -792,7 +796,7 @@ void keyReleased(){
     if(player.land_block == 3 && !player.isOnLadder){
       player.change_x = 2;
     }
-    else if(player.isOnLadder && keyCode != UP){
+    else if(player.isOnLadder && (keyPressed)){
       player.change_y = 0;
       player.change_x = 0;
     }
@@ -804,7 +808,7 @@ void keyReleased(){
      if(player.land_block == 3 && !player.isOnLadder){
       player.change_x = -2;
     }
-    else if(player.isOnLadder && keyCode != UP){
+    else if(player.isOnLadder && (keyPressed)){
       player.change_y = 0;
       player.change_x = 0;
     }
@@ -826,15 +830,9 @@ void keyReleased(){
     player.isOnTop = false;
     }
   }
-  /*else if(key == 'a' && expCounter == healthPoints - 1){
-    pauseScreen.updateBars(expCounter, "lvl");
-    expCounter += 1;
-  }*/
 }
 
 void mouseClicked(){
-  //println("mouseClicked, pmouseX: ", pmouseX, "\n pmouseY: ", pmouseY, "\n");
-  //println("button x: ", pauseScreen.crossButton.getLeft(), "-", pauseScreen.crossButton.getRight(), "\nbutton y: ", pauseScreen.crossButton.getTop(), "-", pauseScreen.crossButton.getBottom());
   if(pmouseX >= pauseScreen.crossButton.getLeft() && pmouseX <= pauseScreen.crossButton.getRight() && 
      pmouseY <= pauseScreen.crossButton.getBottom() && pmouseY >= pauseScreen.crossButton.getTop() && pause && mouseButton == LEFT){
        player.center_x = currentX;
