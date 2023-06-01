@@ -94,7 +94,7 @@ public class Menu{
     musicButton = new Sprite(musicOn, panelRight.getRight() - MENU_MARGIN/2, panelRight.getTop() + MENU_MARGIN/2, musicOn.width, musicOn.height, true);
   }
   
-  void viewMenu(String hp, String lvl){ //displays the menu blocks and content
+  void viewMenu(String hp, String lvl){ //displays the menu blocks and content of the pause menu
     rightBox.display();
     textAlign(CENTER, TOP);
     textSize(128);
@@ -107,13 +107,14 @@ public class Menu{
     for(int i = 0; i < healthBar.length; i++){
         image(healthBar[i], panelLeft.w/2 + i*healthBar[i].width, panelLeft.getTop() + MENU_MARGIN);
         image(lvlBar[i], panelLeft.w/2 + i*lvlBar[i].width, panelLeft.getTop() + 1.5*MENU_MARGIN);
-        copy(int(panelLeft.w/2 - healthBar[i].width/2 + i*healthBar[i].width), int(panelLeft.getTop() + MENU_MARGIN - healthBar[i].height/2), healthBar[i].width, healthBar[i].height, displayWidth - int(RIGHT_MARGIN) + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height);
         
     }
+    /*
     stroke(255);
     noFill();
     rect(displayWidth - int(RIGHT_MARGIN), 30, healthBar[0].width * healthPoints, healthBar[0].height);
-    rect(panelLeft.w/2 - healthBar[0].width/2, panelLeft.getTop() + MENU_MARGIN - healthBar[0].height/2, healthBar[0].width * healthPoints, healthBar[0].height);
+    rect(panelLeft.w/2 - healthBar[0].width/2, panelLeft.getTop() + MENU_MARGIN, healthBar[0].width * healthPoints, healthBar[0].height/2);
+    */
     fill(#B24A16);
     textAlign(LEFT, CENTER);
     textSize(healthBar[0].height);
@@ -130,28 +131,23 @@ public class Menu{
   }
   
   public void updateBars(int num, String bar){ //updates a bar to the according value(if hp is lost or exp gained)
-    if(num == 0 && bar == "lvl"){
-      lvlBar[num] = lvlPointLeft;
+    if(num >= 0 && num <= healthPoints && bar == "lvl"){
+      lvlBar[num] = lvlPointMid;
     }
-    else if(num > 0 && num <= healthPoints - 2 && bar == "lvl"){
-      pauseScreen.lvlBar[num] = lvlPointMid;
-    }
-    else if(num > 0 && num == healthPoints - 1 && bar == "lvl"){
-      lvlBar[num] = lvlPointRight;
-    }
-    else if(num > 0 && num == healthPoints && bar == "lvl"){
+    else if(num > 0 && num == healthPoints + 1 && bar == "lvl"){
+      lvlBar[healthPoints] = lvlPointMid;
       lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
     }
     else if(num == 0 && bar == "hp"){
       healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
     }
     else if(num == healthPoints - 1 && bar == "hp"){
-      healthBar[healthPoints-1] = lvlRight;
-      healthBar[healthPoints-2] = hpRight;
+      healthBar[healthPoints-1] = lvlMid;
+      healthBar[healthPoints-2] = hpMid;
     }
     else if(num < healthPoints - 1 && bar == "hp"){
       healthBar[num] = lvlMid;
-      healthBar[num-1] = hpRight;
+      healthBar[num-1] = hpMid;
     }
   }
   
@@ -167,11 +163,9 @@ public class Menu{
 
   PImage[] createBar(PImage left, PImage mid, PImage right, int hp){ //creates a hp or lvl bar of a given length
     PImage[] bar = new PImage[hp];
-    bar[0] = left;
-    for(int i = 1; i < bar.length - 1; i++){
+    for(int i = 0; i < bar.length; i++){
       bar[i] = mid;
     }
-    bar[bar.length-1] = right;
     return bar;
   }
 }

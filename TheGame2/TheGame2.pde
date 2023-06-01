@@ -515,10 +515,10 @@ void Punch(){
 }
 
 void giveExp(int expGain){ //Updates the lvl bar if any exp in the game is gained
-    if(expCounter >= 0 && expCounter <= healthPoints - 2){
+    if(expCounter >= 0 && expCounter <= healthPoints - 1){
       pauseScreen.updateBars(expCounter, "lvl");
       expCounter += expGain;
-      if( expCounter >= healthPoints-1){
+      if( expCounter >= healthPoints){
         expCounter = 0;
         WALK_SPEED += lvlCounter;
         JUMP_SPEED += lvlCounter;
