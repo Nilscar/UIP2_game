@@ -24,9 +24,9 @@ public class Menu{
   PImage lvlPointLeft;
   PImage lvlPointRight;
   PImage lvlPointMid;
-  PImage soundOn, soundOff, musicOn, musicOff;
+  PImage soundOn, soundOff, musicOn, musicOff, langSwe, langEng;
   PImage skillBox;
-  Sprite rightBox, leftBoxUp, leftBoxDown, panelLeft, panelRight, crossButton, soundButton, musicButton;
+  Sprite rightBox, leftBoxUp, leftBoxDown, panelLeft, panelRight, crossButton, soundButton, musicButton, sweButton, engButton;
   Sprite[] itemBoxes;
   int nrItemBoxes = 3;
   int healthPoints = 11;
@@ -75,11 +75,12 @@ public class Menu{
     lvlPointRight.resize(lvlPointRight.get().width*4, lvlPointRight.get().height*2);
     lvlPointMid.resize(lvlPointMid.get().width*2, lvlPointMid.get().height*2);
     
-    soundOn = loadImage("data/menu/shadedDark17.png");
-    soundOff = loadImage("data/menu/shadedDark19.png");
-    musicOn = loadImage("data/menu/shadedDark13.png");
-    musicOff = loadImage("data/menu/shadedDark15.png");
-    skillBox = loadImage("data/menu/square_shadow.png");
+    musicOn = loadImage("data/menu/shadedDark17.png");
+    musicOff = loadImage("data/menu/shadedDark19.png");
+    soundOn = loadImage("data/menu/shadedDark13.png");
+    soundOff = loadImage("data/menu/shadedDark15.png");
+    langSwe = loadImage("data/menu/swe.PNG");
+    langEng = loadImage("data/menu/eng.PNG");
     
     rightBox = new Sprite(menuBoxBrown, 0.75*displayWidth, displayHeight/2, SCALE_W, SCALE_RIGHT_H, false);
     leftBoxUp = new Sprite(menuBoxBrown, 0.25*displayWidth, 0.25*displayHeight, SCALE_W, SCALE_LEFT_H, false);
@@ -92,6 +93,9 @@ public class Menu{
     crossButton = new Sprite(closeButton, rightBox.getRight() - MENU_MARGIN/4, rightBox.getTop() + MENU_MARGIN/4, MENU_MARGIN, MENU_MARGIN, true);
     soundButton = new Sprite(soundOn, panelRight.getRight() - (MENU_MARGIN + soundOn.width/4), panelRight.getTop() + MENU_MARGIN/2, soundOn.width, soundOn.height, true);
     musicButton = new Sprite(musicOn, panelRight.getRight() - MENU_MARGIN/2, panelRight.getTop() + MENU_MARGIN/2, musicOn.width, musicOn.height, true);
+    sweButton = new Sprite(langSwe, panelRight.getLeft() + MENU_MARGIN/2 + musicOn.width/2, panelRight.getTop() + MENU_MARGIN/2, langSwe.width/2, musicOn.height, false);
+    engButton = new Sprite(langEng, panelRight.getLeft() + MENU_MARGIN/2 + musicOn.width/2 + 1.5*langEng.width/2, panelRight.getTop() + MENU_MARGIN/2, langEng.width/2, musicOn.height, true);
+    sweButton.img.filter(GRAY);
   }
   
   void viewMenu(String hp, String lvl){ //displays the menu blocks and content of the pause menu
@@ -126,8 +130,10 @@ public class Menu{
     }
     crossButton.display();
     image(cross, crossButton.center_x, crossButton.center_y, crossButton.w/2, crossButton.h/2);
-    soundButton.display();
+    //soundButton.display();
     musicButton.display();
+    sweButton.display();
+    engButton.display();
   }
   
   public void updateBars(int num, String bar){ //updates a bar to the according value(if hp is lost or exp gained)

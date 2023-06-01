@@ -644,13 +644,26 @@ void mouseClicked(){
        player.center_y = currentY;
        pause = !pause;
   }
-  else if(pmouseX >= pauseScreen.soundButton.getLeft() && pmouseX <= pauseScreen.soundButton.getRight() && 
-          pmouseY <= pauseScreen.soundButton.getBottom() && pmouseY >= pauseScreen.soundButton.getTop() && pause && mouseButton == LEFT){
-       if(pauseScreen.soundButton.img == pauseScreen.soundOn){
-         pauseScreen.soundButton.img = pauseScreen.soundOff;
+  else if(pmouseX >= pauseScreen.sweButton.getLeft() && pmouseX <= pauseScreen.sweButton.getRight() && 
+          pmouseY <= pauseScreen.sweButton.getBottom() && pmouseY >= pauseScreen.sweButton.getTop() && pause && mouseButton == LEFT){
+       if(pauseScreen.sweButton.button){
        }
        else{
-         pauseScreen.soundButton.img = pauseScreen.soundOn;
+         pauseScreen.sweButton.button = !pauseScreen.sweButton.button;
+         pauseScreen.sweButton.img = loadImage("data/menu/swe.PNG");
+         pauseScreen.engButton.button = !pauseScreen.engButton.button;
+         pauseScreen.engButton.img.filter(GRAY);
+       }
+  }
+  else if(pmouseX >= pauseScreen.engButton.getLeft() && pmouseX <= pauseScreen.engButton.getRight() && 
+          pmouseY <= pauseScreen.engButton.getBottom() && pmouseY >= pauseScreen.engButton.getTop() && pause && mouseButton == LEFT){
+       if(pauseScreen.engButton.button){
+       }
+       else{
+         pauseScreen.engButton.button = !pauseScreen.engButton.button;
+         pauseScreen.engButton.img = loadImage("data/menu/eng.PNG");
+         pauseScreen.sweButton.button = !pauseScreen.sweButton.button;
+         pauseScreen.sweButton.img.filter(GRAY);
        }
   }
   else if(pmouseX >= pauseScreen.musicButton.getLeft() && pmouseX <= pauseScreen.musicButton.getRight() && 
