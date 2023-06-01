@@ -1,0 +1,9 @@
+Welcome to the tutorial, press enter to continue
+You move through the world using the arrow keys
+You jump and climb ladders with the up arrow
+You attack using the space bar, you can only attack facing you enemies
+Killing enemies give you exp, as seen in the blue bar in the top right corner of you screen
+Dont get to close to the enemies, as they attack back and you will lose HP
+Your goal is to find and defeat the Local Farmer
+Remember, Zombies can't swim
+Go through the portal to begin your adventure
