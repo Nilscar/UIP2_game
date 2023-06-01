@@ -782,15 +782,9 @@ void keyReleased(){
     player.isOnTop = false;
     }
   }
-  /*else if(key == 'a' && expCounter == healthPoints - 1){
-    pauseScreen.updateBars(expCounter, "lvl");
-    expCounter += 1;
-  }*/
 }
 
 void mouseClicked(){
-  //println("mouseClicked, pmouseX: ", pmouseX, "\n pmouseY: ", pmouseY, "\n");
-  //println("button x: ", pauseScreen.crossButton.getLeft(), "-", pauseScreen.crossButton.getRight(), "\nbutton y: ", pauseScreen.crossButton.getTop(), "-", pauseScreen.crossButton.getBottom());
   if(pmouseX >= pauseScreen.crossButton.getLeft() && pmouseX <= pauseScreen.crossButton.getRight() && 
      pmouseY <= pauseScreen.crossButton.getBottom() && pmouseY >= pauseScreen.crossButton.getTop() && pause && mouseButton == LEFT){
        player.center_x = currentX;
