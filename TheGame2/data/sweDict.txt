@@ -7,4 +7,9 @@ Gå inte för nära fiender, då de kan attackera tillbaka och få dig att tappa
 Ditt mål är att hitta och besegra den lokala bonden
 Kom ihåg, Zombier kan inte simma
 Gå genom portalen för att påbörja ditt äventyr
+Du dog... 
+Bonden kommer leva vidare
+Försök igen? 
+Du vann!
+Den här gården tillhör de döda
 Nu blåser vi bonden

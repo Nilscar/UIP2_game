@@ -7,4 +7,9 @@ Dont get to close to the enemies, as they attack back and you will lose HP
 Your goal is to find and defeat the Local Farmer
 Remember, Zombies can't swim
 Go through the portal to begin your adventure
+You Died...
+The farmer will live on
+Retry?
+Victory!
+This farm belongs to the dead
 Fall of the living

@@ -11,10 +11,11 @@ PFont f;
 String[] Tutorial;
 String[] sweTutorial;
  String[] engTutorial;
+Sprite restart;
   
 int textReader = 0; 
 
-
+PImage RestartButton; 
 PImage fartRight;
 PImage[] FartRight = new PImage[4];
 PImage fartLeft;
@@ -26,15 +27,19 @@ PImage[] PortalGreen = new PImage[2];
 PImage button;
 PImage[] Button = new PImage[2];
 PImage bubble;
+PImage WinPic;
 int healthPoints = 11;
 int hpCounter = healthPoints-1;
 int expCounter = 0;
 int lvlCounter = 1;
 boolean attacked = false;
 boolean pause;
+int ToD;
+int ToW;
 Menu pauseScreen;
 int timeNowR;
 int timeNowL;
+
 int time;
 int timeAttack;
 int ballspawned =14;
@@ -83,6 +88,8 @@ void setup(){
   imageMode(CENTER);
   minim = new Minim(this);
   timeAttack = 0;
+  ToD = 999999999;
+  ToW = 999999999;
   Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
   //Audioplayer.play();
    f = createFont("Arial",70,true);
@@ -98,6 +105,10 @@ void setup(){
   portalGreen = loadImage("data/portalGreen.png");
   button = loadImage("data/Button.png"); 
   bubble = loadImage("data/bubble.png"); 
+  WinPic = loadImage("data/WinScene.png");
+  WinPic.resize(displayWidth,displayHeight);
+  RestartButton = loadImage("data/menu/restartButton.png"); 
+  RestartButton.resize(displayWidth/4, displayWidth/9);
   bubble.resize(400,280); 
   Button[0] = button.get(0,0,128,64);
   Button[1] = button.get(128,0,128,64);
@@ -121,7 +132,7 @@ void setup(){
   for(int bals = 0; bals <15;bals++){
     ball[bals] = new HalmBall(true);
   }
-  
+  restart  = new Sprite(RestartButton, (displayWidth/2), 3.5*displayHeight/4,RestartButton.width,RestartButton.height,true);
   for (int fartimg = 0; fartimg < 4 ; fartimg++){
     
     FartRight[fartimg] = fartRight.get(int(120*(fartimg%4)), 0, 120, 90);
@@ -151,8 +162,8 @@ void setup(){
   blocks[11] = loadImage("data/blocks/Waterdeep.png");
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
-  //player = new Player(400, 7000);
-  player = new Player(3780,5370);
+  player = new Player(400, 7000);
+  //player = new Player(3780,5370);
   pig[0] = new Mob(200,600,1);
   pig[1] = new Mob(2400,1700,1);
   pig[2] = new Mob(3400,1200,1);
@@ -178,6 +189,41 @@ void draw(){
     player.display();
     player.update();
     
+  }
+  else if (ToW < time){
+    image(WinPic,displayWidth/2,displayHeight/2);
+    textAlign(RIGHT, CENTER);
+    textSize(displayWidth/20);
+    fill(203, 219, 202);
+    text(Tutorial[12],displayWidth/3, displayHeight/10);
+    fill(0);
+    textSize(displayWidth/30);
+    text(Tutorial[13],2.3*displayWidth/3 +2, displayHeight/5+2);
+
+    fill(#6F934D);
+    textSize(displayWidth/30);
+    text(Tutorial[13],2.3*displayWidth/3, displayHeight/5);
+    restart.display();
+    fill(0);
+    textAlign(CENTER, BOTTOM);
+    textSize(displayWidth/35);
+    text(Tutorial[11],(displayWidth/2), restart.center_y+displayWidth/70);
+  }
+  else if (ToD < time){
+    background(0);
+    textAlign(RIGHT, CENTER);
+    textSize(displayWidth/20);
+    fill(203, 219, 202);
+    text(Tutorial[9],displayWidth/3, displayHeight/4);
+    textSize(displayWidth/30);
+    text(Tutorial[10],2.6*displayWidth/3, 2.4*displayHeight/4);
+    fill(197, 208, 224);
+    
+    restart.display();
+    fill(0);
+    textAlign(CENTER, BOTTOM);
+    textSize(displayWidth/35);
+    text(Tutorial[11],(displayWidth/2), restart.center_y+displayWidth/70);
   }
   else{
     imageMode(CENTER);
@@ -312,6 +358,7 @@ void portalsDisp(){
     if(player.center_x < 4050  && player.center_x > 3950 && player.center_y > 5450 && player.center_y < 5530){
       button = Button[1];
       farmer.life = -2;
+      ToW = time + 1000;
       
     }
   }
@@ -339,7 +386,7 @@ void portals_transfer(int port_nmr){
   
 }
 void MobAttack(int i, boolean mob){
-  if(mob && timeAttack +800 < time){
+  if(mob && timeAttack+800 < time){
     if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) <800 && !attacked){
       print("OUUF");
       hpCounter -= 4;
@@ -372,7 +419,7 @@ void MobAttack(int i, boolean mob){
     }
   }
   else{
-    if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) <800 && !attacked){
+    if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) <800 && !attacked && timeAttack+300 < time ){
       hpCounter--;
       println("hp is at ", hpCounter);
       attacked=true;
@@ -381,8 +428,8 @@ void MobAttack(int i, boolean mob){
          player.change_x = 0;
          player.dead = true;
        }
-       else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 1){
-           pauseScreen.healthBar[hpCounter] = pauseScreen.lvlMid;
+       else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 0){
+           pauseScreen.updateBars(hpCounter, "hp");
            //healthBar[hpCounter-1] = lvlMid;
          }
     }
@@ -432,6 +479,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        player.change_y = 1;
        hpCounter = 0;
        pauseScreen.updateBars(hpCounter, "hp");
+       ToD = time + 2000;
        }
     else if (player.center_y/Cell.BLOCK_SIZE > player.deadspot && player.dead){
        player.change_y = -GRAVITY;
@@ -793,6 +841,17 @@ void mouseClicked(){
        player.center_y = currentY;
        pause = !pause;
   }
+  else if(pmouseX >= restart.getLeft() && pmouseX <= restart.getRight() && 
+          pmouseY <= restart.getBottom() && pmouseY >= restart.getTop() && !pause && mouseButton == LEFT&& (ToD < time || ToW < time)){
+          WALK_SPEED = 6;
+          JUMP_SPEED = 14.4;
+          healthPoints = 11;
+          hpCounter = healthPoints-1;
+          expCounter = 0;
+          lvlCounter = 1;
+          setup();
+            
+          }
   else if(pmouseX >= pauseScreen.sweButton.getLeft() && pmouseX <= pauseScreen.sweButton.getRight() && 
           pmouseY <= pauseScreen.sweButton.getBottom() && pmouseY >= pauseScreen.sweButton.getTop() && pause && mouseButton == LEFT){
        if(pauseScreen.sweButton.button){
@@ -829,7 +888,7 @@ void mouseClicked(){
          pauseScreen.musicButton.img = pauseScreen.musicOn;
          Audioplayer.play();
        }
-  }
+   }
 }
 
 //Creating the game map from csv file, making it a grid system
