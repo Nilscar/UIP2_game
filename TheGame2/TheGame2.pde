@@ -690,20 +690,17 @@ void Punch(){
 }
 
 void giveExp(int expGain){ //Updates the lvl bar if any exp in the game is gained
-    if(expCounter >= 0 && expCounter <= healthPoints - 1){
-      pauseScreen.updateBars(expCounter, "lvl");
-      expCounter += expGain;
+    if(expCounter <= healthPoints - 1){
+        expCounter += expGain;
+        pauseScreen.updateBars(expCounter, "lvl");
       if( expCounter >= healthPoints){
         expCounter = 0;
         WALK_SPEED += lvlCounter;
         JUMP_SPEED += lvlCounter;
         lvlCounter += 1;
-        pauseScreen.lvlBar = pauseScreen.createBar(pauseScreen.lvlLeft, pauseScreen.lvlMid, pauseScreen.lvlRight, healthPoints);
+        //pauseScreen.lvlBar = pauseScreen.createBar(pauseScreen.lvlLeft, pauseScreen.lvlMid, pauseScreen.lvlRight, healthPoints);
         print(" \n lvl: ", lvlCounter, " >>>");
       }
-      else{
-          pauseScreen.updateBars(expCounter, "lvl");
-    }
   }
 }
 

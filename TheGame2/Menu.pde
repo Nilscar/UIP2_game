@@ -101,7 +101,7 @@ public class Menu{
   void viewMenu(String hp, String lvl){ //displays the menu blocks and content of the pause menu
     rightBox.display();
     textAlign(CENTER, TOP);
-    textSize(128);
+    textSize(MENU_MARGIN);
     fill(#296986); 
     text(gameTitle, rightBox.center_x, rightBox.getTop() + MENU_MARGIN/2);
     leftBoxUp.display();
@@ -137,19 +137,16 @@ public class Menu{
   }
   
   public void updateBars(int num, String bar){ //updates a bar to the according value(if hp is lost or exp gained)
-    if(num >= 0 && num <= healthPoints - 2 && bar == "lvl"){
-      lvlBar[num] = lvlPointMid;
+    if(num <= healthPoints - 1 && bar == "lvl"){
+      for(int i = 0; i < num; i++){
+        lvlBar[i] = lvlPointMid;
+      }
     }
-    else if(num > 0 && num == healthPoints - 1 && bar == "lvl"){
-      lvlBar[num] = lvlPointMid;
+    else if(num >= healthPoints && bar == "lvl"){
       lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
     }
     else if(num == 0 && bar == "hp"){
       healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
-    }
-    else if(num == healthPoints - 1 && bar == "hp"){
-      healthBar[healthPoints-1] = lvlMid;
-      healthBar[healthPoints-2] = hpMid;
     }
     else if(num < healthPoints - 1 && bar == "hp"){
       healthBar[num] = lvlMid;
