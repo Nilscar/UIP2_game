@@ -131,11 +131,11 @@ public class Menu{
   }
   
   public void updateBars(int num, String bar){ //updates a bar to the according value(if hp is lost or exp gained)
-    if(num >= 0 && num <= healthPoints && bar == "lvl"){
+    if(num >= 0 && num <= healthPoints - 2 && bar == "lvl"){
       lvlBar[num] = lvlPointMid;
     }
-    else if(num > 0 && num == healthPoints + 1 && bar == "lvl"){
-      lvlBar[healthPoints] = lvlPointMid;
+    else if(num > 0 && num == healthPoints - 1 && bar == "lvl"){
+      lvlBar[num] = lvlPointMid;
       lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
     }
     else if(num == 0 && bar == "hp"){
