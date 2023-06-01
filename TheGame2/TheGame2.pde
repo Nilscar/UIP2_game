@@ -8,8 +8,8 @@ AudioPlayer Audioplayer;
 AudioPlayer Pun;
 Minim minim;//audio context
 PFont f;
-
-String Tutorial = loadStrings("engDixct.txt");
+String[] Tutorial;
+ 
   
 int textReader = 0; 
 
@@ -82,7 +82,8 @@ void setup(){
   Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
   //Audioplayer.play();
    f = createFont("Arial",70,true);
-  createTutorial();
+   Tutorial = loadStrings("data/engDict.txt");
+  //createTutorial();
   Pun = minim.loadFile("data/music/burp.mp3", 2048);
   pauseScreen = new Menu();
   fartRight = loadImage("data/fartRight.png");
@@ -169,8 +170,8 @@ void setup(){
    Tutorial.append("Dont get to close to the enemies, as they attack back and you will lose HP");
    Tutorial.append("Your goal is to find and defeat the Local Farmer");
    Tutorial.append("Remember, Zombies can't swim");
-   Tutorial.append("Go through the portal to begin your adventure");*/
- }
+   Tutorial.append("Go through the portal to begin your adventure");
+ }*/
 void draw(){
   if(pause){
     //Sets the menu screen if the game is paused
@@ -214,7 +215,7 @@ void draw(){
     }
     
       
-    thinkText(doll,Tutorial.get(textReader));
+   // thinkText(doll,Tutorial[textReader]);
     player.display();
     player.update();
     collisions(player, Mapcells);
