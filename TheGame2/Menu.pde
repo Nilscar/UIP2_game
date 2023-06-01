@@ -37,6 +37,7 @@ public class Menu{
   PImage[] lvlBar = new PImage[healthPoints];
   
   public Menu(){
+    //Setting the menu margins based on screen size
     MENU_MARGIN = displayWidth/20;
     SCALE_W = displayWidth/2 - MENU_MARGIN;
     SCALE_RIGHT_H = displayHeight - MENU_MARGIN;
@@ -93,7 +94,7 @@ public class Menu{
     musicButton = new Sprite(musicOn, panelRight.getRight() - MENU_MARGIN/2, panelRight.getTop() + MENU_MARGIN/2, musicOn.width, musicOn.height, true);
   }
   
-  void viewMenu(String hp, String lvl){
+  void viewMenu(String hp, String lvl){ //displays the menu blocks and content
     rightBox.display();
     textAlign(CENTER, TOP);
     textSize(128);
@@ -106,7 +107,13 @@ public class Menu{
     for(int i = 0; i < healthBar.length; i++){
         image(healthBar[i], panelLeft.w/2 + i*healthBar[i].width, panelLeft.getTop() + MENU_MARGIN);
         image(lvlBar[i], panelLeft.w/2 + i*lvlBar[i].width, panelLeft.getTop() + 1.5*MENU_MARGIN);
+        copy(int(panelLeft.w/2 - healthBar[i].width/2 + i*healthBar[i].width), int(panelLeft.getTop() + MENU_MARGIN - healthBar[i].height/2), healthBar[i].width, healthBar[i].height, displayWidth - int(RIGHT_MARGIN) + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height);
+        
     }
+    stroke(255);
+    noFill();
+    rect(displayWidth - int(RIGHT_MARGIN), 30, healthBar[0].width * healthPoints, healthBar[0].height);
+    rect(panelLeft.w/2 - healthBar[0].width/2, panelLeft.getTop() + MENU_MARGIN - healthBar[0].height/2, healthBar[0].width * healthPoints, healthBar[0].height);
     fill(#B24A16);
     textAlign(LEFT, CENTER);
     textSize(healthBar[0].height);
@@ -122,7 +129,7 @@ public class Menu{
     musicButton.display();
   }
   
-  public void updateBars(int num, String bar){
+  public void updateBars(int num, String bar){ //updates a bar to the according value(if hp is lost or exp gained)
     if(num == 0 && bar == "lvl"){
       lvlBar[num] = lvlPointLeft;
     }
@@ -148,7 +155,7 @@ public class Menu{
     }
   }
   
-  public void drawBars(){
+  public void drawBars(){ //copies the hp and lvl bar from the menu to the in-game view
      for(int i = 0; i < healthBar.length; i++){
          copy(healthBar[i], int(panelLeft.w/2 - healthBar[i].width/2 + i*healthBar[i].width), int(panelLeft.getTop() + MENU_MARGIN - healthBar[i].height/2), healthBar[i].width, healthBar[i].height, displayWidth - int(RIGHT_MARGIN) + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height);
          copy(lvlBar[i], int(panelLeft.w/2 + i*lvlBar[i].width), int(panelLeft.getTop() + 1.5*MENU_MARGIN), lvlBar[i].width, lvlBar[i].height, displayWidth - int(RIGHT_MARGIN) + i*lvlBar[i].width, 80, lvlBar[i].width, lvlBar[i].height);
@@ -157,38 +164,8 @@ public class Menu{
         //image(lvlBar[i], displayWidth - int(RIGHT_MARGIN) + i*lvlBar[i].width, 80);
     }
   }
-  
-  public void drawMenu(){
-    background(#3890BF);
-    imageMode(CORNER);
-    image(menuBoxBrown, displayWidth/2 + MENU_MARGIN/2, MENU_MARGIN, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight - 2*MENU_MARGIN); //draws the right side box
-    for(int i = 0; i < healthBar.length; i++){ //draws the health and lvl bars
-      image(healthBar[i], (displayWidth/2 + 3*MENU_MARGIN) + i*healthBar[i].width, 2.5*MENU_MARGIN);
-      image(lvlBar[i], (displayWidth/2 + 3*MENU_MARGIN) + i*healthBar[i].width, 3.5*MENU_MARGIN);
-    }
-    image(menuBoxBrown, MENU_MARGIN, MENU_MARGIN, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight/2 - 1.5*MENU_MARGIN); //draws the upper left box
-    image(menuBoxBlue, MENU_MARGIN, displayHeight/2 + MENU_MARGIN/2, displayWidth/2 - 1.5*MENU_MARGIN, displayHeight/2 - 1.5*MENU_MARGIN); //draws the lower left box
-    image(itemBox, 1.5*MENU_MARGIN, displayHeight/2 + MENU_MARGIN, 2*MENU_MARGIN, 3*MENU_MARGIN);
-    image(itemBox, 4*MENU_MARGIN, displayHeight/2 + MENU_MARGIN, 2*MENU_MARGIN, 3*MENU_MARGIN);
-    image(itemBox, 6.5*MENU_MARGIN, displayHeight/2 + MENU_MARGIN, 2*MENU_MARGIN, 3*MENU_MARGIN);
-    image(menuPanel, 1.5*MENU_MARGIN, 1.5*MENU_MARGIN, displayWidth/2 - 2.5*MENU_MARGIN, displayHeight/2 - 2.5*MENU_MARGIN); //draws the upper left panel that is in the box
-    textSize(128);
-    fill(#296986); 
-    text("The Game", 2.5*MENU_MARGIN, 2*MENU_MARGIN);  
-    image(menuPanel, displayWidth/2 + MENU_MARGIN, displayHeight/2 + MENU_MARGIN, displayWidth/2 - 2.5*MENU_MARGIN, displayHeight/2 - 2.5*MENU_MARGIN); //draws the bottom right side panel that is in the box
-    fill(#F0C879);
-    textAlign(LEFT, TOP);
-    textSize(36);
-    text("Lvl: "+str(lvlCounter), displayWidth/2 + MENU_MARGIN, 3.5*MENU_MARGIN);
-    text("Health: "+str(int(100*hpCounter/healthPoints))+"%", displayWidth/2 + MENU_MARGIN, 2.5*MENU_MARGIN);
-    fill(#936F27);
-    text("Speed: ", displayWidth/2 + 1.5*MENU_MARGIN, displayHeight/2 + 1.5*MENU_MARGIN);
-    imageMode(CENTER);
-    image(closeButton, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height , MENU_MARGIN, MENU_MARGIN); //draws the closeButton of the top right corner
-    image(cross, displayWidth - MENU_MARGIN - closeButton.get().width , MENU_MARGIN + closeButton.get().height, 3*cross.get().width, 3*cross.get().height); //draws the cross of the closeButton
-  }
 
-  PImage[] createBar(PImage left, PImage mid, PImage right, int hp){
+  PImage[] createBar(PImage left, PImage mid, PImage right, int hp){ //creates a hp or lvl bar of a given length
     PImage[] bar = new PImage[hp];
     bar[0] = left;
     for(int i = 1; i < bar.length - 1; i++){

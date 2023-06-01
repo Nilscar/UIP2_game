@@ -50,11 +50,11 @@ public class Sprite{
       fr_w=w/n_frames;
     }
   }
-  //Constructor for stuff in upper left corner?? idk
+  //Constructor for sprite
   public Sprite(String filename, float scale, int n_frames){
     this(filename, scale, 0, 0, n_frames, false );
   }
-  //Constructor for blocks
+  //Constructor for map blocks
   public Sprite(PImage image, float scaleW, float scaleH, int num_of_frames, boolean chest){
    img = image;
    
@@ -99,7 +99,7 @@ public class Sprite{
    this.button = button;
   }
   
-  public void display(){
+  public void display(){ //sets the sprite/image to be shown on screen
     if(n_frames == 0){
       image(img, center_x, center_y, w, h);
     }

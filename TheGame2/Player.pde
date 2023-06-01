@@ -16,7 +16,7 @@ public class Player extends Sprite{
   final static float PLAYER_SCALE = 0.8;
   
   public Player(float x_pos, float y_pos ){
-    super("data/zombie_seq.png", PLAYER_SCALE, x_pos, y_pos, stand_frames, true);
+    super("data/zombie_seq.png", PLAYER_SCALE, x_pos, y_pos, stand_frames, true); //Calls the sprite class when creating the player
     i_w = player_stand.width / stand_frames;
       for (int i = 0; i < stand_frames; i++) {
         pl_stand[i] = player_stand.get(int(i_w*(i%stand_frames)), 0, int(i_w), int(player_stand.height));

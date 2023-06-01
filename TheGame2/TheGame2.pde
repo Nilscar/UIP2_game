@@ -105,7 +105,7 @@ void setup(){
  
 void draw(){
   if(pause){
-
+    //Sets the menu screen if the game is paused
     background(#3890BF);
     pauseScreen.viewMenu(str(int(110*hpCounter/healthPoints)), str(lvlCounter));
     player.center_x = pauseScreen.panelLeft.getLeft() + pauseScreen.MENU_MARGIN/2;
@@ -132,11 +132,8 @@ void draw(){
         }
       }
     }
-    pauseScreen.drawBars();
-    /*for(int i = 0; i < pauseScreen.healthBar.length-1; i++){
-        pauseScreen.healthBar[i].copy();
-        pauseScreen.lvlBar[i].copy();
-      }*/
+    pauseScreen.drawBars(); //Call for the function that draws  the hp & lvl bars into the player screen
+    
     if( millis()<timeNowR+500){
       println(int(millis()-timeNowR)/126);
       image(FartRight[int(millis()-timeNowR)/126],player.center_x+60 ,player.center_y - 20);
@@ -153,7 +150,7 @@ void draw(){
     chick.update();
     doll.display();
     MobAttack();
-    
+         
     collisions(player, Mapcells);
     
     if(pig.life >0){
@@ -162,14 +159,15 @@ void draw(){
     if(chick.life >0){
     collisions(chick, Mapcells);
     }
+    //keyPressed needs to be called in the draw func in order to properly update the postion when climbing ladders
     if(keyPressed && (keyCode == UP && player.isOnLadder && ladder != null)){
-      if(player.getBottom() >= ladder.getTop()){
+      if(player.getBottom() >= ladder.getTop()){//if player not on top of ladder it should climb the ladder with half the walking speed
         player.change_y = -WALK_SPEED/2;
         player.isOnBlock = false;
         player.isOnTop = false;
         
       }
-      else if(player.getBottom() <= ladder.getTop()){
+      else if(player.getBottom() <= ladder.getTop()){//if player is on top of a ladder it should jump
         player.isOnTop = true;
         player.change_y = -JUMP_SPEED;
         player.isOnBlock = false;
@@ -247,12 +245,14 @@ void scroll(){
  translate(-viewX, -viewY);
 }
 
+//This function checks for collisions between a movable object(player or mob) and the map blocks
 public void collisions(Sprite player, Cell[][] mapBlocks){
-  ArrayList<Cell> collisionList = checkColl(player, mapBlocks);
+  ArrayList<Cell> collisionList = checkColl(player, mapBlocks);//Creates a list of surrounding map blocks of the movable object(aka player in collisions func)
+  //where position 0, 3, 6 are the blocks above the player and 2, 5, 8 are the postions beneath the player and 1 & 7 are the blocks of each side of the player in the list
   if(!player.isOnLadder){
-    player.change_y += GRAVITY;
+    player.change_y += GRAVITY;//adds gravity to the player if it is not on a ladder
   }
-    player.center_y += player.change_y;
+    player.center_y += player.change_y;//updates the player's movement in the y-direction if there is any
     
     if(player.center_y/Cell.BLOCK_SIZE < 19 && player.dead){
        player.change_y = 1;
@@ -265,7 +265,8 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        pauseScreen.updateBars(hpCounter, "hp");
        }
           
-    if(player.change_y > 0){
+    if(player.change_y > 0){//if moving downwards
+      //Checking collisions of the map blocks beneath the player
       if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop() && collisionList.get(8).visable && collisionList.get(2).visable && !player.dead){
         player.setBottom(collisionList.get(5).block.getTop());
         player.isOnBlock = true;
@@ -276,7 +277,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         if(player.land_block != 3 && (player.change_x == 2||player.change_x == -2)&& player.isPlayer){ 
           player.change_x = 0;
        }
-       if(player.land_block == 10 && !player.dead && player.isPlayer){ 
+       if(player.land_block == 10 && !player.dead && player.isPlayer){//if player lands on water ==> death
          println("coll water 1");
          print(player.center_y/Cell.BLOCK_SIZE);
           player.dead = true;
@@ -285,7 +286,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           hpCounter = 0;
           pauseScreen.updateBars(hpCounter, "hp");
        }
-        else if (  player.land_block == 4 && !updated && player.isPlayer){// Add damage
+        else if (  player.land_block == 4 && !updated && player.isPlayer){//if player land on stone block, the block cracks
          collisionList.get(5).block.stone_update(updated);
          collisionList.get(5).counter++;
          
@@ -301,6 +302,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
          }
        }
       }
+      //Checking the map block that is straight below the player and sets the postition of that block if it exists
       else if(collisionList.get(5).visable && player.getBottom() >= collisionList.get(5).block.getTop() && !player.dead){
         player.setBottom(collisionList.get(5).block.getTop());
         player.isOnBlock = true;
@@ -310,7 +312,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.change_x = 0;
        }
 
-       if ( player.land_block == 4 && !updated && player.isPlayer){ //Add damage
+       if ( player.land_block == 4 && !updated && player.isPlayer){ //if player land on stone block, the block cracks
          collisionList.get(5).block.stone_update(updated);
          collisionList.get(5).counter++;
          if (collisionList.get(5).counter > 4){
@@ -324,7 +326,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
            pauseScreen.updateBars(hpCounter, "hp");
          }
        }
-       if(player.land_block == 10 && !player.dead && player.isPlayer){ 
+       if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
          println("coll water 2");
          print(player.center_y/Cell.BLOCK_SIZE);
           player.dead = true;
@@ -340,7 +342,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.change_y = 0;
         player.land_block = collisionList.get(8).block_num;
         
-        if(player.land_block == 10 && !player.dead && player.isPlayer){ 
+        if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
           println("coll water 3");
          print(player.center_y/Cell.BLOCK_SIZE);
           player.dead = true;
@@ -355,7 +357,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.isOnBlock = true;
         player.change_y = 0;
         player.land_block = collisionList.get(2).block_num;
-        if(player.land_block == 10 && !player.dead && player.isPlayer){ 
+        if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
           println("coll water 4");
          print(player.center_y/Cell.BLOCK_SIZE);
           player.dead = true;
@@ -372,18 +374,18 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.isOnTop = true;
       }
       
-      else if(!collisionList.get(5).visable /*&& !collisionList.get(8).visable && !collisionList.get(2).visable*/){
+      else if(!collisionList.get(5).visable){ 
         player.isOnBlock = false;
       }
       
     }
-    if(player.change_y < 0){
+    if(player.change_y < 0){ //if player is moving upwards
        if(collisionList.get(3).visable && player.getTop() <= collisionList.get(3).block.getBottom()){
          player.setTop(collisionList.get(3).block.getBottom());
          player.isOnBlock = false;
          player.head_block = collisionList.get(3).block_num;
          player.change_y = 0;
-          if ( player.head_block == 4 && !updated && player.isPlayer){
+          if ( player.head_block == 4 && !updated && player.isPlayer){ //if player jumps on stone block, the block cracks
          collisionList.get(3).block.stone_update(updated);
          collisionList.get(3).counter++;
          if (collisionList.get(3).counter > 4){
@@ -398,8 +400,8 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        }
     }
   
-  player.center_x += player.change_x;
-  if(player.change_x > 0){
+  player.center_x += player.change_x; //updates the player's movement in the x-direction if there is any
+  if(player.change_x > 0){ // if player moves to the right
     if(collisionList.get(7).visable && player.getRight() >= collisionList.get(7).block.getLeft()){
        player.setRight(collisionList.get(7).block.getLeft());
        player.side_block = collisionList.get(7).block_num;
@@ -411,7 +413,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        
      }
   }
-  if(player.change_x < 0){
+  if(player.change_x < 0){ // if player moves to the left
     if(collisionList.get(1).visable && player.getLeft() <= collisionList.get(1).block.getRight()){
        player.setLeft(collisionList.get(1).block.getRight());
        if(!player.isPlayer){player.change_x = - player.change_x;}
@@ -420,13 +422,14 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        }
      }
   }
-  for(int i = 0; i < collisionList.size(); i += 1){
+  for(int i = 0; i < collisionList.size(); i += 1){ //Checks if the player is on a ladder
         if(collisionList.get(i).ladder && 
             dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= collisionList.get(i).block.w){
           ladder = collisionList.get(i).block;
           player.isOnLadder = true;
         }
       }
+   //Checks if the player is not on a ladder
    if(ladder != null && player.getLeft() > ladder.getRight() ||
    ladder != null && player.getRight() < ladder.getLeft()){
      player.isOnLadder = false;
@@ -435,7 +438,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
    
 }
 
-public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates a 3x3 matrix containing the surrounding blocks of the player
+public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates a "3x3 matrix"(actually a list) containing the surrounding map blocks of the player
    ArrayList<Cell> collisionList = new ArrayList<Cell>();
    for(int i = int(player.center_x/Cell.BLOCK_SIZE) - 1; i < int(player.center_x/Cell.BLOCK_SIZE) + 2; i++){
      for(int j = int(player.center_y/Cell.BLOCK_SIZE) - 1; j < int(player.center_y/Cell.BLOCK_SIZE) + 2; j++){
@@ -444,6 +447,7 @@ public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates 
    }
    return collisionList;
 }
+
 void Punch(){
   if (player.change_x >= 0){
   float PunchRadie = player.center_x +90;
@@ -510,7 +514,7 @@ void Punch(){
   }
 }
 
-void giveExp(int expGain){
+void giveExp(int expGain){ //Updates the lvl bar if any exp in the game is gained
     if(expCounter >= 0 && expCounter <= healthPoints - 2){
       pauseScreen.updateBars(expCounter, "lvl");
       expCounter += expGain;
@@ -528,7 +532,7 @@ void giveExp(int expGain){
   }
 }
 
-void keyPressed(){
+void keyPressed(){ //Controller keys for moving/jumping and punching
   if(keyCode == RIGHT && !player.dead){
     player.change_x = WALK_SPEED;
   }
@@ -641,7 +645,7 @@ void mouseClicked(){
   }
 }
 
-//Creating the game map from csv file
+//Creating the game map from csv file, making it a grid system
 void createMap(String[] blockrows){
   //print("HEEEERE:        ", blocks[1]);
   String[] rows = blockrows;
