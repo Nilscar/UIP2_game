@@ -9,9 +9,11 @@ AudioPlayer Pun;
 Minim minim;//audio context
 PFont f;
 String[] Tutorial;
- 
+String[] sweTutorial;
+ String[] engTutorial;
   
 int textReader = 0; 
+
 
 PImage fartRight;
 PImage[] FartRight = new PImage[4];
@@ -82,10 +84,12 @@ void setup(){
   Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
   //Audioplayer.play();
    f = createFont("Arial",70,true);
-   Tutorial = loadStrings("data/engDict.txt");
+   engTutorial = loadStrings("data/engDict.txt");
+   sweTutorial = loadStrings("data/sweDict.txt");
+   Tutorial = engTutorial;
   //createTutorial();
   Pun = minim.loadFile("data/music/burp.mp3", 2048);
-  pauseScreen = new Menu();
+  pauseScreen = new Menu(Tutorial);
   fartRight = loadImage("data/fartRight.png");
   fartLeft = loadImage("data/fartLeft.png"); 
   portalRed = loadImage("data/portalRed.png");
@@ -215,7 +219,7 @@ void draw(){
     }
     
       
-   // thinkText(doll,Tutorial[textReader]);
+    thinkText(doll,Tutorial[textReader]);
     player.display();
     player.update();
     collisions(player, Mapcells);
@@ -815,6 +819,8 @@ void mouseClicked(){
        else{
          pauseScreen.sweButton.button = !pauseScreen.sweButton.button;
          pauseScreen.sweButton.img = loadImage("data/menu/swe.PNG");
+         Tutorial = sweTutorial;
+         pauseScreen.gameTitle = Tutorial[Tutorial.length-1];
          pauseScreen.engButton.button = !pauseScreen.engButton.button;
          pauseScreen.engButton.img.filter(GRAY);
        }
@@ -826,6 +832,8 @@ void mouseClicked(){
        else{
          pauseScreen.engButton.button = !pauseScreen.engButton.button;
          pauseScreen.engButton.img = loadImage("data/menu/eng.PNG");
+         Tutorial =  engTutorial;
+         pauseScreen.gameTitle = Tutorial[Tutorial.length-1];
          pauseScreen.sweButton.button = !pauseScreen.sweButton.button;
          pauseScreen.sweButton.img.filter(GRAY);
        }

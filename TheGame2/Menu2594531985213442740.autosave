@@ -7,7 +7,7 @@ public class Menu{
   float SCALE_LEFT_H;
   float barScale;
   
-  String gameTitle;
+  String gameTitle = "GAME TITLE";
   PImage menu;
   PImage menuBoxBrown;
   PImage menuBoxBlue;
@@ -37,9 +37,8 @@ public class Menu{
   PImage[] healthBar = new PImage[healthPoints];
   PImage[] lvlBar = new PImage[healthPoints];
   
-  public Menu(String[] Tutorial){
+  public Menu(){
     //Setting the menu margins based on screen size
-    gameTitle = Tutorial[Tutorial.length-1];
     MENU_MARGIN = displayWidth/20;
     SCALE_W = displayWidth/2 - MENU_MARGIN;
     SCALE_RIGHT_H = displayHeight - MENU_MARGIN;
@@ -47,9 +46,9 @@ public class Menu{
     SCALE_PANEL_H = displayHeight/2 - 2*MENU_MARGIN;
     SCALE_LEFT_H = displayHeight/2 - MENU_MARGIN;
     barScale = displayWidth/1920.0;
-    itemBoxes = new Sprite[nrItemBoxes];
-    println(MENU_MARGIN);
     
+    itemBoxes = new Sprite[nrItemBoxes];
+    print(barScale,displayWidth, "   ", MENU_MARGIN );
     menuBoxBrown = loadImage("data/menu/panel_brown.png");
     menuBoxBlue = loadImage("data/menu/panel_blue.png");
     itemBox = loadImage("data/menu/buttonSquare_beige.png");
@@ -59,24 +58,25 @@ public class Menu{
     hpLeft = loadImage("data/menu/barRed_horizontalLeft.png");
     hpRight = loadImage("data/menu/barRed_horizontalRight.png");
     hpMid = loadImage("data/menu/barRed_horizontalMid.png");
-
+    hpLeft.resize(int(hpLeft.get().width*4*barScale), int(hpLeft.get().height*2*barScale));
+    hpRight.resize(hpRight.get().width*4*int(barScale), hpRight.get().height*2*int(barScale));
     hpMid.resize(int(hpMid.get().width*2*barScale), int(hpMid.get().height*2*barScale));
     healthBar = createBar(hpLeft, hpMid, hpRight, healthPoints);
     
     lvlLeft = loadImage("data/menu/barBack_horizontalLeft.png");
     lvlRight = loadImage("data/menu/barBack_horizontalRight.png");
     lvlMid = loadImage("data/menu/barBack_horizontalMid.png");
-    lvlLeft.resize(int(lvlLeft.get().width*4*barScale), int(lvlLeft.get().height*2*barScale));
-    lvlRight.resize(int(lvlRight.get().width*4*barScale), int(lvlRight.get().height*2*barScale));
+    lvlLeft.resize(lvlLeft.get().width*4*int(barScale), lvlLeft.get().height*2*int(barScale));
+    lvlRight.resize(lvlRight.get().width*4*int(barScale), lvlRight.get().height*2*int(barScale));
     lvlMid.resize(int(lvlMid.get().width*2*barScale), int(lvlMid.get().height*2*barScale));
     lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
     
     lvlPointLeft = loadImage("data/menu/barBlue_horizontalLeft.png");
     lvlPointRight = loadImage("data/menu/barBlue_horizontalRight.png");
     lvlPointMid = loadImage("data/menu/barBlue_horizontalBlue.png");
-    lvlPointLeft.resize(int(lvlPointLeft.get().width*4*barScale), int(lvlPointLeft.get().height*2*barScale));
-    lvlPointRight.resize(int(lvlPointRight.get().width*4*barScale), int(lvlPointRight.get().height*2*barScale));
-    lvlPointMid.resize(int(lvlPointMid.get().width*2*barScale), int(lvlPointMid.get().height*2*barScale));
+    lvlPointLeft.resize(lvlPointLeft.get().width*4*int(barScale), lvlPointLeft.get().height*2*int(barScale));
+    lvlPointRight.resize(lvlPointRight.get().width*4*int(barScale), lvlPointRight.get().height*2*int(barScale));
+    lvlPointMid.resize(int(lvlPointMid.get().width*2*barScale), lvlPointMid.get().height*2);
     
     musicOn = loadImage("data/menu/shadedDark17.png");
     musicOff = loadImage("data/menu/shadedDark19.png");

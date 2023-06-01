@@ -1,0 +1,10 @@
+Välkommen till genomgången, tryck på retur för att gå vidare
+Du förflyttar dig genom att använda piltangenterna
+Du hoppar och klättrar med pil uppåt
+Du attackerar med mellanslag, du kan endast attackera vänd mot fienden
+Döda fiender för att få exp, du kan följa din utveckling i den blåa stapeln uppe till höger
+Gå inte för nära fiender, då de kan attackera tillbaka och få dig att tappa HP
+Ditt mål är att hitta och besegra den lokala bonden
+Kom ihåg, Zombier kan inte simma
+Gå genom portalen för att påbörja ditt äventyr
+Nu blåser vi bonden
