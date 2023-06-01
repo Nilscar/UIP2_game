@@ -109,12 +109,12 @@ public class Menu{
     panelLeft.display();
     panelRight.display();
     for(int i = 0; i < healthBar.length; i++){
-        image(healthBar[i], panelLeft.w/2 + i*healthBar[i].width, panelLeft.center_y);
+        image(healthBar[i], panelLeft.center_x - MENU_MARGIN + i*healthBar[i].width, panelLeft.center_y);
         image(lvlBar[i], panelLeft.w/2 + i*lvlBar[i].width, panelLeft.center_y + 1.5*healthBar[0].height);
         
     }
     fill(#B24A16);
-    textAlign(LEFT, CENTER);
+    textAlign(CENTER, CENTER);
     textSize(healthBar[0].height);
     text("HP: "+hp+"%", panelLeft.getLeft() + MENU_MARGIN, panelLeft.center_y - healthBar[0].height/4);
     text("Lvl: "+lvl, panelLeft.getLeft() + MENU_MARGIN, panelLeft.center_y + 1.5*healthBar[0].height - healthBar[0].height/4);
