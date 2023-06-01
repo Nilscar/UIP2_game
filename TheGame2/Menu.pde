@@ -5,6 +5,7 @@ public class Menu{
   float SCALE_PANEL_W;
   float SCALE_PANEL_H;
   float SCALE_LEFT_H;
+  float barScale;
   
   String gameTitle = "GAME TITLE";
   PImage menu;
@@ -44,6 +45,7 @@ public class Menu{
     SCALE_PANEL_W = displayWidth/2 - 2*MENU_MARGIN;
     SCALE_PANEL_H = displayHeight/2 - 2*MENU_MARGIN;
     SCALE_LEFT_H = displayHeight/2 - MENU_MARGIN;
+    barScale = 1920/displayWidth;
     itemBoxes = new Sprite[nrItemBoxes];
     
     menuBoxBrown = loadImage("data/menu/panel_brown.png");
@@ -55,25 +57,25 @@ public class Menu{
     hpLeft = loadImage("data/menu/barRed_horizontalLeft.png");
     hpRight = loadImage("data/menu/barRed_horizontalRight.png");
     hpMid = loadImage("data/menu/barRed_horizontalMid.png");
-    hpLeft.resize(hpLeft.get().width*4, hpLeft.get().height*2);
-    hpRight.resize(hpRight.get().width*4, hpRight.get().height*2);
-    hpMid.resize(hpMid.get().width*2, hpMid.get().height*2);
+    hpLeft.resize(hpLeft.get().width*4*int(barScale), hpLeft.get().height*2*int(barScale));
+    hpRight.resize(hpRight.get().width*4*int(barScale), hpRight.get().height*2*int(barScale));
+    hpMid.resize(hpMid.get().width*2*int(barScale), hpMid.get().height*2*int(barScale));
     healthBar = createBar(hpLeft, hpMid, hpRight, healthPoints);
     
     lvlLeft = loadImage("data/menu/barBack_horizontalLeft.png");
     lvlRight = loadImage("data/menu/barBack_horizontalRight.png");
     lvlMid = loadImage("data/menu/barBack_horizontalMid.png");
-    lvlLeft.resize(lvlLeft.get().width*4, lvlLeft.get().height*2);
-    lvlRight.resize(lvlRight.get().width*4, lvlRight.get().height*2);
-    lvlMid.resize(lvlMid.get().width*2, lvlMid.get().height*2);
+    lvlLeft.resize(lvlLeft.get().width*4*int(barScale), lvlLeft.get().height*2*int(barScale));
+    lvlRight.resize(lvlRight.get().width*4*int(barScale), lvlRight.get().height*2*int(barScale));
+    lvlMid.resize(lvlMid.get().width*2*int(barScale), lvlMid.get().height*2*int(barScale));
     lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
     
     lvlPointLeft = loadImage("data/menu/barBlue_horizontalLeft.png");
     lvlPointRight = loadImage("data/menu/barBlue_horizontalRight.png");
     lvlPointMid = loadImage("data/menu/barBlue_horizontalBlue.png");
-    lvlPointLeft.resize(lvlPointLeft.get().width*4, lvlPointLeft.get().height*2);
-    lvlPointRight.resize(lvlPointRight.get().width*4, lvlPointRight.get().height*2);
-    lvlPointMid.resize(lvlPointMid.get().width*2, lvlPointMid.get().height*2);
+    lvlPointLeft.resize(lvlPointLeft.get().width*4*int(barScale), lvlPointLeft.get().height*2*int(barScale));
+    lvlPointRight.resize(lvlPointRight.get().width*4*int(barScale), lvlPointRight.get().height*2*int(barScale));
+    lvlPointMid.resize(lvlPointMid.get().width*2*int(barScale), lvlPointMid.get().height*2*int(barScale));
     
     musicOn = loadImage("data/menu/shadedDark17.png");
     musicOff = loadImage("data/menu/shadedDark19.png");
