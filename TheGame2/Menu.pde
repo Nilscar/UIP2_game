@@ -145,9 +145,11 @@ public class Menu{
     else if(num == 0 && bar == "hp"){
       healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
     }
-    else if(num < healthPoints - 1 && bar == "hp"){
-      healthBar[num] = lvlMid;
-      healthBar[num-1] = hpMid;
+    else if(num > 0 && bar == "hp"){
+      healthBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
+      for(int i = 0; i < num; i++){
+        healthBar[i] = hpMid;
+      }
     }
   }
   
