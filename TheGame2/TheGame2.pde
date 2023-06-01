@@ -139,10 +139,10 @@ void setup(){
   //player = new Player(3780,5370);
   pig[0] = new Mob(200,600,1);
   pig[1] = new Mob(2400,1700,1);
-  pig[2] = new Mob(300,1200,1);
+  pig[2] = new Mob(3400,1200,1);
   doll = new Mob(300,7140,3);
   chick[0] = new Mob(400,600,2);
-  chick[1] = new Mob(500,2600,2);
+  chick[1] = new Mob(1300,500,2);
   chick[2] = new Mob(800,2600,2);
   farmer = new Mob(3780,5370,4);
   currentX = player.center_x;
