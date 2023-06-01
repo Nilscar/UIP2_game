@@ -748,7 +748,7 @@ void keyReleased(){
     if(player.land_block == 3 && !player.isOnLadder){
       player.change_x = 2;
     }
-    else if(player.isOnLadder && (!keyPressed)){
+    else if(player.isOnLadder && (keyPressed)){
       player.change_y = 0;
       player.change_x = 0;
     }
@@ -760,7 +760,7 @@ void keyReleased(){
      if(player.land_block == 3 && !player.isOnLadder){
       player.change_x = -2;
     }
-    else if(player.isOnLadder && (!keyPressed)){
+    else if(player.isOnLadder && (keyPressed)){
       player.change_y = 0;
       player.change_x = 0;
     }
