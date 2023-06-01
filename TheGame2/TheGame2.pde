@@ -161,17 +161,7 @@ void setup(){
   mapWidth = split(CSVrows[0], ";").length;
   //print("dispWidth: ", displayWidth, " <<< dispHeight: ", displayHeight);
 }
- /*void createTutorial(){
-   Tutorial.append("Welcome to the tutorial, press enter to continue");
-   Tutorial.append("you move through the world using the arrow keys");
-   Tutorial.append( "you jump and climb ladders with the up arrow");
-   Tutorial.append("you attack using the space bar, you can only attack facing you enemies");
-   Tutorial.append("killing enemies give you exp, as seen in the blue bar in the top right corner of you screen");
-   Tutorial.append("Dont get to close to the enemies, as they attack back and you will lose HP");
-   Tutorial.append("Your goal is to find and defeat the Local Farmer");
-   Tutorial.append("Remember, Zombies can't swim");
-   Tutorial.append("Go through the portal to begin your adventure");
- }*/
+
 void draw(){
   if(pause){
     //Sets the menu screen if the game is paused
@@ -215,7 +205,7 @@ void draw(){
     }
     
       
-   // thinkText(doll,Tutorial[textReader]);
+    thinkText(doll,Tutorial[textReader]);
     player.display();
     player.update();
     collisions(player, Mapcells);
