@@ -9,7 +9,7 @@ AudioPlayer Pun;
 Minim minim;//audio context
 PFont f;
 
-StringList Tutorial = new StringList();
+String Tutorial = loadStrings("engDixct.txt");
   
 int textReader = 0; 
 
@@ -160,7 +160,7 @@ void setup(){
   mapWidth = split(CSVrows[0], ";").length;
   //print("dispWidth: ", displayWidth, " <<< dispHeight: ", displayHeight);
 }
- void createTutorial(){
+ /*void createTutorial(){
    Tutorial.append("Welcome to the tutorial, press enter to continue");
    Tutorial.append("you move through the world using the arrow keys");
    Tutorial.append( "you jump and climb ladders with the up arrow");
@@ -169,7 +169,7 @@ void setup(){
    Tutorial.append("Dont get to close to the enemies, as they attack back and you will lose HP");
    Tutorial.append("Your goal is to find and defeat the Local Farmer");
    Tutorial.append("Remember, Zombies can't swim");
-   Tutorial.append("Go through the portal to begin your adventure");
+   Tutorial.append("Go through the portal to begin your adventure");*/
  }
 void draw(){
   if(pause){
