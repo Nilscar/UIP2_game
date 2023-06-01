@@ -163,6 +163,7 @@ void draw(){
     if(keyPressed && (keyCode == UP && player.isOnLadder && ladder != null)){
       if(player.getBottom() >= ladder.getTop()){//if player not on top of ladder it should climb the ladder with half the walking speed
         player.change_y = -WALK_SPEED/2;
+        player.change_x = 0;
         player.isOnBlock = false;
         player.isOnTop = false;
         
@@ -173,6 +174,19 @@ void draw(){
         player.isOnBlock = false;
         player.isOnLadder = false;
         player.isOnTop = false;
+      }
+    }
+    else if(keyPressed && (keyCode == DOWN && player.isOnLadder && ladder != null)){
+      if(player.getBottom() >= ladder.getTop()){//if player not on top of ladder it should climb the ladder with half the walking speed
+        player.change_y = WALK_SPEED/2;
+        player.change_x = 0;
+        player.isOnBlock = false;
+        player.isOnTop = false;
+      }
+      else if(player.getTop() >= ladder.getBottom()){
+        player.isOnLadder = false;
+        player.isOnTop = false;
+        player.change_y += GRAVITY;
       }
     }
   }
@@ -578,7 +592,7 @@ void keyPressed(){ //Controller keys for moving/jumping and punching
 
 void keyReleased(){
   if(keyCode == RIGHT && !player.dead){
-    if(player.land_block == 3){
+    if(player.land_block == 3 && !player.isOnLadder){
       player.change_x = 2;
     }
     else if(player.isOnLadder && keyCode != UP){
@@ -590,7 +604,7 @@ void keyReleased(){
     }
   }
   else if(keyCode == LEFT && !player.dead){
-     if(player.land_block == 3){
+     if(player.land_block == 3 && !player.isOnLadder){
       player.change_x = -2;
     }
     else if(player.isOnLadder && keyCode != UP){
@@ -605,8 +619,15 @@ void keyReleased(){
     player.change_y = 0;
   }
   else if(keyCode == DOWN && (player.isOnLadder || player.isOnTop)){
+    if(player.getTop() >= ladder.getBottom()){
+      player.isOnLadder = false;
+      player.isOnTop = false;
+      player.change_y += GRAVITY;
+    }
+    else if(player.getTop() < ladder.getBottom()){
     player.change_y = 0;
     player.isOnTop = false;
+    }
   }
   /*else if(key == 'a' && expCounter == healthPoints - 1){
     pauseScreen.updateBars(expCounter, "lvl");
