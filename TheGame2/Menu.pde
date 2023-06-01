@@ -45,8 +45,9 @@ public class Menu{
     SCALE_PANEL_W = displayWidth/2 - 2*MENU_MARGIN;
     SCALE_PANEL_H = displayHeight/2 - 2*MENU_MARGIN;
     SCALE_LEFT_H = displayHeight/2 - MENU_MARGIN;
-    barScale = 1920/displayWidth;
+    barScale = displayWidth/1920.0;
     itemBoxes = new Sprite[nrItemBoxes];
+    println(MENU_MARGIN);
     
     menuBoxBrown = loadImage("data/menu/panel_brown.png");
     menuBoxBlue = loadImage("data/menu/panel_blue.png");
