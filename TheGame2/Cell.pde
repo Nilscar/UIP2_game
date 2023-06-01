@@ -41,7 +41,7 @@ public class Cell{
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      visable = true;
     }
-    else if( blocknum == 11){
+    else if( blocknum == 11){ //creates deep water blocks
      block = new Sprite(img, BLOCK_SCALEW, BLOCK_SCALEH, 4, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
