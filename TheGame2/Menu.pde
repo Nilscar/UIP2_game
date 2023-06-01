@@ -95,9 +95,9 @@ public class Menu{
     }
     crossButton = new Sprite(closeButton, rightBox.getRight() - MENU_MARGIN/4, rightBox.getTop() + MENU_MARGIN/4, MENU_MARGIN, MENU_MARGIN, true);
     soundButton = new Sprite(soundOn, panelRight.getRight() - (MENU_MARGIN + soundOn.width/4), panelRight.getTop() + MENU_MARGIN/2, soundOn.width, soundOn.height, true);
-    musicButton = new Sprite(musicOn, panelRight.getRight() - MENU_MARGIN/2, panelRight.getTop() + MENU_MARGIN/2, musicOn.width, musicOn.height, true);
-    sweButton = new Sprite(langSwe, panelRight.getLeft() + MENU_MARGIN/2 + musicOn.width/2, panelRight.getTop() + MENU_MARGIN/2, langSwe.width/2, musicOn.height, false);
-    engButton = new Sprite(langEng, panelRight.getLeft() + MENU_MARGIN/2 + musicOn.width/2 + 1.5*langEng.width/2, panelRight.getTop() + MENU_MARGIN/2, langEng.width/2, musicOn.height, true);
+    musicButton = new Sprite(musicOn, panelRight.getRight() - 0.75*MENU_MARGIN, panelRight.getTop() + 0.75*MENU_MARGIN, musicOn.width, musicOn.height, true);
+    sweButton = new Sprite(langSwe, panelRight.getLeft() + MENU_MARGIN/2 + musicOn.width/2, panelRight.getTop() + 0.75*MENU_MARGIN, langSwe.width/2, musicOn.height, false);
+    engButton = new Sprite(langEng, panelRight.getLeft() + MENU_MARGIN/2 + musicOn.width/2 + 1.5*langEng.width/2, panelRight.getTop() + 0.75*MENU_MARGIN, langEng.width/2, musicOn.height, true);
     sweButton.img.filter(GRAY);
   }
   
