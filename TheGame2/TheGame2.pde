@@ -391,7 +391,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
   }
     player.center_y += player.change_y;
     
-    if(player.center_y/Cell.BLOCK_SIZE < 19 && player.dead){
+    if(player.center_y/Cell.BLOCK_SIZE < player.deadspot && player.dead){
        player.change_y = 1;
        hpCounter = 0;
        pauseScreen.updateBars(hpCounter, "hp");
@@ -422,7 +422,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           hpCounter = 0;
           pauseScreen.updateBars(hpCounter, "hp");
        }
-        else if (  player.land_block == 4 && !updated && player.isPlayer){// Add damage
+        else if (  player.land_block == 4 && !updated && player.isPlayer && !player.dead){// Add damage
          collisionList.get(5).block.stone_update(updated);
          collisionList.get(5).counter++;
          
@@ -447,7 +447,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.change_x = 0;
        }
 
-       if ( player.land_block == 4 && !updated && player.isPlayer){ //Add damage
+       if ( player.land_block == 4 && !updated && player.isPlayer && !player.dead){ //Add damage
          collisionList.get(5).block.stone_update(updated);
          collisionList.get(5).counter++;
          if (collisionList.get(5).counter > 4){
@@ -471,7 +471,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           pauseScreen.updateBars(hpCounter, "hp");
        }
       }
-      else if(collisionList.get(8).visable && player.getRight() > collisionList.get(8).block.getLeft() && player.getBottom() >= collisionList.get(8).block.getTop()){
+      else if(collisionList.get(8).visable && player.getRight() > collisionList.get(8).block.getLeft() && player.getBottom() >= collisionList.get(8).block.getTop() && !player.dead){
         player.setBottom(collisionList.get(8).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
@@ -487,7 +487,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           pauseScreen.updateBars(hpCounter, "hp");
        }
       }
-      else if(collisionList.get(2).visable && player.getLeft() < collisionList.get(2).block.getRight() && player.getBottom() >= collisionList.get(2).block.getTop()){
+      else if(collisionList.get(2).visable && player.getLeft() < collisionList.get(2).block.getRight() && player.getBottom() >= collisionList.get(2).block.getTop() && !player.dead){
         player.setBottom(collisionList.get(2).block.getTop());
         player.isOnBlock = true;
         player.change_y = 0;
@@ -522,7 +522,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
       }*/
     }
     if(player.change_y < 0){
-       if(collisionList.get(3).visable && player.getTop() <= collisionList.get(3).block.getBottom()){
+       if(collisionList.get(3).visable && player.getTop() <= collisionList.get(3).block.getBottom()&& !player.dead){
          player.setTop(collisionList.get(3).block.getBottom());
          player.isOnBlock = false;
          player.head_block = collisionList.get(3).block_num;
@@ -536,7 +536,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
          updated = true; 
        }
        }
-       else if(collisionList.get(3).ladder && player.getBottom() <= collisionList.get(3).block.getTop() || collisionList.get(4).ladder && player.getBottom() <= collisionList.get(4).block.getTop()){
+       else if(collisionList.get(3).ladder && player.getBottom() <= collisionList.get(3).block.getTop() || collisionList.get(4).ladder && player.getBottom() <= collisionList.get(4).block.getTop()&& !player.dead){
          player.isOnTop = true;
          player.change_y = 0;
        }
