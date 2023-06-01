@@ -726,9 +726,6 @@ void keyPressed(){
     player.change_y = WALK_SPEED/2;
     player.isOnTop = false;
   }
-  else if(key == 'a' && !pause){
-      giveExp(1);
-  }
   else if(key == 'q'){
     if(pause){
       player.center_x = currentX;
