@@ -176,8 +176,8 @@ void draw(){
     //Sets the menu screen if the game is paused
     background(#3890BF);
     pauseScreen.viewMenu(str(int(110*hpCounter/healthPoints)), str(lvlCounter));
-    player.center_x = pauseScreen.panelLeft.getLeft() + pauseScreen.MENU_MARGIN/2;
-    player.center_y = pauseScreen.panelLeft.getTop() + pauseScreen.MENU_MARGIN + pauseScreen.healthBar[0].height/2;
+    player.center_x = pauseScreen.panelLeft.center_x + pauseScreen.healthBar[0].height/2;
+    player.center_y = pauseScreen.panelLeft.getTop() + pauseScreen.MENU_MARGIN/2 + pauseScreen.healthBar[0].height;
     player.display();
     player.update();
     
