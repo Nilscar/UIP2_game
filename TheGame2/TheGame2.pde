@@ -124,7 +124,7 @@ void setup(){
     
     FartRight[fartimg] = fartRight.get(int(120*(fartimg%4)), 0, 120, 90);
     FartRight[fartimg].resize(80, 50);
-    FartLeft[fartimg] = fartLeft.get(int(120*(fartimg%4)), 0, 120, 90);
+    FartLeft[fartimg] = fartLeft.get(int(360 - 120 *(fartimg%4)), 0, 120, 90);
     FartLeft[fartimg].resize(80, 50);
   }
   
@@ -738,11 +738,6 @@ void keyPressed(){
       pause = true;
     }
   }
-  else if(key == 'w'){
-    //println("pause meassures center_x: ", pauseScreen.leftBoxDown.center_x);
-    //println("mob meassures w: ", pig.w);
-    //println("mob meassures h: ", pig.h);
-    }
 }
 
 void keyReleased(){
