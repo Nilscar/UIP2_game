@@ -7,6 +7,11 @@ import ddf.minim.*;
 AudioPlayer Audioplayer;
 AudioPlayer Pun;
 Minim minim;//audio context
+PFont f;
+
+StringList Tutorial = new StringList();
+  
+int textReader = 0; 
 
 PImage fartRight;
 PImage[] FartRight = new PImage[4];
@@ -18,6 +23,7 @@ PImage portalGreen;
 PImage[] PortalGreen = new PImage[2];
 PImage button;
 PImage[] Button = new PImage[2];
+PImage bubble;
 int healthPoints = 11;
 int hpCounter = healthPoints-1;
 int expCounter = 0;
@@ -75,7 +81,8 @@ void setup(){
   minim = new Minim(this);
   Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
   //Audioplayer.play();
-  
+   f = createFont("Arial",70,true);
+  createTutorial();
   Pun = minim.loadFile("data/music/burp.mp3", 2048);
   pauseScreen = new Menu();
   fartRight = loadImage("data/fartRight.png");
@@ -83,6 +90,8 @@ void setup(){
   portalRed = loadImage("data/portalRed.png");
   portalGreen = loadImage("data/portalGreen.png");
   button = loadImage("data/Button.png"); 
+  bubble = loadImage("data/bubble.png"); 
+  bubble.resize(400,280); 
   Button[0] = button.get(0,0,128,64);
   Button[1] = button.get(128,0,128,64);
   button =Button[0];
@@ -151,7 +160,17 @@ void setup(){
   mapWidth = split(CSVrows[0], ";").length;
   //print("dispWidth: ", displayWidth, " <<< dispHeight: ", displayHeight);
 }
- 
+ void createTutorial(){
+   Tutorial.append("Welcome to the tutorial, press enter to continue");
+   Tutorial.append("you move through the world using the arrow keys");
+   Tutorial.append( "you jump and climb ladders with the up arrow");
+   Tutorial.append("you attack using the space bar, you can only attack facing you enemies");
+   Tutorial.append("killing enemies give you exp, as seen in the blue bar in the top right corner of you screen");
+   Tutorial.append("Dont get to close to the enemies, as they attack back and you will lose HP");
+   Tutorial.append("Your goal is to find and defeat the Local Farmer");
+   Tutorial.append("Remember, Zombies can't swim");
+   Tutorial.append("Go through the portal to begin your adventure");
+ }
 void draw(){
   if(pause){
 
@@ -161,6 +180,7 @@ void draw(){
     player.center_y = pauseScreen.panelLeft.getTop() + pauseScreen.MENU_MARGIN + pauseScreen.healthBar[0].height/2;
     player.display();
     player.update();
+    
   }
   else{
     imageMode(CENTER);
@@ -198,7 +218,7 @@ void draw(){
     }
     
       
-    
+    thinkText(doll,Tutorial.get(textReader));
     player.display();
     player.update();
     collisions(player, Mapcells);
@@ -251,34 +271,44 @@ void draw(){
     }
   }
 }
+void thinkText(Sprite champ, String txt_msg){
+  image(bubble, champ.center_x + 200, champ.center_y -150);
+  textAlign(CENTER, TOP);
+  textSize(128);
+  fill(#296986); 
+  textFont(f,20);               
+  text(txt_msg, champ.center_x + 35, champ.center_y -240, 310,290);
+}
+
 void BallSpawner(){
       ball[ballspawned] = new HalmBall(false);
-    
-  
 }
 void portalsDisp(){
-  image(PortalGreen[int((time/500)%2)],portal1_in[0],portal1_in[1]);
-  image(PortalRed[int((time/500)%2)],portal1_out[0],portal1_out[1]); 
-  image(PortalGreen[int((time/500)%2)],portal2_in[0],portal2_in[1]);
-  image(PortalRed[int((time/500)%2)],portal2_out[0],portal2_out[1]); 
-  image(PortalGreen[int((time/500)%2)],portal3_in[0],portal3_in[1]);
-  image(PortalRed[int((time/500)%2)],portal3_out[0],portal3_out[1]); 
-  image(button,4000,5470);
-  if(player.center_x < portal1_in[0] + 20 && player.center_x > portal1_in[0]-20 && player.center_y > portal1_in[1]+20 && player.center_y < portal1_in[1]+80){
-    portals_transfer(1);
-  }
-  if(player.center_x < portal2_in[0] + 20 && player.center_x > portal2_in[0]-20 && player.center_y > portal2_in[1]+20 && player.center_y < portal2_in[1]+80){
-    portals_transfer(2);
-  }
-  if(player.center_x < portal3_in[0] + 20 && player.center_x > portal3_in[0]-20 && player.center_y > portal3_in[1]+20 && player.center_y < portal3_in[1]+80){
-    portals_transfer(3);
-  }
-  if(player.center_x < 4050  && player.center_x > 3950 && player.center_y > 5450 && player.center_y < 5530){
-    button = Button[1];
-    farmer.life = -2;
-    
+  if(textReader >7){
+    image(PortalGreen[int((time/500)%2)],portal1_in[0],portal1_in[1]);
+    image(PortalRed[int((time/500)%2)],portal1_out[0],portal1_out[1]); 
+    image(PortalGreen[int((time/500)%2)],portal2_in[0],portal2_in[1]);
+    image(PortalRed[int((time/500)%2)],portal2_out[0],portal2_out[1]); 
+    image(PortalGreen[int((time/500)%2)],portal3_in[0],portal3_in[1]);
+    image(PortalRed[int((time/500)%2)],portal3_out[0],portal3_out[1]); 
+    image(button,4000,5470);
+    if(player.center_x < portal1_in[0] + 20 && player.center_x > portal1_in[0]-20 && player.center_y > portal1_in[1]+20 && player.center_y < portal1_in[1]+80){
+      portals_transfer(1);
+    }
+    if(player.center_x < portal2_in[0] + 20 && player.center_x > portal2_in[0]-20 && player.center_y > portal2_in[1]+20 && player.center_y < portal2_in[1]+80){
+      portals_transfer(2);
+    }
+    if(player.center_x < portal3_in[0] + 20 && player.center_x > portal3_in[0]-20 && player.center_y > portal3_in[1]+20 && player.center_y < portal3_in[1]+80){
+      portals_transfer(3);
+    }
+    if(player.center_x < 4050  && player.center_x > 3950 && player.center_y > 5450 && player.center_y < 5530){
+      button = Button[1];
+      farmer.life = -2;
+      
+    }
   }
 }
+
 void draw_background(){
   int x = z % bakgroundimg.width;
   for (int i = -x ; i < width ; i += bakgroundimg.width) {
@@ -675,21 +705,26 @@ void giveExp(int expGain){
 }
 
 void keyPressed(){
-  if(keyCode == RIGHT && !player.dead){
+  if(keyCode == RIGHT && !player.dead && textReader>0){
     player.change_x = WALK_SPEED;
   }
-  else if(keyCode == 32 && !player.dead){
+  else if(keyCode == 32 && !player.dead && textReader > 2){
     Punch();
   }
-  else if(keyCode == LEFT&& !player.dead){
+  else if(keyCode == LEFT&& !player.dead && textReader>0){
     player.change_x = -WALK_SPEED;
   }
-  else if(keyCode == UP && (player.isOnBlock || player.isOnTop) && !player.dead){
+  else if(keyCode == UP && (player.isOnBlock || player.isOnTop) && !player.dead && textReader>1){
     player.change_y = -JUMP_SPEED;
     player.isOnBlock = false;
     updated = false;
     player.isOnLadder = false;
     player.isOnTop = false;
+  }
+  else if(keyCode == ENTER ){
+    if(textReader<8){
+      textReader++;
+    }
   }
   
   else if(keyCode == DOWN && (player.isOnTop || player.isOnLadder)){
