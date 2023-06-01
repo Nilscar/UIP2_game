@@ -205,11 +205,11 @@ void draw(){
     pauseScreen.drawBars(); //Call for the function that draws  the hp & lvl bars into the player screen
     
     if( millis()<timeNowR+500){
-      println(int(millis()-timeNowR)/126);
+     
       image(FartRight[int(millis()-timeNowR)/126],player.center_x+60 ,player.center_y - 20);
     }
     else if( time<timeNowL+500){
-      println(int(time-timeNowL)/126);
+     
       image(FartLeft[int(time-timeNowL)/126],player.center_x-60 ,player.center_y - 20);
     }
     
@@ -499,12 +499,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
            collisionList.get(5).visable = false;
          }
          updated = true;
-         if(abs(hpCounter - healthPoints) == 1){
-           pauseScreen.updateBars(hpCounter, "hp");
-         }
-         else if(hpCounter > 1 && abs(hpCounter - healthPoints) > 1){
-           pauseScreen.updateBars(hpCounter, "hp");
-         }
        }
        if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
          println("coll water 2");
