@@ -36,6 +36,7 @@ Menu pauseScreen;
 int timeNowR;
 int timeNowL;
 int time;
+int timeAttack;
 int ballspawned =19;
 float currentX;
 float currentY;
@@ -81,6 +82,7 @@ void setup(){
   fullScreen(P2D);
   imageMode(CENTER);
   minim = new Minim(this);
+  timeAttack = 0;
   Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
   //Audioplayer.play();
    f = createFont("Arial",70,true);
@@ -337,10 +339,11 @@ void portals_transfer(int port_nmr){
   
 }
 void MobAttack(int i, boolean mob){
-  if(mob){
+  if(mob && timeAttack +800 < time){
     if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) <800 && !attacked){
       print("OUUF");
       hpCounter -= 4;
+      timeAttack = time;
       println("hp is at ", hpCounter);
       attacked=true;
       if(hpCounter <= 0){
@@ -359,6 +362,7 @@ void MobAttack(int i, boolean mob){
       print("OUUF");
       hpCounter-=3;
       attacked=true;
+      timeAttack = time;
        if(hpCounter <= 0){
          player.dead = true;
        }
@@ -378,6 +382,7 @@ void MobAttack(int i, boolean mob){
       //hpCounter--;
       println("hp is at ", hpCounter);
       attacked=true;
+      timeAttack = time;
       if(hpCounter <= 0){
          player.change_x = 0;
          player.dead = true;
