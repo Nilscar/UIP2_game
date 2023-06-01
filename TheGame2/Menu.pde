@@ -57,25 +57,25 @@ public class Menu{
     hpLeft = loadImage("data/menu/barRed_horizontalLeft.png");
     hpRight = loadImage("data/menu/barRed_horizontalRight.png");
     hpMid = loadImage("data/menu/barRed_horizontalMid.png");
-    hpLeft.resize(hpLeft.get().width*4*int(barScale), hpLeft.get().height*2*int(barScale));
+    hpLeft.resize(int(hpLeft.get().width*4*barScale), int(hpLeft.get().height*2*barScale));
     hpRight.resize(hpRight.get().width*4*int(barScale), hpRight.get().height*2*int(barScale));
-    hpMid.resize(hpMid.get().width*2*int(barScale), hpMid.get().height*2*int(barScale));
+    hpMid.resize(int(hpMid.get().width*2*barScale), int(hpMid.get().height*2*barScale));
     healthBar = createBar(hpLeft, hpMid, hpRight, healthPoints);
     
     lvlLeft = loadImage("data/menu/barBack_horizontalLeft.png");
     lvlRight = loadImage("data/menu/barBack_horizontalRight.png");
     lvlMid = loadImage("data/menu/barBack_horizontalMid.png");
-    lvlLeft.resize(lvlLeft.get().width*4*int(barScale), lvlLeft.get().height*2*int(barScale));
-    lvlRight.resize(lvlRight.get().width*4*int(barScale), lvlRight.get().height*2*int(barScale));
-    lvlMid.resize(lvlMid.get().width*2*int(barScale), lvlMid.get().height*2*int(barScale));
+    lvlLeft.resize(int(lvlLeft.get().width*4*barScale), int(lvlLeft.get().height*2*barScale));
+    lvlRight.resize(int(lvlRight.get().width*4*barScale), int(lvlRight.get().height*2*barScale));
+    lvlMid.resize(int(lvlMid.get().width*2*barScale), int(lvlMid.get().height*2*barScale));
     lvlBar = createBar(lvlLeft, lvlMid, lvlRight, healthPoints);
     
     lvlPointLeft = loadImage("data/menu/barBlue_horizontalLeft.png");
     lvlPointRight = loadImage("data/menu/barBlue_horizontalRight.png");
     lvlPointMid = loadImage("data/menu/barBlue_horizontalBlue.png");
-    lvlPointLeft.resize(lvlPointLeft.get().width*4*int(barScale), lvlPointLeft.get().height*2*int(barScale));
-    lvlPointRight.resize(lvlPointRight.get().width*4*int(barScale), lvlPointRight.get().height*2*int(barScale));
-    lvlPointMid.resize(lvlPointMid.get().width*2*int(barScale), lvlPointMid.get().height*2*int(barScale));
+    lvlPointLeft.resize(int(lvlPointLeft.get().width*4*barScale), int(lvlPointLeft.get().height*2*barScale));
+    lvlPointRight.resize(int(lvlPointRight.get().width*4*barScale), int(lvlPointRight.get().height*2*barScale));
+    lvlPointMid.resize(int(lvlPointMid.get().width*2*barScale), int(lvlPointMid.get().height*2*barScale));
     
     musicOn = loadImage("data/menu/shadedDark17.png");
     musicOff = loadImage("data/menu/shadedDark19.png");
