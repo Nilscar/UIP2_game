@@ -800,7 +800,15 @@ void keyPressed(){
 }
 
 void keyReleased(){
-  if(keyCode == RIGHT && !player.dead){
+  if(keyCode == RIGHT && keyCode == UP && player.isOnLadder && !player.dead){
+    player.change_x = 0;
+    player.change_y = 0;
+  }
+  else if(keyCode == LEFT && keyCode == UP && player.isOnLadder && !player.dead){
+    player.change_x = 0;
+    player.change_y = 0;
+  }
+  else if(keyCode == RIGHT && !player.dead){
     if(player.land_block == 3 && !player.isOnLadder){
       player.change_x = 2;
     }
