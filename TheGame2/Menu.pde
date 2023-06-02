@@ -25,9 +25,9 @@ public class Menu{
   PImage lvlPointLeft;
   PImage lvlPointRight;
   PImage lvlPointMid;
-  PImage soundOn, soundOff, musicOn, musicOff, langSwe, langEng;
+  PImage soundOn, soundOff, musicOn, musicOff, langSwe, langEng, pauseA;
   PImage skillBox;
-  Sprite rightBox, leftBoxUp, leftBoxDown, panelLeft, panelRight, crossButton, soundButton, musicButton, sweButton, engButton;
+  Sprite rightBox, leftBoxUp, leftBoxDown, panelLeft, panelRight, crossButton, soundButton, musicButton, sweButton, engButton, pauseButton;
   Sprite[] itemBoxes;
   int nrItemBoxes = 3;
   int healthPoints = 11;
