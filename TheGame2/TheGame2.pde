@@ -10,7 +10,7 @@ Minim minim;//audio context
 PFont f;
 String[] Tutorial;
 String[] sweTutorial;
- String[] engTutorial;
+String[] engTutorial;
 Sprite restart;
   
 int textReader = 0; 
@@ -144,7 +144,7 @@ void setup(){
   pause = true;
 
   bakgroundimg = loadImage("data/blocks/background.png");
-  bakgroundimg.resize(displayWidth+400,displayHeight);
+  bakgroundimg.resize(displayWidth+600,displayHeight);
   String[] CSVrows = loadStrings("data/blocks/blockMapPelle.csv");
   cells = new ArrayList<Cell>();
   Mapcells = new Cell[split(CSVrows[0], ";").length][CSVrows.length];
@@ -232,10 +232,10 @@ void draw(){
     int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
     time = millis();
        scroll();
-     xZone[0] = playercol-13;
-     xZone[1] = playercol+13;
-     yZone[0] = playerrow-8;
-     yZone[1] = playerrow+8;
+     xZone[0] = playercol-14;
+     xZone[1] = playercol+14;
+     yZone[0] = playerrow-9;
+     yZone[1] = playerrow+9;
     for (int i = xZone[0]; i<xZone[1]; i++){
       for (int j = yZone[0]; j<yZone[1]; j++){
         if(i >= 0 && i < mapWidth){
@@ -368,7 +368,7 @@ void portalsDisp(){
 void draw_background(){
   int x = z % bakgroundimg.width;
   for (int i = -x ; i < width ; i += bakgroundimg.width) {
-      copy(bakgroundimg, 0, 0, bakgroundimg.width, height, i, 0, bakgroundimg.width, height);    
+      copy(bakgroundimg, -300, 0, bakgroundimg.width, height,-300 + i, 0, bakgroundimg.width, height);    
   }
 }
 void portals_transfer(int port_nmr){
