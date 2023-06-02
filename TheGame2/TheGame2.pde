@@ -747,7 +747,15 @@ void giveExp(int expGain){ //Updates the lvl bar if any exp in the game is gaine
 }
 
 void keyPressed(){
-  if(keyCode == RIGHT && !player.dead && textReader>0){
+  if(keyCode == RIGHT && keyCode == UP && player.isOnLadder && !player.dead && textReader>0){
+    player.change_x = WALK_SPEED;
+    player.change_y = -WALK_SPEED;
+  }
+  else if(keyCode == LEFT && keyCode == UP && player.isOnLadder && !player.dead && textReader>0){
+    player.change_x = -WALK_SPEED;
+    player.change_y = -WALK_SPEED;
+  }
+  else if(keyCode == RIGHT && !player.dead && textReader>0){
     player.change_x = WALK_SPEED;
   }
   else if(keyCode == 32 && !player.dead && textReader > 2){
