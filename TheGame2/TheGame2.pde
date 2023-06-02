@@ -162,8 +162,8 @@ void setup(){
   blocks[11] = loadImage("data/blocks/Waterdeep.png");
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
-  player = new Player(400, 7000);
-  //player = new Player(3780,5370);
+  //player = new Player(400, 7000);
+  player = new Player(3780,5370);
   pig[0] = new Mob(200,600,1);
   pig[1] = new Mob(2400,1700,1);
   pig[2] = new Mob(3400,1200,1);
@@ -281,20 +281,20 @@ void draw(){
       chick[i].display();
       chick[i].update();
       MobAttack(i, true);
-    
-    
-    
-    
-    if(pig[i].life >0){
-    collisions(pig[i], Mapcells);
+
+      if(pig[i].life >0){
+        collisions(pig[i], Mapcells);
+      }
+      if(chick[i].life >0){
+        collisions(chick[i], Mapcells);
+      }
     }
-    if(chick[i].life >0){
-    collisions(chick[i], Mapcells);
-    }
-    
+    if(!keyPressed && ladder != null && !player.isOnLadder){
+      //println("change_y: ", player.change_y);
+      //player.change_y = 0;
     }
     //keyPressed needs to be called in the draw func in order to properly update the postion when climbing ladders
-    if((keyPressed && (keyCode == UP && player.isOnLadder && ladder != null)) || (keyPressed && (keyCode == UP && keyCode == LEFT && player.isOnLadder && ladder != null))
+    if((keyPressed && (keyCode == UP && player.isOnLadder && ladder != null)) || (keyPressed && (keyCode == UP && keyCode == RIGHT && player.isOnLadder && ladder != null))
         || (keyPressed && (keyCode == UP && keyCode == LEFT && player.isOnLadder && ladder != null))){
       if(player.getBottom() >= ladder.getTop()){//if player not on top of ladder it should climb the ladder with half the walking speed
         player.change_y = -WALK_SPEED/2;
@@ -640,9 +640,10 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
   }
   for(int i = 0; i < collisionList.size(); i += 1){ //Checks if the player is on a ladder
         if(collisionList.get(i).ladder && 
-            dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= collisionList.get(i).block.w){
+            dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= collisionList.get(i).block.w/2){
           ladder = collisionList.get(i).block;
           player.isOnLadder = true;
+          println("ladder not false");
         }
       }
    //Checks if the player is not on a ladder
@@ -749,11 +750,11 @@ void giveExp(int expGain){ //Updates the lvl bar if any exp in the game is gaine
 void keyPressed(){
   if(keyCode == RIGHT && keyCode == UP && player.isOnLadder && !player.dead && textReader>0){
     player.change_x = WALK_SPEED;
-    player.change_y = -WALK_SPEED;
+    player.change_y = -WALK_SPEED/2;
   }
   else if(keyCode == LEFT && keyCode == UP && player.isOnLadder && !player.dead && textReader>0){
     player.change_x = -WALK_SPEED;
-    player.change_y = -WALK_SPEED;
+    player.change_y = -WALK_SPEED/2;
   }
   else if(keyCode == RIGHT && !player.dead && textReader>0){
     player.change_x = WALK_SPEED;
