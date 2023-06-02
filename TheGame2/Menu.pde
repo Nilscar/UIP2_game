@@ -84,6 +84,7 @@ public class Menu{
     soundOff = loadImage("data/menu/shadedDark15.png");
     langSwe = loadImage("data/menu/swe.PNG");
     langEng = loadImage("data/menu/eng.PNG");
+    pauseA = loadImage("data/menu/shadedDark36.png");
     
     rightBox = new Sprite(menuBoxBrown, 0.75*displayWidth, displayHeight/2, SCALE_W, SCALE_RIGHT_H, false);
     leftBoxUp = new Sprite(menuBoxBrown, 0.25*displayWidth, 0.25*displayHeight, SCALE_W, SCALE_LEFT_H, false);
@@ -107,6 +108,9 @@ public class Menu{
     textSize(MENU_MARGIN);
     fill(#296986); 
     text(gameTitle, rightBox.center_x, rightBox.getTop() + MENU_MARGIN/2);
+    textSize(MENU_MARGIN/2);
+    fill(#296986); 
+    text("Press Q to toggle pause", rightBox.center_x, rightBox.getTop() + 4*MENU_MARGIN);
     leftBoxUp.display();
     leftBoxDown.display();
     panelLeft.display();
