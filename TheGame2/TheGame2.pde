@@ -501,8 +501,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.change_x = 0;
        }
        if(player.land_block == 10 && !player.dead && player.isPlayer){//if player lands on water ==> death
-         println("coll water 1");
-         print(player.center_y/Cell.BLOCK_SIZE);
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
