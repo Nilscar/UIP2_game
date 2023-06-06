@@ -636,6 +636,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           ladder = collisionList.get(i).block;
           player.isOnLadder = true;
           println("ladder not false ", collisionList.get(i).ladder);
+          println("ladder not false: collisionList size: ", collisionList.size());
         }
       }
    //Checks if the player is not on a ladder
