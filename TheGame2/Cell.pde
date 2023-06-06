@@ -34,18 +34,21 @@ public class Cell{
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      visable = true;
+     ladder = false;
     }
     else if( blocknum == 10){ //creates water blocks
      block = new Sprite(img, BLOCK_SCALEW, BLOCK_SCALEH, 4, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      visable = true;
+     ladder = false;
     }
     else if( blocknum == 11){ //creates deep water blocks
      block = new Sprite(img, BLOCK_SCALEW, BLOCK_SCALEH, 4, false);
      block.center_x = BLOCK_SIZE/2 + col * BLOCK_SIZE;
      block.center_y = BLOCK_SIZE/2 + row * BLOCK_SIZE;
      visable = true;
+     ladder = false;
     }
     else { //creates empty blocks
      block = new Sprite(img, BLOCK_SCALEW, BLOCK_SCALEH, 1, false);
@@ -62,8 +65,5 @@ public class Cell{
         block.update();
       }
     }
-    else{
-      //rect( this_col * BLOCK_SIZE,  this_row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-   // rect(BLOCK_SIZE + this_col * BLOCK_SIZE, BLOCK_SIZE + this_row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-  }}
+  }
 }

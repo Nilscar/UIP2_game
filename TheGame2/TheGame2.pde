@@ -542,8 +542,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
          updated = true;
        }
        if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
-         println("coll water 2");
-         print(player.center_y/Cell.BLOCK_SIZE);
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -558,8 +556,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.land_block = collisionList.get(8).block_num;
         
         if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
-          println("coll water 3");
-         print(player.center_y/Cell.BLOCK_SIZE);
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -573,8 +569,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.change_y = 0;
         player.land_block = collisionList.get(2).block_num;
         if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
-          println("coll water 4");
-         print(player.center_y/Cell.BLOCK_SIZE);
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -615,7 +609,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
     }
   
   player.center_x += player.change_x; //updates the player's movement in the x-direction if there is any
-  if(player.change_x > 0){ // if player moves to the right
+  if(player.change_x > 0){ // if player moves to the right, check for collision
     if(collisionList.get(7).visable && player.getRight() >= collisionList.get(7).block.getLeft()){
        player.setRight(collisionList.get(7).block.getLeft());
        player.side_block = collisionList.get(7).block_num;
@@ -627,7 +621,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        
      }
   }
-  if(player.change_x < 0){ // if player moves to the left
+  if(player.change_x < 0){ // if player moves to the left, check for collision
     if(collisionList.get(1).visable && player.getLeft() <= collisionList.get(1).block.getRight()){
        player.setLeft(collisionList.get(1).block.getRight());
        if(!player.isPlayer){player.change_x = - player.change_x;}
@@ -641,7 +635,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
             dist(player.center_x, player.center_y, collisionList.get(i).block.center_x, collisionList.get(i).block.center_y) <= collisionList.get(i).block.w/2){
           ladder = collisionList.get(i).block;
           player.isOnLadder = true;
-          println("ladder not false");
+          println("ladder not false ", collisionList.get(i).ladder);
         }
       }
    //Checks if the player is not on a ladder
