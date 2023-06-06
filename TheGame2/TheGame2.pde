@@ -162,8 +162,8 @@ void setup(){
   blocks[11] = loadImage("data/blocks/Waterdeep.png");
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
-  //player = new Player(400, 7000);
-  player = new Player(3780,5370);
+  player = new Player(400, 7000);
+  //player = new Player(3780,5370);
   pig[0] = new Mob(200,600,1);
   pig[1] = new Mob(2400,1700,1);
   pig[2] = new Mob(3400,1200,1);
