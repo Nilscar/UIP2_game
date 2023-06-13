@@ -3,18 +3,18 @@ public class HalmBall extends Sprite{
   PImage halm = loadImage("data/Halm.png");
   PImage[] Halm = new PImage[4];
   public HalmBall(boolean first){
-    super("data/pigRight.png", MOB_SCALE, 3720, 5320, 1, false);
+    super("data/pigRight.png", MOB_SCALE* SizeScale, 3720* SizeScale, 5320* SizeScale, 1, false);
     Halm[0] = halm.get(0, 0, 128, 128);
     Halm[1] = halm.get(128, 0, 128, 128);
     Halm[2] = halm.get(256, 0, 128, 128);
     Halm[3] = halm.get(394, 0, 128, 128);
     if(first){
-      center_x = 4300;
-      center_y = 7100;
+      center_x = 4300* SizeScale;
+      center_y = 7100* SizeScale;
       change_x = 0;
     }
     else{
-      change_x = random(-3.5,-1.2);
+      change_x = random(-3.5* SizeScale,-1.2* SizeScale);
     }
   }
   @Override

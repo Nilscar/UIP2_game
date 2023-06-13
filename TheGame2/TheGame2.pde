@@ -1,7 +1,7 @@
 // Global variables
-float WALK_SPEED = 6;
-float JUMP_SPEED = 14.4;
-final static float GRAVITY = 0.5;
+float WALK_SPEED;
+float JUMP_SPEED;
+float GRAVITY;
 PImage menu;
 import ddf.minim.*;
 AudioPlayer Audioplayer;
@@ -12,7 +12,8 @@ String[] Tutorial;
 String[] sweTutorial;
 String[] engTutorial;
 Sprite restart;
-  
+public float SizeScale;
+float BLOCK_SIZE;
 int textReader = 0; 
 
 PImage RestartButton; 
@@ -84,6 +85,13 @@ boolean treasure = false;
 Cell[][] Mapcells;
 
 void setup(){
+  SizeScale = float(displayWidth)/1920.0;
+  BLOCK_SIZE = 100 * SizeScale;
+  WALK_SPEED = 6;
+  JUMP_SPEED = 14.4 * SizeScale;
+  GRAVITY = 0.5* SizeScale;
+  println("BLCOK SICE " ,BLOCK_SIZE, "SIXE SVLAE" , SizeScale);
+  println("DW " ,displayWidth);
   fullScreen(P2D);
   imageMode(CENTER);
   minim = new Minim(this);
@@ -117,18 +125,18 @@ void setup(){
   PortalRed[1] = portalRed.get(128,0,128,128);
   PortalGreen[0] = portalGreen.get(0,0,128,128);
   PortalGreen[1] = portalGreen.get(128,0,128,128);
-  portal1_in[0] = 1250;
-  portal1_in[1] = 7130;
-  portal1_out[0] = 300;
-  portal1_out[1] = 2200;
-  portal2_in[0] = 4350;
-  portal2_in[1] = 2500;
-  portal2_out[0] = 300;
-  portal2_out[1] = 300;
-  portal3_in[0] = 2350;
-  portal3_in[1] = 500;
-  portal3_out[0] = 1780;
-  portal3_out[1] = 7100;
+  portal1_in[0] = int(1250*SizeScale);
+  portal1_in[1] = int(7130*SizeScale);
+  portal1_out[0] = int(300*SizeScale);
+  portal1_out[1] = int(2200*SizeScale);
+  portal2_in[0] = int(4350*SizeScale);
+  portal2_in[1] = int(2500*SizeScale);
+  portal2_out[0] = int(300*SizeScale);
+  portal2_out[1] = int(300*SizeScale);
+  portal3_in[0] = int(2350*SizeScale);
+  portal3_in[1] = int(500*SizeScale);
+  portal3_out[0] = int(1780*SizeScale);
+  portal3_out[1] = int(7100*SizeScale);
   for(int bals = 0; bals <15;bals++){
     ball[bals] = new HalmBall(true);
   }
@@ -162,16 +170,16 @@ void setup(){
   blocks[11] = loadImage("data/blocks/Waterdeep.png");
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
-  player = new Player(400, 7000);
+  player = new Player(int(400*SizeScale), int(7000*SizeScale));
   //player = new Player(3780,5370);
-  pig[0] = new Mob(200,600,1);
-  pig[1] = new Mob(2400,1700,1);
-  pig[2] = new Mob(3400,1200,1);
-  doll = new Mob(300,7140,3);
-  chick[0] = new Mob(400,600,2);
-  chick[1] = new Mob(1300,500,2);
-  chick[2] = new Mob(800,2600,2);
-  farmer = new Mob(3780,5370,4);
+  pig[0] = new Mob(int(200*SizeScale),int(600*SizeScale),1);
+  pig[1] = new Mob(int(2400*SizeScale),int(1700*SizeScale),1);
+  pig[2] = new Mob(int(3400*SizeScale),int(1200*SizeScale),1);
+  doll = new Mob(int(300*SizeScale),int(7140*SizeScale),3);
+  chick[0] = new Mob(int(400*SizeScale),int(600*SizeScale),2);
+  chick[1] = new Mob(int(1300*SizeScale),int(500*SizeScale),2);
+  chick[2] = new Mob(int(800*SizeScale),int(2600*SizeScale),2);
+  farmer = new Mob(int(3780*SizeScale),int(5370*SizeScale),4);
   currentX = player.center_x;
   currentY = player.center_y;
   mapHeight = CSVrows.length;
@@ -228,8 +236,8 @@ void draw(){
   else{
     imageMode(CENTER);
     draw_background();
-    int playercol = int(player.center_x/Cell.BLOCK_SIZE);
-    int playerrow = int(player.center_y/Cell.BLOCK_SIZE);
+    int playercol = int(player.center_x/BLOCK_SIZE);
+    int playerrow = int(player.center_y/BLOCK_SIZE);
     time = millis();
        scroll();
      xZone[0] = playercol-14;
@@ -346,7 +354,7 @@ void portalsDisp(){
     image(PortalRed[int((time/500)%2)],portal2_out[0],portal2_out[1]); 
     image(PortalGreen[int((time/500)%2)],portal3_in[0],portal3_in[1]);
     image(PortalRed[int((time/500)%2)],portal3_out[0],portal3_out[1]); 
-    image(button,4000,5470);
+    image(button,int(4000*SizeScale),int(5470*SizeScale));
     if(player.center_x < portal1_in[0] + 20 && player.center_x > portal1_in[0]-20 && player.center_y > portal1_in[1]+20 && player.center_y < portal1_in[1]+80){
       portals_transfer(1);
     }
@@ -356,7 +364,7 @@ void portalsDisp(){
     if(player.center_x < portal3_in[0] + 20 && player.center_x > portal3_in[0]-20 && player.center_y > portal3_in[1]+20 && player.center_y < portal3_in[1]+80){
       portals_transfer(3);
     }
-    if(player.center_x < 4050  && player.center_x > 3950 && player.center_y > 5450 && player.center_y < 5530){
+    if(player.center_x < int(4050*SizeScale)  && player.center_x > int(3950*SizeScale) && player.center_y > int(5450*SizeScale) && player.center_y < int(5530*SizeScale)){
       button = Button[1];
       farmer.life = -2;
       ToW = time + 1000;
@@ -368,7 +376,7 @@ void portalsDisp(){
 void draw_background(){
   int x = z % bakgroundimg.width;
   for (int i = -x ; i < width ; i += bakgroundimg.width) {
-      copy(bakgroundimg, -300, 0, bakgroundimg.width, height,-300 + i, 0, bakgroundimg.width, height);    
+      copy(bakgroundimg, int(-300*SizeScale), 0, bakgroundimg.width, height,int(-300*SizeScale) + i, 0, bakgroundimg.width, height);    
   }
 }
 void portals_transfer(int port_nmr){
@@ -388,7 +396,7 @@ void portals_transfer(int port_nmr){
 }
 void MobAttack(int i, boolean mob){
   if(mob && timeAttack+800 < time){
-    if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) <800 && !attacked){
+    if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) <int(800*SizeScale) && !attacked){
       print("OUUF");
       hpCounter -= 4;
       timeAttack = time;
@@ -402,7 +410,7 @@ void MobAttack(int i, boolean mob){
            pauseScreen.updateBars(hpCounter, "hp");
          }
     }
-     else if(Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) <800 && !attacked){
+     else if(Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) <int(800*SizeScale) && !attacked){
       print("OUUF");
       hpCounter-=3;
       attacked=true;
@@ -415,12 +423,12 @@ void MobAttack(int i, boolean mob){
          }
       
     }
-    else if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) > 800 && Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) > 800){
+    else if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) > int(800*SizeScale) && Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) > int(800*SizeScale)){
       attacked = false;
     }
   }
   else{
-    if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) <800 && !attacked && timeAttack+300 < time ){
+    if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) <int(800*SizeScale) && !attacked && timeAttack+300 < time ){
       hpCounter--;
       println("hp is at ", hpCounter);
       attacked=true;
@@ -434,7 +442,7 @@ void MobAttack(int i, boolean mob){
            //healthBar[hpCounter-1] = lvlMid;
          }
     }
-    else if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) > 800){
+    else if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) > int(800*SizeScale)){
       attacked = false;
     }
     
@@ -476,13 +484,13 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
   }
     player.center_y += player.change_y;//updates the player's movement in the y-direction if there is any
     
-    if(player.center_y/Cell.BLOCK_SIZE < player.deadspot && player.dead){
+    if(player.center_y/BLOCK_SIZE < player.deadspot && player.dead){
        player.change_y = 1;
        hpCounter = 0;
        pauseScreen.updateBars(hpCounter, "hp");
-       ToD = time + 2000;
+       ToD = time + 1000;
        }
-    else if (player.center_y/Cell.BLOCK_SIZE > player.deadspot && player.dead){
+    else if (player.center_y/BLOCK_SIZE > player.deadspot && player.dead){
        player.change_y = -GRAVITY;
        hpCounter = 0;
        pauseScreen.updateBars(hpCounter, "hp");
@@ -502,7 +510,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        }
        if(player.land_block == 10 && !player.dead && player.isPlayer){//if player lands on water ==> death
          println("coll water 1");
-         print(player.center_y/Cell.BLOCK_SIZE);
+         print(player.center_y/BLOCK_SIZE);
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -545,7 +553,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
        }
        if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
          println("coll water 2");
-         print(player.center_y/Cell.BLOCK_SIZE);
+         print(player.center_y/BLOCK_SIZE);
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -561,7 +569,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         
         if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
           println("coll water 3");
-         print(player.center_y/Cell.BLOCK_SIZE);
+         print(player.center_y/BLOCK_SIZE);
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -576,7 +584,7 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.land_block = collisionList.get(2).block_num;
         if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
           println("coll water 4");
-         print(player.center_y/Cell.BLOCK_SIZE);
+         print(player.center_y/BLOCK_SIZE);
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -656,8 +664,8 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
 
 public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates a "3x3 matrix"(actually a list) containing the surrounding map blocks of the player
    ArrayList<Cell> collisionList = new ArrayList<Cell>();
-   for(int i = int(player.center_x/Cell.BLOCK_SIZE) - 1; i < int(player.center_x/Cell.BLOCK_SIZE) + 2; i++){
-     for(int j = int(player.center_y/Cell.BLOCK_SIZE) - 1; j < int(player.center_y/Cell.BLOCK_SIZE) + 2; j++){
+   for(int i = int(player.center_x/BLOCK_SIZE) - 1; i < int(player.center_x/BLOCK_SIZE) + 2; i++){
+     for(int j = int(player.center_y/BLOCK_SIZE) - 1; j < int(player.center_y/BLOCK_SIZE) + 2; j++){
          collisionList.add(blockList[i][j]);
      }
    }

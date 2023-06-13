@@ -19,7 +19,7 @@ public class Mob extends Sprite{
   
   
   public Mob(float x_pos, float y_pos, int animal ){
-    super("data/pigRight.png", MOB_SCALE, x_pos, y_pos, 1, false);
+    super("data/pigRight.png", MOB_SCALE* SizeScale, x_pos, y_pos, 1, false);
     anim = animal;
        change_x = 1.2;
        Chicken_right[0] = chicken_right.get(0, 0, 80, 100);
@@ -52,7 +52,7 @@ public class Mob extends Sprite{
       }
     }
     else if( anim == 3){
-      image(doll, center_x, center_y, 90, 120);
+      image(doll, center_x, center_y, 90* SizeScale, 120* SizeScale);
       change_x = 0;
       change_y = 0; 
     }
@@ -66,8 +66,8 @@ public class Mob extends Sprite{
       center_y +=change_y;
     }
     else{
-      center_x = 2000;
-      center_y=2000;
+      center_x = -2000;
+      center_y = -2000;
       change_x = 0;
       change_y = 0; 
     }

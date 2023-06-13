@@ -73,8 +73,8 @@ public class Sprite{
       //print("one got through");
     }
     else{
-      fr_w = img.width * (Cell.BLOCK_SIZE/img.width);
-      img.resize(int(Cell.BLOCK_SIZE*n_frames),img.height);
+      fr_w = img.width * (BLOCK_SIZE/img.width);
+      img.resize(int(BLOCK_SIZE*n_frames),img.height);
       for (int i = 0; i < n_frames; i++) {
         imgs[i] = img.get(int(fr_w*(i%n_frames)), 0, int(fr_w), int(h));
         //imgs[i].resize(int(100),int(100));

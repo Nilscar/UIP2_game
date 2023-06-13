@@ -1,10 +1,10 @@
 public class Cell{
-  final static float BLOCK_SIZE = 100;
-  final static float BLOCK_SCALEW = BLOCK_SIZE/128;
-  final static float BLOCK_SCALEH = BLOCK_SIZE/128;
-  final static float CHEST_SIZE = BLOCK_SIZE/3;
-  final static float CHEST_SCALEW = CHEST_SIZE/62;
-  final static float CHEST_SCALEH = CHEST_SIZE/55;
+  final  float BLOCK_SIZE = 100.0 * SizeScale;
+  final  float BLOCK_SCALEW = BLOCK_SIZE/128.0;
+  final  float BLOCK_SCALEH = BLOCK_SIZE/128.0;
+  final  float CHEST_SIZE = BLOCK_SIZE/3;
+  final  float CHEST_SCALEW = CHEST_SIZE/62;
+  final  float CHEST_SCALEH = CHEST_SIZE/55;
   boolean visable;
   boolean ladder;
   Sprite block;

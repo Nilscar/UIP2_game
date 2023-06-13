@@ -10,13 +10,10 @@ public class Player extends Sprite{
   PImage player_drown = loadImage("data/zombie_drown.png");
   PImage[] pl_drown = new PImage[7];
   boolean onlydieonce = false;
-  
-  
-
-  final static float PLAYER_SCALE = 0.8;
+  final  float PLAYER_SCALE = 0.8 * SizeScale;
   
   public Player(float x_pos, float y_pos ){
-    super("data/zombie_seq.png", PLAYER_SCALE, x_pos, y_pos, stand_frames, true); //Calls the sprite class when creating the player
+    super("data/zombie_seq.png",  0.8 * SizeScale, x_pos, y_pos, stand_frames, true); //Calls the sprite class when creating the player
     i_w = player_stand.width / stand_frames;
       for (int i = 0; i < stand_frames; i++) {
         pl_stand[i] = player_stand.get(int(i_w*(i%stand_frames)), 0, int(i_w), int(player_stand.height));
@@ -52,8 +49,7 @@ public class Player extends Sprite{
     //image(pl_stand[0], center_x, center_y, fr_w, h);
     if(dead){
       if(!onlydieonce){ currentFrame = 0;
-          deadspot = (center_y + 200)/100;
-          print("Here sjould we stay  ", deadspot);
+          deadspot = (center_y + 2*BLOCK_SIZE)/BLOCK_SIZE;
           onlydieonce = true;}
       image(pl_drown[(int(currentFrame))%7], center_x, center_y, fr_w, h);
     }
