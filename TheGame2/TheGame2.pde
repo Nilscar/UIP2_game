@@ -158,7 +158,7 @@ void setup(){
   pause = true;
 //load background img and resize to cover sides while scrolling
   bakgroundimg = loadImage("data/blocks/background.png");
-  bakgroundimg.resize(displayWidth+int(600*SizeScale),displayHeight);
+  bakgroundimg.resize(displayWidth+600,displayHeight);
   //load map and block images
   String[] CSVrows = loadStrings("data/blocks/blockMapPelle.csv");
   cells = new ArrayList<Cell>();
@@ -383,7 +383,7 @@ void portalsDisp(){
 void draw_background(){
   int x = z % bakgroundimg.width;
   for (int i = -x ; i < width ; i += bakgroundimg.width) {
-      copy(bakgroundimg, int(-300*SizeScale), 0, bakgroundimg.width, height,int(-300*SizeScale) + i, 0, bakgroundimg.width, height);    
+      copy(bakgroundimg, -300, 0, bakgroundimg.width, height,-300 + i, 0, bakgroundimg.width, height);    
   }
 }
 //Transport the player to the right position when moving into a portal
@@ -434,7 +434,7 @@ void MobAttack(int i, boolean mob){
     }
   }
   else{
-    if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) <int(800*SizeScale) && !attacked && timeAttack+300 < time ){
+    if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) <int(800*SizeScale) && !attacked && timeAttack+150 < time ){
       hpCounter--;
       attacked=true;
       timeAttack = time;
