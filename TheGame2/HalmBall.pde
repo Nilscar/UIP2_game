@@ -1,4 +1,5 @@
 public class HalmBall extends Sprite{
+  //initiate the halmbals
   final static float MOB_SCALE = 0.8;
   PImage halm = loadImage("data/Halm.png");
   PImage[] Halm = new PImage[4];
@@ -8,6 +9,7 @@ public class HalmBall extends Sprite{
     Halm[1] = halm.get(128, 0, 128, 128);
     Halm[2] = halm.get(256, 0, 128, 128);
     Halm[3] = halm.get(394, 0, 128, 128);
+    //check if the bals should be spawned in a unvisable spot or from the farmer
     if(first){
       center_x = 4300* SizeScale;
       center_y = 7100* SizeScale;

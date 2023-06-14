@@ -1,4 +1,5 @@
 public class Menu{
+  //initiating variables
   float MENU_MARGIN;
   float SCALE_W;
   float SCALE_RIGHT_H;
@@ -37,6 +38,7 @@ public class Menu{
   PImage[] healthBar = new PImage[healthPoints];
   PImage[] lvlBar = new PImage[healthPoints];
   
+  //construct the menu
   public Menu(String[] Tutorial){
     //Setting the menu margins based on screen size
     gameTitle = Tutorial[Tutorial.length-1];
@@ -48,7 +50,6 @@ public class Menu{
     SCALE_LEFT_H = displayHeight/2 - MENU_MARGIN;
     barScale = displayWidth/1920.0;
     itemBoxes = new Sprite[nrItemBoxes];
-    println(MENU_MARGIN);
     
     menuBoxBrown = loadImage("data/menu/panel_brown.png");
     menuBoxBlue = loadImage("data/menu/panel_blue.png");
@@ -101,7 +102,7 @@ public class Menu{
     engButton = new Sprite(langEng, panelRight.getLeft() + MENU_MARGIN/2 + musicOn.width/2 + 1.5*langEng.width/2, panelRight.getTop() + 0.75*MENU_MARGIN, langEng.width/2, musicOn.height, true);
     sweButton.img.filter(GRAY);
   }
-  
+  //display the menu
   void viewMenu(String hp, String lvl){ //displays the menu blocks and content of the pause menu
     rightBox.display();
     textAlign(CENTER, TOP);
@@ -136,7 +137,7 @@ public class Menu{
     sweButton.display();
     engButton.display();
   }
-  
+  //update the bars when gaining exp or losing health
   public void updateBars(int num, String bar){ //updates a bar to the according value(if hp is lost or exp gained)
     if(num <= healthPoints - 1 && bar == "lvl"){
       for(int i = 0; i < num; i++){
@@ -156,17 +157,15 @@ public class Menu{
       }
     }
   }
-  
+  //draw the bars to show your exp or hp
   public void drawBars(){ //copies the hp and lvl bar from the menu to the in-game view
      for(int i = 0; i < healthBar.length; i++){
          copy(healthBar[i], int(panelLeft.w/2 - healthBar[i].width/2 + i*healthBar[i].width), int(panelLeft.getTop() + MENU_MARGIN - healthBar[i].height/2), healthBar[i].width, healthBar[i].height, displayWidth - int(RIGHT_MARGIN) + i*healthBar[i].width, 30, healthBar[i].width, healthBar[i].height);
          copy(lvlBar[i], int(panelLeft.w/2 + i*lvlBar[i].width), int(panelLeft.getTop() + 1.5*MENU_MARGIN), lvlBar[i].width, lvlBar[i].height, displayWidth - int(RIGHT_MARGIN) + i*lvlBar[i].width, 80, lvlBar[i].width, lvlBar[i].height);
 
-        //image(healthBar[i], displayWidth - int(RIGHT_MARGIN) + i*healthBar[i].width, 30);
-        //image(lvlBar[i], displayWidth - int(RIGHT_MARGIN) + i*lvlBar[i].width, 80);
     }
   }
-
+  //create the bar
   PImage[] createBar(PImage left, PImage mid, PImage right, int hp){ //creates a hp or lvl bar of a given length
     PImage[] bar = new PImage[hp];
     for(int i = 0; i < bar.length; i++){

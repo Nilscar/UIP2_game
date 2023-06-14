@@ -2,20 +2,31 @@
 float WALK_SPEED;
 float JUMP_SPEED;
 float GRAVITY;
-PImage menu;
+public float SizeScale;
+float BLOCK_SIZE;
+float currentX;
+float currentY;
+final static float RIGHT_MARGIN = 500;
+final static float LEFT_MARGIN = 500;
+final static float VERTICAL_MARGIN = 500;
+float viewX = 0;
+float viewY = height;
+float mapHeight;
+float mapWidth;
+
 import ddf.minim.*;
 AudioPlayer Audioplayer;
 AudioPlayer Pun;
 Minim minim;//audio context
 PFont f;
+// Textfiles
 String[] Tutorial;
 String[] sweTutorial;
 String[] engTutorial;
-Sprite restart;
-public float SizeScale;
-float BLOCK_SIZE;
 int textReader = 0; 
-
+Sprite restart;
+// Image variables
+PImage menu;
 PImage RestartButton; 
 PImage fartRight;
 PImage[] FartRight = new PImage[4];
@@ -29,33 +40,26 @@ PImage button;
 PImage[] Button = new PImage[2];
 PImage bubble;
 PImage WinPic;
+PImage bakgroundimg;
+PImage[] blocks = new PImage[13];
+
+Menu pauseScreen;
+
+boolean attacked = false;
+boolean pause;
+boolean updated = false;
+
+int ToD;
+int ToW;
+int timeNowR;
+int timeNowL;
 int healthPoints = 11;
 int hpCounter = healthPoints-1;
 int expCounter = 0;
 int lvlCounter = 1;
-boolean attacked = false;
-boolean pause;
-int ToD;
-int ToW;
-Menu pauseScreen;
-int timeNowR;
-int timeNowL;
-
 int time;
 int timeAttack;
 int ballspawned =14;
-float currentX;
-float currentY;
-
-final static float RIGHT_MARGIN = 500;
-final static float LEFT_MARGIN = 500;
-final static float VERTICAL_MARGIN = 500;
-boolean updated = false;
-
-float viewX = 0;
-float viewY = height;
-float mapHeight;
-float mapWidth;
 int[] xZone = new int[2];
 int[] yZone = new int[2];
 int z = 0;
@@ -66,18 +70,14 @@ int[] portal2_out = new int[2];
 int[] portal3_in = new int[2];
 int[] portal3_out = new int[2];
 
-public PGraphics blockGraphics;
-PImage mapimg;
-PImage bakgroundimg;
 Player player;
 Mob[] pig = new Mob[3];
 Mob[] chick = new Mob[3];
 Mob doll;
 Mob farmer; 
 HalmBall[] ball = new HalmBall[15]; 
-//HalmBall ball;
 Sprite reward;
-PImage[] blocks = new PImage[13];
+
 
 Sprite ladder;
 ArrayList<Cell> cells;
@@ -87,26 +87,29 @@ Cell[][] Mapcells;
 void setup(){
   SizeScale = float(displayWidth)/1920.0;
   BLOCK_SIZE = 100 * SizeScale;
-  WALK_SPEED = 6;
+  WALK_SPEED = 6 * SizeScale;
   JUMP_SPEED = 14.4 * SizeScale;
   GRAVITY = 0.5* SizeScale;
-  println("BLCOK SICE " ,BLOCK_SIZE, "SIXE SVLAE" , SizeScale);
-  println("DW " ,displayWidth);
+  
   fullScreen(P2D);
   imageMode(CENTER);
   minim = new Minim(this);
+  //setting up timer variables
   timeAttack = 0;
   ToD = 999999999;
   ToW = 999999999;
+  // music player
   Audioplayer = minim.loadFile("data/music/backSong.mp3", 2048);
-  //Audioplayer.play();
+  Audioplayer.play();
+  Pun = minim.loadFile("data/music/burp.mp3", 2048);
    f = createFont("Arial",70,true);
+   //loading strings
    engTutorial = loadStrings("data/engDict.txt");
    sweTutorial = loadStrings("data/sweDict.txt");
    Tutorial = engTutorial;
-  //createTutorial();
-  Pun = minim.loadFile("data/music/burp.mp3", 2048);
+   
   pauseScreen = new Menu(Tutorial);
+  //Initiate images
   fartRight = loadImage("data/fartRight.png");
   fartLeft = loadImage("data/fartLeft.png"); 
   portalRed = loadImage("data/portalRed.png");
@@ -118,6 +121,7 @@ void setup(){
   RestartButton = loadImage("data/menu/restartButton.png"); 
   RestartButton.resize(displayWidth/4, displayWidth/9);
   bubble.resize(400,280); 
+  //splitting sequence images to 2 frame animations
   Button[0] = button.get(0,0,128,64);
   Button[1] = button.get(128,0,128,64);
   button =Button[0];
@@ -125,6 +129,7 @@ void setup(){
   PortalRed[1] = portalRed.get(128,0,128,128);
   PortalGreen[0] = portalGreen.get(0,0,128,128);
   PortalGreen[1] = portalGreen.get(128,0,128,128);
+  //portal positions 
   portal1_in[0] = int(1250*SizeScale);
   portal1_in[1] = int(7130*SizeScale);
   portal1_out[0] = int(300*SizeScale);
@@ -137,22 +142,24 @@ void setup(){
   portal3_in[1] = int(500*SizeScale);
   portal3_out[0] = int(1780*SizeScale);
   portal3_out[1] = int(7100*SizeScale);
+  //initiate the halmbals 
   for(int bals = 0; bals <15;bals++){
     ball[bals] = new HalmBall(true);
   }
   restart  = new Sprite(RestartButton, (displayWidth/2), 3.5*displayHeight/4,RestartButton.width,RestartButton.height,true);
+  //attack animation
   for (int fartimg = 0; fartimg < 4 ; fartimg++){
     
     FartRight[fartimg] = fartRight.get(int(120*(fartimg%4)), 0, 120, 90);
-    FartRight[fartimg].resize(80, 50);
+    FartRight[fartimg].resize(int(80*SizeScale), int(50*SizeScale));
     FartLeft[fartimg] = fartLeft.get(int(360 - 120 *(fartimg%4)), 0, 120, 90);
-    FartLeft[fartimg].resize(80, 50);
+    FartLeft[fartimg].resize(int(80*SizeScale), int(50*SizeScale));
   }
-  
   pause = true;
-
+//load background img and resize to cover sides while scrolling
   bakgroundimg = loadImage("data/blocks/background.png");
-  bakgroundimg.resize(displayWidth+600,displayHeight);
+  bakgroundimg.resize(displayWidth+int(600*SizeScale),displayHeight);
+  //load map and block images
   String[] CSVrows = loadStrings("data/blocks/blockMapPelle.csv");
   cells = new ArrayList<Cell>();
   Mapcells = new Cell[split(CSVrows[0], ";").length][CSVrows.length];
@@ -171,7 +178,7 @@ void setup(){
   blocks[12] = loadImage("data/blocks/ladder_large_resized.png");
   createMap(CSVrows);
   player = new Player(int(400*SizeScale), int(7000*SizeScale));
-  //player = new Player(3780,5370);
+  //mobs spawn
   pig[0] = new Mob(int(200*SizeScale),int(600*SizeScale),1);
   pig[1] = new Mob(int(2400*SizeScale),int(1700*SizeScale),1);
   pig[2] = new Mob(int(3400*SizeScale),int(1200*SizeScale),1);
@@ -184,7 +191,6 @@ void setup(){
   currentY = player.center_y;
   mapHeight = CSVrows.length;
   mapWidth = split(CSVrows[0], ";").length;
-  //print("dispWidth: ", displayWidth, " <<< dispHeight: ", displayHeight);
 }
 
 void draw(){
@@ -199,6 +205,7 @@ void draw(){
     
   }
   else if (ToW < time){
+    //if Time of Win gets lower than the current time, Win Screen initiates
     image(WinPic,displayWidth/2,displayHeight/2);
     textAlign(RIGHT, CENTER);
     textSize(displayWidth/20);
@@ -218,6 +225,7 @@ void draw(){
     text(Tutorial[11],(displayWidth/2), restart.center_y+displayWidth/70);
   }
   else if (ToD < time){
+    //if Time of Death gets lower than the current time, Loss Screen initiates
     background(0);
     textAlign(RIGHT, CENTER);
     textSize(displayWidth/20);
@@ -240,10 +248,11 @@ void draw(){
     int playerrow = int(player.center_y/BLOCK_SIZE);
     time = millis();
        scroll();
-     xZone[0] = playercol-14;
-     xZone[1] = playercol+14;
+     xZone[0] = playercol-16;
+     xZone[1] = playercol+16;
      yZone[0] = playerrow-9;
      yZone[1] = playerrow+9;
+     //draw the blocks that are visable on the viewscreen
     for (int i = xZone[0]; i<xZone[1]; i++){
       for (int j = yZone[0]; j<yZone[1]; j++){
         if(i >= 0 && i < mapWidth){
@@ -255,16 +264,15 @@ void draw(){
     }
     pauseScreen.drawBars(); //Call for the function that draws  the hp & lvl bars into the player screen
     
+     //to make the attack only visalbe for half a second
     if( millis()<timeNowR+500){
-     
       image(FartRight[int(millis()-timeNowR)/126],player.center_x+60 ,player.center_y - 20);
     }
     else if( time<timeNowL+500){
-     
       image(FartLeft[int(time-timeNowL)/126],player.center_x-60 ,player.center_y - 20);
     }
     
-      
+     //Display and unpdate the moving/dynamic objects
     thinkText(doll,Tutorial[textReader]);
     player.display();
     player.update();
@@ -279,8 +287,8 @@ void draw(){
     collisions(ball[j], Mapcells);
     MobAttack(j, false);
     }
-    if(ballspawned != int((time/1000)%15) && farmer.life>0){
-      ballspawned = int((time/1000)%15);
+    if(ballspawned != int(int(time/1000)%15) && farmer.life>0){
+      ballspawned = int(int(time/1000)%15);
       BallSpawner();
     }
     for(int i = 0; i<3;i++){
@@ -289,9 +297,6 @@ void draw(){
       chick[i].display();
       chick[i].update();
       MobAttack(i, true);
-    
-    
-    
     
     if(pig[i].life >0){
     collisions(pig[i], Mapcells);
@@ -334,6 +339,7 @@ void draw(){
   }//End of is not paused
 }//End of draw()
 
+//show text above a mob/player
 void thinkText(Sprite champ, String txt_msg){
   image(bubble, champ.center_x + 200, champ.center_y -150);
   textAlign(CENTER, TOP);
@@ -342,10 +348,11 @@ void thinkText(Sprite champ, String txt_msg){
   textFont(f,20);               
   text(txt_msg, champ.center_x + 35, champ.center_y -240, 310,290);
 }
-
+//re initiate the balls with first spawn set to false to give them random speed and starting position at the farmer
 void BallSpawner(){
       ball[ballspawned] = new HalmBall(false);
 }
+//Display all the portals and the win button while also checking if player should pe transported
 void portalsDisp(){
   if(textReader >7){
     image(PortalGreen[int((time/500)%2)],portal1_in[0],portal1_in[1]);
@@ -372,13 +379,14 @@ void portalsDisp(){
     }
   }
 }
-
+//Draw the background with side parralax when moving 
 void draw_background(){
   int x = z % bakgroundimg.width;
   for (int i = -x ; i < width ; i += bakgroundimg.width) {
       copy(bakgroundimg, int(-300*SizeScale), 0, bakgroundimg.width, height,int(-300*SizeScale) + i, 0, bakgroundimg.width, height);    
   }
 }
+//Transport the player to the right position when moving into a portal
 void portals_transfer(int port_nmr){
   if (port_nmr == 1){
     player.center_x = portal1_out[0];
@@ -394,13 +402,12 @@ void portals_transfer(int port_nmr){
   }
   
 }
+//Check if the mob should attack and deal dmg, regulated by a time buffer so that the Hp isnt drained
 void MobAttack(int i, boolean mob){
   if(mob && timeAttack+800 < time){
     if(Math.pow(pig[i].center_x - player.center_x,2) + Math.pow(pig[i].center_y-player.center_y,2) <int(800*SizeScale) && !attacked){
-      print("OUUF");
       hpCounter -= 4;
       timeAttack = time;
-      println("hp is at ", hpCounter);
       attacked=true;
       if(hpCounter <= 0){
          player.change_x = 0;
@@ -411,7 +418,6 @@ void MobAttack(int i, boolean mob){
          }
     }
      else if(Math.pow(chick[i].center_x - player.center_x,2) + Math.pow(chick[i].center_y-player.center_y,2) <int(800*SizeScale) && !attacked){
-      print("OUUF");
       hpCounter-=3;
       attacked=true;
       timeAttack = time;
@@ -430,7 +436,6 @@ void MobAttack(int i, boolean mob){
   else{
     if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) <int(800*SizeScale) && !attacked && timeAttack+300 < time ){
       hpCounter--;
-      println("hp is at ", hpCounter);
       attacked=true;
       timeAttack = time;
       if(hpCounter <= 0){
@@ -439,7 +444,6 @@ void MobAttack(int i, boolean mob){
        }
        else if(hpCounter > 0 && abs(hpCounter - healthPoints) > 0){
            pauseScreen.updateBars(hpCounter, "hp");
-           //healthBar[hpCounter-1] = lvlMid;
          }
     }
     else if(Math.pow(ball[i].center_x - player.center_x,2) + Math.pow(ball[i].center_y-player.center_y,2) > int(800*SizeScale)){
@@ -449,7 +453,7 @@ void MobAttack(int i, boolean mob){
     
   }
 }
-
+//scroll to move the background image and the map
 void scroll(){
  float rightBoundary = viewX + displayWidth - RIGHT_MARGIN;
  if(player.getRight() > rightBoundary){
@@ -509,8 +513,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
           player.change_x = 0;
        }
        if(player.land_block == 10 && !player.dead && player.isPlayer){//if player lands on water ==> death
-         println("coll water 1");
-         print(player.center_y/BLOCK_SIZE);
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -552,8 +554,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
          updated = true;
        }
        if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
-         println("coll water 2");
-         print(player.center_y/BLOCK_SIZE);
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -568,8 +568,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.land_block = collisionList.get(8).block_num;
         
         if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
-          println("coll water 3");
-         print(player.center_y/BLOCK_SIZE);
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -583,8 +581,6 @@ public void collisions(Sprite player, Cell[][] mapBlocks){
         player.change_y = 0;
         player.land_block = collisionList.get(2).block_num;
         if(player.land_block == 10 && !player.dead && player.isPlayer){ //if player lands on water ==> death
-          println("coll water 4");
-         print(player.center_y/BLOCK_SIZE);
           player.dead = true;
           player.change_x = 0;
           player.isOnBlock = false;
@@ -671,9 +667,12 @@ public ArrayList<Cell> checkColl(Sprite player, Cell[][] blockList){ // creates 
    }
    return collisionList;
 }
-
+//punch is the attack function to burp on the enemy
 void Punch(){
+  //checking in wich direction we are attacking
   if (player.change_x >= 0){
+    //giving a radie where the attack will hit an potential enemy, and only diplay the attack if it hits
+    //if the attacks kills, give exp to the player according to the animal
   float PunchRadie = player.center_x +140;
   for(int i = 0; i<3;i++){
     if(pig[i].center_x > player.center_x && pig[i].center_x < PunchRadie && (int(pig[i].center_y/100) == int(player.center_y/100))){
@@ -748,13 +747,12 @@ void giveExp(int expGain){ //Updates the lvl bar if any exp in the game is gaine
         WALK_SPEED += lvlCounter;
         JUMP_SPEED += lvlCounter;
         lvlCounter += 1;
-        //pauseScreen.lvlBar = pauseScreen.createBar(pauseScreen.lvlLeft, pauseScreen.lvlMid, pauseScreen.lvlRight, healthPoints);
-        print(" \n lvl: ", lvlCounter, " >>>");
       }
   }
 }
 
 void keyPressed(){
+  //movement actions and pause button. 
   if(keyCode == RIGHT && !player.dead && textReader>0){
     player.change_x = WALK_SPEED;
   }
@@ -899,11 +897,9 @@ void mouseClicked(){
 
 //Creating the game map from csv file, making it a grid system
 void createMap(String[] blockrows){
-  //print("HEEEERE:        ", blocks[1]);
   String[] rows = blockrows;
   for(int row = 0; row < rows.length; row++){
    String[] columns = split(rows[row], ";");
-   //print("Col length is" ,columns.length);
    for(int col = 0; col < columns.length; col++){
      Cell cell = new Cell(int(columns[col]), col, row, blocks[int(columns[col])]);
      cells.add(cell);

@@ -1,4 +1,5 @@
 public class Player extends Sprite{
+  //initiate the variables and load the animation sequences
   final static int stand_frames = 5;
   final static int walk_frames = 2;
   PImage player_stand = loadImage("data/zombie_seq.png");
@@ -13,6 +14,7 @@ public class Player extends Sprite{
   final  float PLAYER_SCALE = 0.8 * SizeScale;
   
   public Player(float x_pos, float y_pos ){
+    //construct the player and set up the animations by cutting the sequence img
     super("data/zombie_seq.png",  0.8 * SizeScale, x_pos, y_pos, stand_frames, true); //Calls the sprite class when creating the player
     i_w = player_stand.width / stand_frames;
       for (int i = 0; i < stand_frames; i++) {
@@ -34,6 +36,7 @@ public class Player extends Sprite{
       }
   }
    @Override
+   //update the animations
    public void update(){
      if( !dead){
     currentFrame = (currentFrame+(n_frames/90.0));
@@ -46,7 +49,7 @@ public class Player extends Sprite{
   }
   @Override
   public void display(){
-    //image(pl_stand[0], center_x, center_y, fr_w, h);
+    //Display the farmer with a animation that depends on players status
     if(dead){
       if(!onlydieonce){ currentFrame = 0;
           deadspot = (center_y + 2*BLOCK_SIZE)/BLOCK_SIZE;

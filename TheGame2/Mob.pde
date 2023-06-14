@@ -17,7 +17,7 @@ public class Mob extends Sprite{
   float deadFrame = 0;
   
   
-  
+  //Construct the mobs
   public Mob(float x_pos, float y_pos, int animal ){
     super("data/pigRight.png", MOB_SCALE* SizeScale, x_pos, y_pos, 1, false);
     anim = animal;
@@ -35,6 +35,7 @@ public class Mob extends Sprite{
   }
   @Override
   public void display(){
+    //display the mobs animation depending on which mob displayed
     if(life>0 && anim == 1){
       if (change_x<=0){
         image(pig_left, center_x, center_y, fr_w, h);
@@ -74,6 +75,7 @@ public class Mob extends Sprite{
 }
   @Override
    public void update(){
+     //update the farmer 
      if ( anim == 4 && life<0){
        if (!farmeronlydieonce){
          farmeronlydieonce = true;
